@@ -22,7 +22,7 @@ class ResponHelper
         return $response->setStatusCode($statusCode)
             ->setJSON([
                 'status' => 'error',
-                'message' => $message
+                'message' => $message,
             ]);
     }
 

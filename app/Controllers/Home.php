@@ -22,8 +22,12 @@ class Home extends BaseController
     }
     public function index(): string
     {
-        return view('auth/login');
-        
+        $value_a = "Ini login";
+
+        $data['value_a'] = $value_a;
+        $data['value_b'] = $value_a;
+        $data['value_c'] = $value_a;
+        return view('auth/login', $data);
     }
 
     private function getJWT($id, $username)

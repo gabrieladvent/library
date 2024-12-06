@@ -30,7 +30,7 @@ class AuthFilter implements FilterInterface
         $key = getenv('JWT_SECRET');
         if (!$key) {
             return service('response')->setJSON([
-                'status' => false,
+                'status' => 'error',
                 'message' => 'Server error: JWT secret not configured.'
             ])->setStatusCode(500);
         }
@@ -38,7 +38,7 @@ class AuthFilter implements FilterInterface
         $authHeader = $request->getHeaderLine('Authorization');
         if (!$authHeader || !preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
             return service('response')->setJSON([
-                'status' => false,
+                'status' => 'error',
                 'message' => 'Authorization token required. Please login.'
             ])->setStatusCode(401);
         }
@@ -47,7 +47,7 @@ class AuthFilter implements FilterInterface
 
         if (cache("blacklist_$token")) {
             return service('response')->setJSON([
-                'status' => false,
+                'status' => 'error',
                 'message' => 'Token is blacklisted. Please login again.'
             ])->setStatusCode(401);
         }
@@ -61,13 +61,13 @@ class AuthFilter implements FilterInterface
         } catch (\Firebase\JWT\ExpiredException $e) {
             // Token expired
             return service('response')->setJSON([
-                'status' => false,
+                'status' => 'error',
                 'message' => 'Token expired. Please login again.'
             ])->setStatusCode(401);
         } catch (\Exception $e) {
             // Token tidak valid
             return service('response')->setJSON([
-                'status' => false,
+                'status' => 'error',
                 'message' => 'Invalid token. Please login again.'
             ])->setStatusCode(401);
         }

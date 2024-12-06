@@ -71,7 +71,7 @@
       }
 
       // Kirim data ke backend
-      fetch('/auth/login', {
+      fetch('login/proses', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
