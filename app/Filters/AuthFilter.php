@@ -25,54 +25,63 @@ class AuthFilter implements FilterInterface
      *
      * @return RequestInterface|ResponseInterface|string|void
      */
+    // public function before(RequestInterface $request, $arguments = null)
+    // {
+    //     $key = getenv('JWT_SECRET');
+    //     if (!$key) {
+    //         return service('response')->setJSON([
+    //             'status' => false,
+    //             'message' => 'Server error: JWT secret not configured.'
+    //         ])->setStatusCode(500);
+    //     }
+
+    //     $authHeader = $request->getHeaderLine('Authorization');
+    //     if (!$authHeader || !preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
+    //         return service('response')->setJSON([
+    //             'status' => false,
+    //             'message' => 'Authorization token required. Please login.'
+    //         ])->setStatusCode(401);
+    //     }
+
+    //     $token = $matches[1];
+
+    //     if (cache("blacklist_$token")) {
+    //         return service('response')->setJSON([
+    //             'status' => false,
+    //             'message' => 'Token is blacklisted. Please login again.'
+    //         ])->setStatusCode(401);
+    //     }
+
+    //     try {
+    //         $decoded = JWT::decode($token, new Key($key, 'HS256'));
+
+    //         // Simpan data user dalam properti request
+    //         $request->userData = (array) $decoded;
+    //     } catch (\Firebase\JWT\ExpiredException $e) {
+    //         return service('response')->setJSON([
+    //             'status' => false,
+    //             'message' => 'Token expired. Please login again.'
+    //         ])->setStatusCode(401);
+    //     } catch (\Exception $e) {
+    //         return service('response')->setJSON([
+    //             'status' => false,
+    //             'message' => 'Invalid token. Please login again.'
+    //         ])->setStatusCode(401);
+    //     }
+
+    //     return;
+    // }
+
     public function before(RequestInterface $request, $arguments = null)
     {
-        $key = getenv('JWT_SECRET');
-        if (!$key) {
+        if (!session('id_user')) {
             return service('response')->setJSON([
-                'status' => false,
-                'message' => 'Server error: JWT secret not configured.'
+                'status' => 'error',
+                'message' => 'Login Dulu.'
             ])->setStatusCode(500);
+
+            return redirect()->to(base_url('/'));
         }
-
-        $authHeader = $request->getHeaderLine('Authorization');
-        if (!$authHeader || !preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
-            return service('response')->setJSON([
-                'status' => false,
-                'message' => 'Authorization token required. Please login.'
-            ])->setStatusCode(401);
-        }
-        
-        $token = $matches[1];
-
-        if (cache("blacklist_$token")) {
-            return service('response')->setJSON([
-                'status' => false,
-                'message' => 'Token is blacklisted. Please login again.'
-            ])->setStatusCode(401);
-        }
-    
-
-
-        try {
-            $decoded = JWT::decode($token, new Key($key, 'HS256'));
-            // Simpan informasi user di request (opsional)
-            $request->user = $decoded;
-        } catch (\Firebase\JWT\ExpiredException $e) {
-            // Token expired
-            return service('response')->setJSON([
-                'status' => false,
-                'message' => 'Token expired. Please login again.'
-            ])->setStatusCode(401);
-        } catch (\Exception $e) {
-            // Token tidak valid
-            return service('response')->setJSON([
-                'status' => false,
-                'message' => 'Invalid token. Please login again.'
-            ])->setStatusCode(401);
-        }
-
-        return;
     }
 
     /**

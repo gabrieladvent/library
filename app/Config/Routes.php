@@ -9,7 +9,7 @@ $routes->get('/', 'Home::index');
 
 $routes->post('login/proses', 'Home::login_process');
 
-$routes->group("api", ['filter' => 'auth'], function ($routes) {
+$routes->group("home", ['filter' => 'auth'], function ($routes) {
     $routes->get('user', function () {
         return service('response')->setJSON([
             'status' => true,
@@ -17,5 +17,7 @@ $routes->group("api", ['filter' => 'auth'], function ($routes) {
         ])->setStatusCode(200);
     });
     
-    $routes->post('logout', 'Home::logout');
+    $routes->get('profile', 'Home::profile');
+    $routes->get('logout', 'Home::logout');
+
 });

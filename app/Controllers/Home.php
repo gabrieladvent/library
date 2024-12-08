@@ -9,17 +9,16 @@ use App\Helpers\ResponHelper;
 
 class Home extends BaseController
 {
-    // $encrypter = \Config\Services::encrypter();
-    // $encrypter = \Config\Services::encrypter();
-    // $decodedResult = $encrypter->decrypt(base64_decode($id_message));
-    // $encrypter->encrypt($index['id'])));
-
     protected $user;
+    protected $encrypter;
+    // $decodedResult = $this->encrypter->decrypt(base64_decode($id_encrypt));
 
     public function __construct()
     {
         $this->user = new UsersModel();
+        $this->encrypter = \Config\Services::encrypter();
     }
+
     public function index(): string
     {
         return view('welcome_message');
@@ -27,24 +26,14 @@ class Home extends BaseController
 
     private function getJWT($id, $username)
     {
-        $key = getenv("JWT_SECRET");
-        if (!$key) {
-            throw new \Exception("JWT Secret not set in environment.");
-        }
-
-        $iat = time();
-        $exp = $iat + (2 * 60 * 60);
+        $id_encrypt = base64_encode($this->encrypter->encrypt($id));
 
         $payload = [
-            'iss' => 'ci4-jwt',
-            'sub' => 'token_user',
-            'iat' => $iat,
-            'exp' => $exp,
-            'id_user' => $id,
-            'user' => $username,
+            'id' => $id_encrypt,
+            'username' => $username
         ];
 
-        return JWT::encode($payload, $key, "HS256");
+        return $payload;
     }
 
     public function login_process()
@@ -65,9 +54,11 @@ class Home extends BaseController
 
         if ($user_data && password_verify($password, $user_data['password'])) {
             $token = $this->getJWT($user_data['id'], $user_data['username']);
-            $data = ['token' => $token, 'user' => $user_data];
 
-            return ResponHelper::handlerSuccessResponJson('Berhasil Login', 200, $data);
+            $params = ['id_user' => $token];
+            session()->set($params);
+            // return ResponHelper::handlerSuccessResponJson('Berhasil Login', 200, $data);
+            return redirect()->to('home/profile');
         }
 
         return ResponHelper::handlerErrorResponJson('Username atau password salah', 400);
@@ -75,25 +66,20 @@ class Home extends BaseController
 
     public function logout()
     {
-        $authHeader = $this->request->getHeaderLine('Authorization');
-        if (!$authHeader || !preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
-            return ResponHelper::handlerErrorResponJson('Authorization token required.', 400);
-        }
+        session()->destroy();
+        return redirect()->to(base_url('/'));
+    }
 
-        $token = $matches[1];
+    public function profile()
+    {
+        $id_user = session('id_user');
+        $decode_id = $this->encrypter->decrypt(base64_decode($id_user['id']));
 
-        try {
-            $decoded = JWT::decode($token, new Key(getenv('JWT_SECRET'), 'HS256'));
-            $expirationTime = $decoded->exp;
-            cache()->save("blacklist_$token", true, $expirationTime - time());
-            $data = [
-                'expirationTime' => $expirationTime,
-                'expirationCache' => $expirationTime - time(),
-            ];
+        $data['user'] = $this->user->where('id', $decode_id)->first();
+        // dd($id_user, $decode_id);
 
-            return ResponHelper::handlerSuccessResponJson('Logout successful.', 200, $data);
-        } catch (\Exception $e) {
-            return ResponHelper::handlerErrorResponJson('Invalid token.', 400);
-        }
+
+        // return ResponHelper::handlerSuccessResponJson('User profile retrieved successfully', 200, $userData);
+        return view('test', $data);
     }
 }
