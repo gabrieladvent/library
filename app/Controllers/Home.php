@@ -21,7 +21,12 @@ class Home extends BaseController
 
     public function index(): string
     {
-        return view('welcome_message');
+        $value_a = "Ini login";
+
+        $data['value_a'] = $value_a;
+        $data['value_b'] = $value_a;
+        $data['value_c'] = $value_a;
+        return view('auth/login', $data);
     }
 
     private function getToken($id, $username)
