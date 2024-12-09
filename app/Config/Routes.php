@@ -16,5 +16,7 @@ $routes->group("home", ['filter' => 'auth'], function ($routes) {
         ])->setStatusCode(200);
     });
     
-    $routes->post('logout', 'Home::logout');
+    $routes->get('profile', 'Home::profile');
+    $routes->get('logout', 'Home::logout');
+
 });
