@@ -24,7 +24,7 @@ class Home extends BaseController
         return view('welcome_message');
     }
 
-    private function getJWT($id, $username)
+    private function getToken($id, $username)
     {
         $id_encrypt = base64_encode($this->encrypter->encrypt($id));
 
@@ -53,7 +53,7 @@ class Home extends BaseController
             : $this->user->getDataByUsername($username);
 
         if ($user_data && password_verify($password, $user_data['password'])) {
-            $token = $this->getJWT($user_data['id'], $user_data['username']);
+            $token = $this->getToken($user_data['id'], $user_data['username']);
 
             $params = ['id_user' => $token];
             session()->set($params);
@@ -81,5 +81,18 @@ class Home extends BaseController
 
         // return ResponHelper::handlerSuccessResponJson('User profile retrieved successfully', 200, $userData);
         return view('test', $data);
+    }
+
+    public function dashboard_view()
+    {
+        // Jumlah peminjaman (int | $count_loans);
+        // Jumlah siswa (int)
+        // Jumlah buku (int)
+
+        $count_book = 0;
+        $count_student = 2;
+        $count_loans = 3;
+
+
     }
 }

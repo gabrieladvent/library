@@ -7,5 +7,6 @@
 </head>
 <body>
     <p>Ini <?= $user['username'] ?></p>
+    <?= $count_book ?>
 </body>
 </html>
