@@ -15,8 +15,7 @@ $routes->group("home", ['filter' => 'auth'], function ($routes) {
             'message' => 'Can Access'
         ])->setStatusCode(200);
     });
-    
-    $routes->get('profile', 'Home::profile');
-    $routes->get('logout', 'Home::logout');
 
+    $routes->get('dashboard', 'Home::Dashboard');
+    $routes->get('logout', 'Home::logout');
 });

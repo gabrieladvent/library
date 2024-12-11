@@ -14,8 +14,16 @@
 
 <body>
 
-  <?= view('components/navbar') ?>
 
+  <? $id_user = session('id_user'); ?>
+
+  <nav class="container-navbar">
+    <div>
+      <h1>SMP SWASTA KATOLIK SANTA URSULA ENDE</h1>
+    </div>
+
+
+  </nav>
   <main class="container-auth">
     <h1 class="welcome">Welcome</h1>
     <div class="container">
@@ -24,153 +32,50 @@
           <h1>Login</h1>
         </div>
         <div class="input">
-          <form action="" autocomplete="off" method="POST">
+          <form action="<?= base_url('login/proses') ?>" autocomplete="off" method="POST">
             <div class="input-satu">
               <label for="">Name</label>
-              <input id="name" type="text" />
+              <input id="name" name="username" type="text" />
             </div>
             <div id="input-pw" class="input-satu">
               <label for="">Password</label>
-              <input id="password" type="text" />
+              <input id="password" name="password" type="text" />
+            </div>
+            <div class="masuk">
+              <button class="button-masuk">masuk</button>
             </div>
           </form>
-          <div class="masuk">
-            <label for=""><a href="">forgot Password</a></label>
-            <button class="button-masuk">masuk</button>
-          </div>
         </div>
       </div>
     </div>
   </main>
 
-  <!-- Toastify JS -->
-  <script
-    type="text/javascript"
-    src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
 
-    <!-- jika sudah terhubung ke database -->
   <script>
-    document.querySelector(".button-masuk").addEventListener("click", (e) => {
-      e.preventDefault(); // Mencegah form submit
+    // Cek apakah ada pesan sukses atau error
+    <?php if (session()->getFlashdata('success')): ?>
+      Toastify({
+        text: "<?= session()->getFlashdata('success') ?>",
+        duration: 3000,
+        gravity: "top", // top or bottom
+        position: "right", // left, center, or right
+        backgroundColor: "green",
+      }).showToast();
+    <?php endif; ?>
 
-      const nameInput = document.getElementById("name").value;
-      const passwordInput = document.getElementById("password").value;
-
-      if (!nameInput || !passwordInput) {
-        // Jika ada input kosong, tampilkan pesan error
-        Toastify({
-          text: "Login gagal! Name atau Password tidak boleh kosong.",
-          duration: 3000,
-          gravity: "top",
-          position: "right",
-          backgroundColor: "#f44336",
-          stopOnFocus: true,
-        }).showToast();
-        return;
-      }
-
-      // Kirim data ke backend
-      fetch('login/proses', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            name: nameInput,
-            password: passwordInput
-          }),
-        })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.status === 'success') {
-            Toastify({
-              text: data.message,
-              duration: 3000,
-              gravity: "top",
-              position: "right",
-              backgroundColor: "#4caf50",
-              stopOnFocus: true,
-            }).showToast();
-
-            // Redirect ke halaman lain jika login berhasil
-            setTimeout(() => {
-              window.location.href = "/dashboard";
-            }, 3000);
-          } else {
-            Toastify({
-              text: data.message,
-              duration: 3000,
-              gravity: "top",
-              position: "right",
-              backgroundColor: "#f44336",
-              stopOnFocus: true,
-            }).showToast();
-          }
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-          Toastify({
-            text: "Terjadi kesalahan pada server.",
-            duration: 3000,
-            gravity: "top",
-            position: "right",
-            backgroundColor: "#f44336",
-            stopOnFocus: true,
-          }).showToast();
-        });
-    });
+    <?php if (session()->getFlashdata('error')): ?>
+      Toastify({
+        text: "<?= session()->getFlashdata('error') ?>",
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: "red",
+      }).showToast();
+    <?php endif; ?>
   </script>
 
-
-  <!-- TESTING TOASTIFY -->
-  <script>
-    document.querySelector(".button-masuk").addEventListener("click", (e) => {
-      e.preventDefault(); // Mencegah form submit
-      console.log("button BERHASIL DI CLICK")
-      // Ambil elemen input
-      const nameInput = document.getElementById("name")
-      const passwordInput = document.getElementById("password");
-
-      // Data dummy
-      const dummyName = "admin";
-      const dummyPassword = "123456";
-
-      // Validasi input
-      if (!nameInput.value || !passwordInput.value) {
-        // Jika ada input kosong, tampilkan pesan error
-        Toastify({
-          text: "Login gagal! Name atau Password tidak boleh kosong.",
-          duration: 3000,
-          gravity: "top",
-          position: "right",
-          backgroundColor: "#f44336",
-          stopOnFocus: true,
-        }).showToast();
-      } else if (nameInput.value === dummyName && passwordInput.value === dummyPassword) {
-        // Jika login berhasil
-        Toastify({
-          text: "Login berhasil! Selamat datang.",
-          duration: 3000,
-          gravity: "top",
-          position: "right",
-          backgroundColor: "#4caf50",
-          stopOnFocus: true,
-        }).showToast();
-      } else {
-        // Jika login gagal
-        Toastify({
-          text: "Login gagal! Name atau Password salah.",
-          duration: 3000,
-          gravity: "top",
-          position: "right",
-          backgroundColor: "#f44336",
-          stopOnFocus: true,
-        }).showToast();
-      }
-    });
-  </script>
-  <!-- END TESTING TOASTIFY -->
 
 </body>
 
