@@ -42,7 +42,6 @@
               <input id="password" name="password" type="text" />
             </div>
             <div class="masuk">
-              <label for=""><a href="">forgot Password</a></label>
               <button class="button-masuk">masuk</button>
             </div>
           </form>
