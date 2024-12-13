@@ -16,3 +16,54 @@
     padding: 1rem;
     align-items: center;
 }
+
+.user {
+    color: var(--font-logo, #383838);
+    font-family: Poppins;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+
+    display: flex;
+    align-items: center;
+    /* background-color: #383838; */
+
+}
+
+.sub-link {
+    position: absolute;
+    top:64px;
+    background-color:#00c777; /* Warna background sub-link */
+    color: #333;
+    padding: 5px 40px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 0px 0px 8px 8px;
+    display: none; /* Sembunyikan sub-link secara default */
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+/* Tampilkan sub-link saat kelas visible ditambahkan */
+.sub-link.visible {
+    display: block;
+}
+
+/* Style untuk link di dalam sub-link */
+.sub-link .a {
+    text-decoration: none;
+    color: #383838;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 5px 0;
+    display: block;
+    transition: color 0.3s ease;
+}
+
+.sub-link:hover {
+    background: linear-gradient(105deg, #00C777 27.17%, #FDFDFD 73.11%);
+}
+
+.sub-link:hover .a {
+    color: red;
+}

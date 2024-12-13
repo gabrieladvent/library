@@ -10,6 +10,8 @@
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 
   <link rel="stylesheet" href="<?= base_url('css/style.login.css') ?>">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+
 </head>
 
 <body>
@@ -38,9 +40,13 @@
               <input id="name" name="username" type="text" />
             </div>
             <div id="input-pw" class="input-satu">
-              <label for="">Password</label>
-              <input id="password" name="password" type="text" />
+              <label for="password">Password</label>
+              <div class="password-wrapper">
+                <input id="password" name="password" type="password" autocomplete="off" />
+                <i id="toggle-password" class="bx bx-show"></i>
+              </div>
             </div>
+
             <div class="masuk">
               <button class="button-masuk">masuk</button>
             </div>
@@ -52,7 +58,30 @@
 
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const passwordInput = document.getElementById("password");
+      const togglePassword = document.getElementById("toggle-password");
 
+      // Fungsi untuk toggle password visibility
+      togglePassword.addEventListener("click", () => {
+        if (passwordInput.type === "password") {
+          passwordInput.type = "text";
+          togglePassword.classList.replace("bx-show", "bx-hide"); // Ganti ikon
+        } else {
+          passwordInput.type = "password";
+          togglePassword.classList.replace("bx-hide", "bx-show"); // Ganti ikon
+        }
+      });
+
+      // Kosongkan input setelah pengiriman formulir
+      const form = document.querySelector("form");
+      form.addEventListener("submit", () => {
+        document.getElementById("name").value = "";
+        passwordInput.value = "";
+      });
+    });
+  </script>
   <script>
     // Cek apakah ada pesan sukses atau error
     <?php if (session()->getFlashdata('success')): ?>

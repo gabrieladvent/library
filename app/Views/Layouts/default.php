@@ -8,11 +8,11 @@
 </head>
 
 <body>
-    <?= $this->include('components/navbar') ?>
 
     <!-- Konten Halaman -->
-    <?= $this->renderSection('content') ?>
 
+    <?= $this->include('components/navbar') ?>
+    <?= $this->renderSection('content') ?>
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
     <!-- Script untuk menampilkan notifikasi Toastify -->

@@ -68,7 +68,38 @@
 .input-satu {
   display: flex;
   flex-direction: column;
+  
+  
+  position: relative; /* Agar elemen anak seperti ikon bisa diatur posisinya */
+  margin-bottom: 1rem; /* Spasi antar elemen input */
 }
+
+
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-wrapper input {
+  width: 100%;
+  padding-right: 2.5rem; /* Memberikan ruang untuk ikon mata */
+  padding-left: 0.5rem;
+}
+
+.password-wrapper i {
+  position: absolute;
+  right: 0.75rem;
+  font-size: 1.25rem;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.password-wrapper i:hover {
+  color: #333;
+}
+
 
 .input-satu input {
   width: 421px;
