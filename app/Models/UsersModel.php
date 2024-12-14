@@ -57,4 +57,22 @@ class UsersModel extends Model
     public function getDataByUsername($username) {
         return $this->where('username', $username)->first();
     }
+
+    public function countRoleUser()
+    {
+        return $this->where('role', 'User')->countAllResults();
+    }
+    
+    public function countRoleAdmin()
+    {
+        return $this->where('role', 'Admin')->countAllResults();
+    }
+
+    public function getDataUserById($id)
+    {
+        return $this
+            ->select('users.id, users.email, users.role, users.username')
+            -> where('users.id', $id)
+            ->first();
+    }
 }

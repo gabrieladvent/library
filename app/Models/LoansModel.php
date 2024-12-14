@@ -53,4 +53,9 @@ class LoansModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function countNewLoans()
+    {
+        return $this->where('created_at >=', date('Y-m-d H:i:s', strtotime('-7 days')))->findAll();
+    }
 }

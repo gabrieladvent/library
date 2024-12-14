@@ -6,32 +6,28 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use App\Models\UsersModel;
 use App\Helpers\ResponHelper;
+use App\Models\BooksModel;
+use App\Models\LoansModel;
 
 class Home extends BaseController
 {
     protected $user;
     protected $encrypter;
+    protected $books;
+    protected $loans;
     // $decodedResult = $this->encrypter->decrypt(base64_decode($id_encrypt));
 
     public function __construct()
     {
         $this->user = new UsersModel();
         $this->encrypter = \Config\Services::encrypter();
+        $this->books = new BooksModel();
+        $this->loans = new LoansModel();
     }
 
     public function index()
     {
-        $data = [];
-        // Cek apakah pengguna sudah login
-        if (session('id_user')) {
-            $id_user = session('id_user');
-            // Dekripsi ID pengguna
-            $decode_id = $this->encrypter->decrypt(base64_decode($id_user['id']));
-
-            // Ambil data pengguna dari database
-            $data['user'] = $this->user->where('id', $decode_id)->first();
-        }
-        return view('auth/login', $data);  // Pastikan data dikirim ke view
+        return view('auth/login');
     }
 
     private function getToken($id, $username)
@@ -52,8 +48,7 @@ class Home extends BaseController
             'username' => 'required',
             'password' => 'required',
         ])) {
-            session()->setFlashdata('error', 'Username dan password wajib diisi.');
-            return redirect()->back();
+            return ResponHelper::handlerErrorResponRedirect('/', "Username dan password wajib diisi.");
         }
 
         $username = $this->request->getVar('username');
@@ -65,21 +60,17 @@ class Home extends BaseController
 
         if ($user_data && password_verify($password, $user_data['password'])) {
             $token = $this->getToken($user_data['id'], $user_data['username']);
+
             session()->set(['id_user' => $token]);
-
-            session()->setFlashdata('success', 'Login berhasil!  ');
-            return redirect()->to('home/dashboard');
+            return ResponHelper::handlerSuccessResponRedirect('home/dashboard', "Login Berhasil");
         }
-
-        session()->setFlashdata('error', 'Username atau password salah.');
-        return redirect()->back();
+        return ResponHelper::handlerErrorResponRedirect('/', "Username atau password salah.");
     }
 
     public function logout()
     {
         session()->destroy();
-        setcookie(session_name(), '', time() - 3600, '/');  // Menghapus cookie sesi di browser
-
+        setcookie(session_name(), '', time() - 3600, '/');
 
         return redirect()->to(base_url('/'));
     }
@@ -89,11 +80,16 @@ class Home extends BaseController
         $id_user = session('id_user');
         $decode_id = $this->encrypter->decrypt(base64_decode($id_user['id']));
 
-        $data['user'] = $this->user->where('id', $decode_id)->first();
-        // dd($id_user, $decode_id);
+        $data = [
+            'user' => $this->user->getDataUserById($decode_id),
+            'count_newborrower' => $this->loans->countNewLoans() ?? 0,
+            'count_book' => $this->books->countAllBook() ?? 0,
+            'count_users' => [
+                'count_user' => $this->user->countRoleUser() ?? 0,
+                'count_admin' => $this->user->countRoleAdmin() ?? 0,
+            ],
+        ];
 
-
-        // return ResponHelper::handlerSuccessResponJson('User profile retrieved successfully', 200, $userData);
         return view('Dashboard', $data);
     }
 }
