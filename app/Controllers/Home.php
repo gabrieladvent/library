@@ -6,6 +6,7 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use App\Models\UsersModel;
 use App\Helpers\ResponHelper;
+use CodeIgniter\CLI\Console;
 
 class Home extends BaseController
 {
@@ -95,5 +96,26 @@ class Home extends BaseController
 
         // return ResponHelper::handlerSuccessResponJson('User profile retrieved successfully', 200, $userData);
         return view('Dashboard', $data);
+    }
+
+    public function Buku()
+    {
+        $id_user = session('id_user');
+        $decode_id = $this->encrypter->decrypt(base64_decode($id_user['id']));
+
+        $data['user'] = $this->user->where('id', $decode_id)->first();
+
+        return view('Content/Buku', $data);
+    }
+
+
+    public function test()
+    {
+        $id_user = session('id_user');
+        $decode_id = $this->encrypter->decrypt(base64_decode($id_user['id']));
+
+        $data['user'] = $this->user->where('id', $decode_id)->first();
+
+        return view('test', $data);
     }
 }

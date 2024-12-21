@@ -13,4 +13,9 @@ class Dashboard extends BaseController
         // menampilkan jumlah buku yang ada di perpustakaan (int) : count_book
         // menampilkan jumalh user (int) : count_member 
     }
+
+    public function test()
+    {
+        return view('test');
+    }
 }

@@ -17,5 +17,7 @@ $routes->group("home", ['filter' => 'auth'], function ($routes) {
     });
 
     $routes->get('dashboard', 'Home::Dashboard');
+    $routes->get('buku', 'Home::Buku');
+
     $routes->get('logout', 'Home::logout');
 });
