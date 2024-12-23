@@ -100,6 +100,10 @@
   width: 20px;
 }
 
+.table th.th-deskripsi{
+  width: 50rem;
+}
+
 
 .table th.th-aksi {
   width: 20px;
