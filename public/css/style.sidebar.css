@@ -110,13 +110,66 @@ a{
     background-color: #bcc0bc;
     
 }
-.nav a.active,
-.nav .sub-menu-item.active {
-    background-color: #bcc0bc;
 
-    color: #007bff; /* Contoh warna teks */
-    font-weight: bold;
+.nav a:is(:link, :active, :visited).active {
+    background-color: #bcc0bc;
+    color: red;
 }
+
+
+
+
+/*  perbaikan  */
+.dropdown-btn:hover{
+    background-color: #bcc0bc;
+    
+}
+
+.dropdown-btn{
+    width: 100%;
+    text-align: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    gap: 10px;
+    display: flex;
+    padding:10px 20px ;
+    margin-left: 0px;
+
+}
+.sub-menu {
+   display: grid;
+   grid-template-rows: 0fr;
+    transition: 300ms ease-in-out;
+
+    >div {
+        overflow: hidden;
+    }
+}
+
+.sub-menu.show {
+   grid-template-rows: 1fr;
+}
+
+
+.svg:last-child {
+    transition: transform 300ms ease;
+    transform: rotate(0deg); /* Nilai awal */
+    /* background-color: antiquewhite; */
+    padding-bottom: 2px;
+}
+
+.rotate .svg:last-child {
+    transform: rotate(180deg); /* Posisi saat submenu terbuka */
+}
+
+
+
+
+
+
+
+
 
 
 .nav-data {
@@ -148,16 +201,16 @@ a{
 }
 
 /* mengubah secara spesifik */
-.nav-data i {
+.dropdown-btn i {
     margin-left: 60px;
 }
-.nav-laporan i {
+.dropdown-btn i {
     margin-left: 90px;
 }
-.nav-data img {
+.dropdown-btn img {
     width: 15px;
 }
-.nav-laporan img{
+.dropdown-btn img{
     width: 15px;
 }
 
@@ -177,18 +230,9 @@ a{
     line-height: normal;
 }
 /* Sub-menu styling */
-.sub-menu {/* Atur padding khusus untuk sub-menu */
-    padding-left: 20px;
-    display: none;
-    flex-direction: column;
-    font-size: 12px;
-    font-weight: 600;
-    /* background-color: #00c777; */
-    /* margin-right: 8rem; */
 
    
-  }
-  
+ 
   .sub-menu-item {
     margin: 0px 0px;
     text-decoration: none;
@@ -196,8 +240,3 @@ a{
     padding: 0px;
   }
   
-  /* Display sub-menu when visible */
-  .sub-menu.visible {
-    display: flex;
-  }
- 

@@ -108,9 +108,14 @@
 .table th.th-aksi {
   width: 20px;
 }
+.table th.th-nama {
+  width: 12rem;
+}
 .table th.th-alamat{
   width: 30rem;
 }
+
+
 
 .table th.th-tgl{
   width: 8rem;
