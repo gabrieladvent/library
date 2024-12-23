@@ -13,7 +13,7 @@
 .container-table {
   /* background-color: #f24040;   */
   width: auto;
-  max-height: 500px;  
+  max-height: calc(100vh - 11rem);  
   overflow-y: auto;
   margin: 0px 20px;
   scrollbar-width: none;
@@ -107,6 +107,19 @@
 
 .table th.th-aksi {
   width: 20px;
+}
+.table th.th-alamat{
+  width: 30rem;
+}
+
+.table th.th-tgl{
+  width: 8rem;
+}
+
+
+.table td.td-alamat{
+  background-color: #00b4d8;
+  text-align: left;
 }
 
 .book-cover {

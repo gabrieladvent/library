@@ -17,7 +17,7 @@
         <div class="container-buku">
             <div class="head">
                 <div class="title">
-                    <h1>Nama Buku</h1>
+                    <h1>Data Anggota</h1>
                 </div>
                 <div class="tambah-buku">
                     <p>Tambah Data</p>
@@ -31,11 +31,11 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Nama Anggota</th>
+                                <th class="th-nama">Nama Anggota</th>
                                 <th>NIS</th>
-                                <th>Alamat</th>
-                                <th class="">Nomor Hp</th>
-                                <th>Tanggal Bergabung</th>
+                                <th class="th-alamat">Alamat</th>
+                                <th>Nomor Hp</th>
+                                <th class="th-tgl">Tanggal Bergabung</th>
                                 <th class="th-aksi">Aksi</th>
                             </tr>
                         </thead>
@@ -43,9 +43,9 @@
                         <tbody>
                             <tr>
                                 <td>1</td>
-                                <td>Elson</td>
+                                <td>Blasius Chelvyn Kera Kleden</td>
                                 <td>2343490593203</td>
-                                <td>Jl. Paingan No.4 No.47, Krodan, Maguwoharjo, Kec. Depok, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55281</td>
+                                <td class="td-alamat">Jl. Paingan No.4 No.47, Krodan, Maguwoharjo, Kec. Depok, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55281</td>
                                 <td>082534553449</td>
                                 <td>12 januari 2023</td>
 

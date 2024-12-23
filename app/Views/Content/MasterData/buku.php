@@ -12,12 +12,12 @@
 </head>
 
 <body>
-    <div class="container-book">
+    <div class="container-book  ">
         <!-- table -->
         <div class="container-buku">
             <div class="head">
                 <div class="title">
-                    <h1>Nama Buku</h1>
+                    <h1>Data Buku</h1>
                 </div>
                 <div class="tambah-buku">
                     <p>Tambah Data</p>
