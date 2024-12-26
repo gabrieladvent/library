@@ -54,8 +54,76 @@ class LoansModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    /**
+     * Menghitung jumlah peminjaman yang dilakukan dalam 7 hari terakhir
+     * 
+     * Fungsi ini akan mengembalikan jumlah peminjaman yang dilakukan dalam 7
+     * hari terakhir
+     * 
+     * @return int jumlah peminjaman yang dilakukan dalam 7 hari terakhir
+     */
     public function countNewLoans()
     {
+        // Hitung jumlah peminjaman yang dilakukan dalam 7 hari terakhir
+        // dengan menggunakan fungsi where dan findAll
         return $this->where('created_at >=', date('Y-m-d H:i:s', strtotime('-7 days')))->findAll();
+    }
+
+    /**
+     * Mengambil data peminjaman berdasarkan id user yang dikirimkan
+     * 
+     * Fungsi ini akan mengembalikan data peminjaman yang memiliki id user yang
+     * sama dengan parameter
+     * 
+     * @param int $id_user id user yang akan diambil
+     * 
+     * @return array data peminjaman yang tersedia
+     */
+    public function getLoanByIdUser($id_user)
+    {
+        // Ambil data peminjaman yang memiliki id user yang sama
+        // dengan parameter
+        return $this
+            ->select('loans.*, books.book_name, categories.category_name')
+            ->join('books', 'books.id = loans.book_id')
+            ->join('categories', 'categories.id = books.category_id')
+            ->where('loans.user_id', $id_user)
+            ->findAll();
+    }
+
+    /**
+     * Mengambil data peminjaman yang tersedia untuk user yang dikirimkan
+     * 
+     * Fungsi ini akan mengembalikan data peminjaman yang memiliki id user yang
+     * sama dengan parameter dan memiliki status 'Borrowed' atau 'Overdue'
+     * 
+     * @param int $id_user id user yang akan diambil
+     * 
+     * @return array data peminjaman yang tersedia
+     */
+    public function getAvailableLoans($id_user)
+    {
+        return $this
+            ->select('loans.*, books.book_name, categories.category_name')
+            ->join('books', 'books.id = loans.book_id')
+            ->join('categories', 'categories.id = books.category_id')
+            ->where('loans.user_id', $id_user)
+            ->whereIn('loans.status', ['Borrowed', 'Overdue'])
+            ->findAll();
+    }
+
+    /**
+     * Menghapus data peminjaman berdasarkan id user yang dikirimkan
+     * 
+     * Fungsi ini akan menghapus data peminjaman yang memiliki id user yang sama
+     * dengan parameter
+     * 
+     * @param int $id_user id user yang akan dihapus
+     * 
+     * @return bool hasil penghapusan data
+     */
+    public function deleteLoan($id_user)
+    {
+        return $this->delete(['user_id' => $id_user]);
     }
 }

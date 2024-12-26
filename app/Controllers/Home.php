@@ -85,8 +85,8 @@ class Home extends BaseController
             'count_newborrower' => $this->loans->countNewLoans() ?? 0,
             'count_book' => $this->books->countAllBook() ?? 0,
             'count_users' => [
-                'count_user' => $this->user->countRoleUser() ?? 0,
-                'count_admin' => $this->user->countRoleAdmin() ?? 0,
+                'count_user' => $this->user->countUserByRole('User') ?? 0,
+                'count_admin' => $this->user->countUserByRole('Admin') ?? 0,
             ],
         ];
 
