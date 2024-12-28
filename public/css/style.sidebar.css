@@ -135,8 +135,9 @@ a{
     display: flex;
     padding:10px 20px ;
     margin-left: 0px;
-
+   
 }
+ 
 .sub-menu {
    display: grid;
    grid-template-rows: 0fr;
@@ -162,12 +163,6 @@ a{
 .rotate .svg:last-child {
     transform: rotate(180deg); /* Posisi saat submenu terbuka */
 }
-
-
-
-
-
-
 
 
 
@@ -201,12 +196,7 @@ a{
 }
 
 /* mengubah secara spesifik */
-.dropdown-btn i {
-    margin-left: 60px;
-}
-.dropdown-btn i {
-    margin-left: 90px;
-}
+
 .dropdown-btn img {
     width: 15px;
 }

@@ -24,7 +24,7 @@
                             <h3 class="text-nav">Master Data</h3>
                             <i class="bx bx-chevron-down svg"></i>
                         </button>
-                        <div class="sub-menu" id="master-data-menu">
+                        <div class="sub-menu" id="">
                             <div>
                                 <a href="<?= base_url('home/kategori') ?>" class="sub-menu-item" id="kategori-link">
                                     <i class="bx bx-category-alt"></i>
