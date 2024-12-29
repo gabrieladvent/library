@@ -1,0 +1,171 @@
+
+.container{
+ 
+    /* background-color: #0cce6b; */
+   
+  
+  }
+  .container-buku {
+  
+    /* background-color: #80e3bb; */
+    width: 80rem;
+  }
+  
+  .container-table {
+    /* background-color: #f24040;   */
+    width: auto;
+    max-height: 500px;  
+    overflow-y: auto;
+    margin: 0px 20px;
+    scrollbar-width: none;
+  
+  }
+  
+  
+  
+  .head {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+  
+  }
+  
+  .head .title {
+    color: var(--font-logo, #383838);
+    font-family: Poppins;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+   
+    
+   
+  }
+  
+  .head .tambah-buku  {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    gap:8px;
+    font-size: 12;
+    font-weight: bold;
+    border-radius: 4px;
+    background: var(--secondary-color, #E4EAE4);
+    color: var(--dashbord, #0A7349);
+  
+  }
+  
+  .tambah-buku i {
+    color: #0A7349;
+  }
+  
+  /* Table styling */
+  .table table {
+    width: 100%;
+    border-collapse: collapse;
+  
+    /* background-color: #0cce6b; */
+  }
+  
+  .table th,
+  .table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .table th {
+    background-color: #0cce6b;
+    color: #f0ffe9;
+    text-transform: uppercase;
+    font-size: 12px;
+    position: sticky;
+    top: 0;
+    /* Agar posisi header tetap di atas */
+    z-index: 1  ;
+    /* Pastikan berada di atas konten */
+  }
+  
+  .table td {
+    background-color: #f2faf0;
+    font-size: 12px;
+    overflow: auto;
+    margin-top: 50px;
+  
+  
+  }
+  
+  .table th.th-kategory,
+  .table th.th-jumlah {
+    width: 20px;
+  }
+  
+  /* .table th.th-sampul {
+      width: 15rem;
+    } */
+  
+  .table th.th-aksi {
+    width: 20px;
+  }
+  
+  .book-cover {
+    width: 100px;
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Aksi button styling */
+  .action-buttons {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .btn {
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .btn-view {
+    background-color: #00b4d8;
+  }
+  
+  .btn-edit {
+    background-color: #ffc300;
+  }
+  
+  .btn-delete {
+    background-color: #ff4d4d;
+  }
+  
+  .btn i {
+    font-size: 16px;
+  }
+  
+  /* Responsive */
+  @media screen and (max-width: 768px) {
+  
+    .table th,
+    .table td {
+      font-size: 12px;
+      padding: 5px;
+    }
+  
+    .book-cover {
+      width: 60px;
+    }
+  
+    .btn {
+      font-size: 10px;
+      padding: 5px 8px;
+    }
+  }

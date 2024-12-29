@@ -4,40 +4,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="<?= base_url('css/style.dashboard.css') ?>" />
+
     <title>Document</title>
 </head>
 
 <body>
 
-    <!-- Konten Halaman -->
+    <!-- navbar -->
 
-    <?= $this->include('components/navbar') ?>
-    <?= $this->renderSection('content') ?>
-    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <?= view('Components/navbar') ?>
+    <!-- end navbar -->
+    <div class="container">
+        <!-- sidebar -->
 
-    <!-- Script untuk menampilkan notifikasi Toastify -->
-    <script type="text/javascript">
-        <?php if (session()->getFlashdata('success')): ?>
-            Toastify({
-                text: "<?= session()->getFlashdata('success') ?>",
-                duration: 3000,
-                close: true,
-                gravity: "top", // "top" or "bottom"
-                position: "right", // "left", "center", "right"
-                backgroundColor: "green"
-            }).showToast();
-        <?php elseif (session()->getFlashdata('error')): ?>
-            Toastify({
-                text: "<?= session()->getFlashdata('error') ?>",
-                duration: 3000,
-                close: true,
-                gravity: "top", // "top" or "bottom"
-                position: "right", // "left", "center", "right"
-                backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc3a0)"
-            }).showToast();
-        <?php endif; ?>
+
+        <?= view('Components/sideNavigation') ?>
+
+        <!-- endsidebar -->
+
+        <?= $this->renderSection('content') ?>
+
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const auth = document.querySelector(".user");
+            const subMenu = auth.nextElementSibling;
+
+            auth.addEventListener("click", () => {
+                subMenu.classList.toggle("visible")
+            })
+        })
     </script>
-
 </body>
 
 </html>
