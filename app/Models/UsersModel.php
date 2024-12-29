@@ -77,7 +77,7 @@ class UsersModel extends Model
     public function getAllRoleByRole($role)
     {
         return $this
-            ->select('users.email, users.username, users.role, biodatausers.fullname, biodatausers.identification, 
+            ->select('users.id, users.email, users.username, users.role, biodatausers.fullname, biodatausers.identification, 
                     biodatausers.address, biodatausers.phone, biodatausers.created_at')
             ->join('biodatausers', 'biodatausers.user_id = users.id', 'left')
             ->where('users.role', $role)

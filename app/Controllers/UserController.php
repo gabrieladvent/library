@@ -53,8 +53,9 @@ class UserController extends BaseController
      */
     public function index()
     {
-        $id_user = $this->decryptId();
+        $id_user = 1;
         $data['profile_user'] = $this->user->getDetailUserById($id_user);
+        dd($data);
 
         return view('profile', $data);
     }
@@ -70,10 +71,14 @@ class UserController extends BaseController
      */
     public function listUser()
     {
+        $id_user = session('id_user');
+        $decode_id = $this->encrypter->decrypt(base64_decode($id_user['id']));
+
         $data['list_admin'] = $this->user->getAllRoleByRole('Admin');
         $data['list_users'] = $this->user->getAllRoleByRole('User');
+        $data['user'] = $this->user->getDataUserById($decode_id);
 
-        return view('list_user', $data);
+        return view('content/MasterData/anggota', $data);
     }
 
     /**
@@ -85,8 +90,10 @@ class UserController extends BaseController
      * @param string $id_user id user yang akan ditampilkan
      * @return \CodeIgniter\HTTP\ResponseInterface
      */
-    public function viewDetailUser($id_user)
+    public function viewDetailUser()
     {
+        $id_user = $_GET['users'] ?? null;
+
         $id_decrypt = $this->decryptId($id_user);
 
         $data['detail_user'] = $this->user->getDetailUserById($id_decrypt);

@@ -92,33 +92,4 @@ class Home extends BaseController
 
         return view('Dashboard', $data);
     }
-
-
-    public function Kategori()
-    {
-        $id_user = session('id_user');
-        $decode_id = $this->encrypter->decrypt(base64_decode($id_user['id']));
-
-        $data['user'] = $this->user->where('id', $decode_id)->first();
-
-        return view('Content/MasterData/kategori', $data);
-    }
-    public function Buku()
-    {
-        $id_user = session('id_user');
-        $decode_id = $this->encrypter->decrypt(base64_decode($id_user['id']));
-
-        $data['user'] = $this->user->where('id', $decode_id)->first();
-
-        return view('Content/MasterData/buku', $data);
-    }
-    public function Anggota()
-    {
-        $id_user = session('id_user');
-        $decode_id = $this->encrypter->decrypt(base64_decode($id_user['id']));
-
-        $data['user'] = $this->user->where('id', $decode_id)->first();
-
-        return view('Content/MasterData/anggota', $data);
-    }
 }

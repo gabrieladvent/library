@@ -1,6 +1,7 @@
 <?= $this->extend('Layouts/default') ?>
 
-<?= $this->section('content') ?>
+<?php $this->section('content');
+$encrypter = \Config\Services::encrypter(); ?>
 
 <head>
     <link rel="stylesheet" href="<?= base_url("css/style.table.css") ?>" />
@@ -35,28 +36,29 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php if (!empty($detail_user)): ?>
-                                <tr>
-                                    <td>1</td>
-                                    <td><?= $detail_user['nama']; ?></td>
-                                    <td><?= $detail_user['nis']; ?></td>
-                                    <td class="td-alamat"><?= $detail_user['alamat']; ?></td>
-                                    <td><?= $detail_user['nomor_hp']; ?></td>
-                                    <td><?= date('d F Y', strtotime($detail_user['tanggal_bergabung'])); ?></td>
-                                    <td>
-                                        <div class="action-buttons">
-                                            <button class="btn btn-view">
-                                                <i class="bx bx-show"></i> Lihat
-                                            </button>
-                                            <button class="btn btn-edit">
-                                                <i class="bx bx-edit"></i> Edit
-                                            </button>
-                                            <button class="btn btn-delete">
-                                                <i class="bx bx-trash"></i> Hapus
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
+                            <?php if (!empty($list_admin)): ?>
+                                <?php foreach ($list_admin as $index => $key): ?>
+                                    <tr>
+                                        <td><?= $index + 1 ?></td>
+                                        <td class="email"><?= $key['email'] ?? $key['username'] ?> </td>
+                                        <td>
+                                            <div class="action-buttons">
+
+                                                <a href="<?= base_url('user/detail') ?> ?users=<?= urlencode(base64_encode($encrypter->encrypt($key['id']))) ?>" class="btn btn-view">
+                                                    <i class="bx bx-show"></i> Lihat
+                                                </a>
+
+
+                                                <button class="btn btn-edit">
+                                                    <i class="bx bx-edit"></i> Edit
+                                                </button>
+                                                <button class="btn btn-delete">
+                                                    <i class="bx bx-trash"></i> Hapus
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php endforeach ?>
                             <?php else: ?>
                                 <tr>
                                     <td colspan="7" style="text-align: center;">Data tidak tersedia.</td>
