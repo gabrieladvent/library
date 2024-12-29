@@ -126,4 +126,12 @@ class LoansModel extends Model
     {
         return $this->delete(['user_id' => $id_user]);
     }
+
+    public function getCountLoanByIdBook($id_book)
+    {
+        return $this
+            ->where('book_id', $id_book)
+            ->where('status', 'Borrowed')
+            ->countAllResults();
+    } 
 }

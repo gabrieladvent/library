@@ -226,10 +226,11 @@ class UserController extends BaseController
             ],
             'identification' => [
                 'rules' => $is_update ? 'max_length[20]'
-                    : 'required|max_length[20]',
+                    : 'required|max_length[20]|numeric',
                 'errors' => [
                     'required' => 'Nomor identitas wajib diisi.',
                     'max_length' => 'Identitas tidak boleh lebih dari 20 karakter.',
+                    'numeric' => 'Identitas hanya boleh berisi angka.',
                 ],
             ],
             'address' => [

@@ -14,11 +14,7 @@ $routes->group("home", ['filter' => 'auth'], function ($routes) {
     $routes->get('logout', 'Home::logout');
 });
 
-$routes->group("book", ['filter' => 'auth'], function ($routes) {
-    $routes->get('dashboard', 'Admin::BookController');
-});
-
-$routes->group("user", function ($routes) {
+$routes->group("user", ['filter' => 'auth'], function ($routes) {
     $routes->get('profile', 'UserController::index');
     $routes->get('list', 'userController::listUser');
     $routes->get('detail/(:any)', 'userController::viewDetailUser/$1');
@@ -26,6 +22,15 @@ $routes->group("user", function ($routes) {
     $routes->post('add', 'userController::addUser');
     $routes->post('edit/(:any)', 'userController::editUser/$1');
     $routes->get('delete/(:any)', 'userController::deleteUser/$1');
+});
+
+$routes->group("book", function ($routes) {
+    $routes->get('dashboard', 'BookController::index');
+    $routes->get('detail/(:any)', 'BookController::viewDetailBook/$1');
+
+    $routes->post('add', 'BookController::addBook');
+    $routes->post('edit/(:any)', 'BookController::editBook/$1');
+    $routes->get('delete/(:any)', 'BookController::deleteBook/$1');
 });
 
 $routes->group("loans", ['filter' => 'auth'], function ($routes) {

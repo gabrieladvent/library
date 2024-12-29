@@ -56,8 +56,48 @@ class BooksModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function countAllBook()
-    {
-        return $this->countAll();
+    /**
+     * Mendapatkan jumlah data buku di database
+     *
+     * @return int
+     */
+    public function countAllBook() { return $this->countAll(); }
+
+    /**
+     * Mendapatkan semua data buku di database
+     *
+     * Menggunakan query join untuk menghubungkan tabel books dengan tabel categories
+     * untuk mendapatkan nama kategori untuk setiap buku.
+     *
+     * @return array
+     */
+    public function getAllBook() 
+    { 
+        return $this
+            ->select('
+                books.id, 
+                books.book_name, 
+                books.isbn, 
+                books.author, 
+                books.total_books, 
+                books.category_id, 
+                books.cover_img, 
+                categories.category_name as category_name
+                    ')
+            ->join('categories', 'categories.id = books.category_id', 'left')
+            ->findAll(); 
     }
+
+    public function getDataById($id)
+    {
+        return $this
+            ->select('
+                books.*,
+                categories.category_name as category_name
+                    ')
+            ->join('categories', 'categories.id = books.category_id', 'left')
+            ->where('books.id', $id)
+            ->first(); 
+    }
+    
 }
