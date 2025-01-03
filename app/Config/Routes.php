@@ -20,27 +20,33 @@ $routes->group("user", ['filter' => 'auth'], function ($routes) {
     $routes->get('detail', 'userController::viewDetailUser');
 
     $routes->post('add', 'userController::addUser');
-    $routes->post('edit/(:any)', 'userController::editUser/$1');
-    $routes->get('delete/(:any)', 'userController::deleteUser/$1');
+    $routes->post('edit', 'userController::editUser');
+    $routes->get('delete', 'userController::deleteUser');
 });
 
-$routes->group("book", function ($routes) {
+$routes->group("book", ['filter' => 'auth'], function ($routes) {
     $routes->get('dashboard', 'BookController::index');
     $routes->get('detail/(:any)', 'BookController::viewDetailBook/$1');
 
     $routes->post('add', 'BookController::addBook');
-    $routes->post('edit/(:any)', 'BookController::editBook/$1');
-    $routes->get('delete/(:any)', 'BookController::deleteBook/$1');
+    $routes->post('edit', 'BookController::editBook');
+    $routes->get('delete', 'BookController::deleteBook');
+});
+
+$routes->group("class", ['filter' => 'auth'], function ($routes) {
+    $routes->get('all', 'UserController::getAllClasses');
+    $routes->post('add', 'UserController::addClass');
+    $routes->post('edit', 'UserController::editClass');
+    $routes->get('delete', 'UserController::deleteClass');
+});
+
+$routes->group("category", ['filter' => 'auth'], function ($routes) {
+    $routes->get('all', 'BookController::getAllCategories');
+    $routes->post('add', 'BookController::addCategory');
+    $routes->post('edit', 'BookController::editCategory');
+    $routes->get('delete', 'BookController::deleteCategory');
 });
 
 $routes->group("loans", ['filter' => 'auth'], function ($routes) {
     $routes->get('dashboard', 'Admin::LoansController');
-});
-
-$routes->group("class", ['filter' => 'auth'], function ($routes) {
-    $routes->get('dashboard', 'Admin::userController');
-});
-
-$routes->group("category", ['filter' => 'auth'], function ($routes) {
-    $routes->get('dashboard', 'Admin::userController');
 });

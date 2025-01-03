@@ -143,10 +143,11 @@ class UserController extends BaseController
      * @param int $id_user id user yang akan di edit
      * @return \CodeIgniter\HTTP\ResponseInterface
      */
-    public function editUser($id_user)
+    public function editUser()
     {
         $data_user = $this->request->getPost();
-        if (empty($data_user)) {
+        $id_user = $this->request->getPost('id_user');
+        if (empty($data_user) || !$data_user) {
             log_message('error', 'Request data is empty.');
             return ResponHelper::handlerErrorResponJson('Data tidak valid.', 400);
         }
@@ -185,8 +186,11 @@ class UserController extends BaseController
      * @param int $id_user id user yang akan dihapus
      * @return \CodeIgniter\HTTP\ResponseInterface
      */
-    public function deleteUser($id_user)
+
+    
+    public function deleteUser()
     {
+        $id_user = $_GET['users'] ?? null;
         $id_decrypt = $this->decryptId($id_user);
 
         $check_loans = $this->loan->getAvailableLoans($id_decrypt);
@@ -212,6 +216,30 @@ class UserController extends BaseController
             $this->db->transRollback();
             return ResponHelper::handlerErrorResponJson($e->getMessage(), 500);
         }
+    }
+
+
+    public function getAllClasses()
+    {
+        $all_classes = $this->class->getAllClasses();
+        $data['all_classes'] = $all_classes;
+        return view('content/MasterData/kelas', $data);
+    }
+
+
+    public function addClass()
+    {
+        
+    }
+
+    public function deleteClass()
+    {
+        
+    }
+
+    public function editClass()
+    {
+
     }
 
 

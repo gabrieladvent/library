@@ -43,4 +43,9 @@ class ClassesModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function getAllClasses()
+    {
+        return $this->findAll();
+    }
 }
