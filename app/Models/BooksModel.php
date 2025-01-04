@@ -88,6 +88,16 @@ class BooksModel extends Model
             ->findAll(); 
     }
 
+
+    /**
+     * Mendapatkan data buku berdasarkan id yang diinginkan
+     * 
+     * Fungsi ini akan mengembalikan data buku yang memiliki id yang sama dengan parameter
+     * Fungsi ini akan mengembalikan data buku beserta nama kategori yang diambil dari tabel categories
+     * 
+     * @param int $id id buku yang diinginkan
+     * @return array data buku yang memiliki id yang sama dengan parameter
+     */
     public function getDataById($id)
     {
         return $this
@@ -99,5 +109,18 @@ class BooksModel extends Model
             ->where('books.id', $id)
             ->first(); 
     }
-    
+
+
+    /**
+     * Mendapatkan jumlah data buku berdasarkan id kategori yang diinginkan
+     * 
+     * Fungsi ini akan mengembalikan jumlah data buku yang memiliki id kategori yang sama dengan parameter
+     * 
+     * @param int $category_id id kategori yang diinginkan
+     * @return int jumlah data buku yang memiliki id kategori yang sama dengan parameter
+     */
+    public function getDataByCategoryId($category_id)
+    {
+        return $this->where('category_id', $category_id)->countAllResults();
+    }
 }

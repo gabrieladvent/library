@@ -47,4 +47,15 @@ class CategoriesModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function checkName($category_name)
+    {
+        $result = $this->where('category_name', $category_name)->first();
+        return $result ? true : false;
+    }
+
+    public function getAllCategory()
+    {
+        return $this->findAll();
+    }
 }

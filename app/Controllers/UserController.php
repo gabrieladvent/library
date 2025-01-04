@@ -187,7 +187,7 @@ class UserController extends BaseController
      * @return \CodeIgniter\HTTP\ResponseInterface
      */
 
-    
+
     public function deleteUser()
     {
         $id_user = $_GET['users'] ?? null;
@@ -219,6 +219,14 @@ class UserController extends BaseController
     }
 
 
+    /**
+     * Menampilkan halaman yang berisi list kelas
+     * 
+     * Fungsi ini akan menampilkan halaman yang berisi list kelas
+     * Fungsi ini akan mengirimkan data kelas ke view
+     * 
+     * @return \CodeIgniter\HTTP\ResponseInterface
+     */
     public function getAllClasses()
     {
         $all_classes = $this->class->getAllClasses();
@@ -227,19 +235,101 @@ class UserController extends BaseController
     }
 
 
+    /**
+     * Menambahkan kelas baru ke database
+     * 
+     * Fungsi ini akan menambahkan data kelas baru ke database
+     * Jika kelas sudah ada, maka akan mengembalikan respon error 400
+     * Jika kelas berhasil ditambahkan, maka akan mengembalikan respon success 201
+     * 
+     * @return \CodeIgniter\HTTP\ResponseInterface
+     */
     public function addClass()
     {
-        
+        $data_classs = $this->request->getPost();
+        $isExists = $this->class->checkName($data_classs['class_name']);
+
+        if ($isExists) {
+            return ResponHelper::handlerErrorResponJson('Kelas sudah ada', 400);
+        }
+
+        try {
+            $this->class->insert($data_classs);
+            return ResponHelper::handlerSuccessResponJson($data_classs, 201);
+        } catch (\Throwable $th) {
+            return ResponHelper::handlerErrorResponJson([$th->getMessage(), $th->getTraceAsString()], 400);
+        }
     }
 
+
+    /**
+     * Menghapus kelas berdasarkan id kelas yang dikirimkan
+     * 
+     * Fungsi ini akan menghapus kelas yang memiliki id kelas yang sama dengan parameter
+     * Fungsi ini akan mengembalikan respon dalam format json
+     * Jika data yang dikirimkan tidak valid, maka akan mengembalikan respon error 400
+     * Jika data yang dikirimkan valid, maka akan mengembalikan respon success 200
+     * 
+     * @return \CodeIgniter\HTTP\ResponseInterface
+     */
     public function deleteClass()
     {
-        
+        $id_class = $_GET['class'] ?? null;
+        $id_decrypt = $this->decryptId($id_class);
+
+        $check_user = $this->biodata->getDataByClassId($id_decrypt);
+        if (!empty($check_user)) {
+            return ResponHelper::handlerErrorResponJson(['error' => 'Class still has users'], 400);
+        }
+
+        try {
+            $this->db->transStart();
+            $this->biodata->deleteBiodata($id_decrypt);
+            $this->class->delete($id_decrypt);
+
+            $this->db->transComplete();
+
+            if ($this->db->transStatus() === false) {
+                return ResponHelper::handlerErrorResponJson('Database transaction failed', 500);
+            }
+
+            return ResponHelper::handlerSuccessResponJson(['message' => 'class deleted successfully'], 200);
+        } catch (\Exception $e) {
+            $this->db->transRollback();
+            return ResponHelper::handlerErrorResponJson($e->getMessage(), 500);
+        }
     }
 
+
+    /**
+     * Fungsi untuk mengedit data kelas berdasarkan id kelas yang dikirimkan
+     * 
+     * Fungsi ini akan mengedit data kelas yang memiliki id kelas yang sama dengan parameter
+     * Fungsi ini akan mengembalikan respon dalam format json
+     * Jika data yang dikirimkan tidak valid, maka akan mengembalikan respon error 400
+     * Jika data yang dikirimkan valid, maka akan mengembalikan respon success 200
+     * 
+     * @return \CodeIgniter\HTTP\ResponseInterface
+     */
     public function editClass()
     {
+        $id_class = $_GET['class'] ?? null;
+        $id_decrypt = $this->decryptId($id_class);
+        $class = $this->class->find($id_decrypt);
 
+        if (empty($class)) {
+            return ResponHelper::handlerErrorResponJson(['error' => 'Class not found'], 404);
+        }
+
+        $data_classs = $this->request->getPost();
+        $isExist = $this->class->checkName($data_classs['class_name']);
+
+        if ($isExist) {
+            return ResponHelper::handlerErrorResponJson(['error' => 'Nama kelas sudah ada'], 400);
+        }
+
+        $this->class->update($id_decrypt, $data_classs);
+        return ResponHelper::handlerSuccessResponJson($data_classs, 200);
     }
 
 

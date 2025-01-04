@@ -114,4 +114,9 @@ class BiodataUsersModel extends Model
     {
         return $this->where('user_id', $id_user)->first();
     }
+
+    public function getDataByClassId($class_id)
+    {
+        return $this->where('class_id', $class_id)->countAllResults();
+    }
 }

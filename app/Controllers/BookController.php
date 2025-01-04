@@ -5,28 +5,16 @@ namespace App\Controllers;
 use App\Models\BooksModel;
 use App\Models\LoansModel;
 use App\Helpers\ResponHelper;
+use App\Models\CategoriesModel;
 use App\Controllers\BaseController;
 
 class BookController extends BaseController
 {
-    // judul buku (string) : judul_buku
-    // pengarang (string) : Pengarang
-    // penerbit (string) : Penerbit
-    // Tahun Terbit(int) : tahun_terbit
-    // kategory (string) : Kategory
-    // jumlah buku (int) : jumlah_buku
-    // sampul(img) : Sampul
-
-    /* 
-        dari parameter dan varaibel di atas 
-        saya ingin kau buat fitur
-        menampilkan data, tambah data ,edit data dan delete data
-    */
-
     protected $book;
     protected $loan;
     protected $encrypter;
     protected $db;
+    protected $category;
 
 
     /**
@@ -44,6 +32,7 @@ class BookController extends BaseController
         $this->loan = new LoansModel();
         $this->encrypter = \Config\Services::encrypter();
         $this->db = \Config\Database::connect();
+        $this->category = new CategoriesModel();
     }
 
 
@@ -224,6 +213,120 @@ class BookController extends BaseController
             $this->db->transRollback();
             return ResponHelper::handlerErrorResponJson($th->getMessage(), 500);
         }
+    }
+
+
+    /**
+     * Menampilkan halaman list kategori
+     * 
+     * Fungsi ini akan menampilkan halaman yang berisi list kategori
+     * Fungsi ini akan mengirimkan data kategori ke view
+     * 
+     * @return \CodeIgniter\HTTP\ResponseInterface
+     */
+    public function getAllCategory()
+    {
+        $all_category = $this->category->getAllCategory();
+        $data['all_category'] = $all_category;
+
+        return view('content/MasterData/kelas', $data);
+    }
+
+
+    /**
+     * Menambahkan kategori baru
+     * 
+     * Fungsi ini akan menambahkan kategori baru berdasarkan data yang dikirimkan
+     * Fungsi ini akan mengembalikan respon dalam format json
+     * Jika data yang dikirimkan tidak valid, maka akan mengembalikan respon error 400
+     * Jika data yang dikirimkan valid, maka akan mengembalikan respon success 201
+     * 
+     * @return \CodeIgniter\HTTP\ResponseInterface
+     */
+    public function addCategory()
+    {
+        $data_category = $this->request->getPost();
+        $isExists = $this->category->checkName($data_category['category_name']);
+
+        if ($isExists) {
+            return ResponHelper::handlerErrorResponJson('Kategori sudah ada', 400);
+        }
+
+        try {
+            $this->category->insert($data_category);
+            return ResponHelper::handlerSuccessResponJson($data_category, 201);
+        } catch (\Throwable $th) {
+            return ResponHelper::handlerErrorResponJson([$th->getMessage(), $th->getTraceAsString()], 400);
+        }
+    }
+
+
+    /**
+     * Menghapus kategori berdasarkan id kategori yang dikirimkan
+     * 
+     * Fungsi ini akan menghapus kategori yang memiliki id kategori yang sama dengan parameter
+     * Fungsi ini akan mengembalikan respon dalam format json
+     * Jika data yang dikirimkan tidak valid, maka akan mengembalikan respon error 400
+     * Jika data yang dikirimkan valid, maka akan mengembalikan respon success 200
+     * 
+     * @return \CodeIgniter\HTTP\ResponseInterface
+     */
+    public function deleteCategory()
+    {
+        $category_id = $_GET['category'] ?? null;
+        $id_decrypt = $this->decryptId($category_id);
+
+        $check_books = $this->book->getDataByCategoryId($id_decrypt);
+        if (!empty($check_books)) {
+            return ResponHelper::handlerErrorResponJson(['error' => 'Class still has users'], 400);
+        }
+
+        try {
+            $this->db->transStart();
+            $this->category->delete($id_decrypt);
+            $this->db->transComplete();
+
+            if ($this->db->transStatus() === false) {
+                return ResponHelper::handlerErrorResponJson('Database transaction failed', 500);
+            }
+
+            return ResponHelper::handlerSuccessResponJson(['message' => 'category deleted successfully'], 200);
+        } catch (\Exception $e) {
+            $this->db->transRollback();
+            return ResponHelper::handlerErrorResponJson($e->getMessage(), 500);
+        }
+    }
+
+
+    /**
+     * Fungsi untuk mengedit data kategori
+     * 
+     * Fungsi ini akan mengedit data kategori berdasarkan id kategori yang dikirimkan
+     * Fungsi ini akan mengembalikan respon dalam format json
+     * Jika data yang dikirimkan tidak valid, maka akan mengembalikan respon error 400
+     * Jika data yang dikirimkan valid, maka akan mengembalikan respon success 200
+     * 
+     * @return \CodeIgniter\HTTP\ResponseInterface
+     */
+    public function editCategory()
+    {
+        $id_category = $_GET['category'] ?? null;
+        $id_decrypt = $this->decryptId($id_category);
+        $category = $this->category->find($id_decrypt);
+
+        if (empty($category)) {
+            return ResponHelper::handlerErrorResponJson(['error' => 'Class not found'], 404);
+        }
+
+        $data_category = $this->request->getPost();
+        $isExist = $this->category->checkName($data_category['category_name']);
+
+        if ($isExist) {
+            return ResponHelper::handlerErrorResponJson(['error' => 'Nama kelas sudah ada'], 400);
+        }
+
+        $this->category->update($id_decrypt, $data_category);
+        return ResponHelper::handlerSuccessResponJson($data_category, 200);
     }
 
 
