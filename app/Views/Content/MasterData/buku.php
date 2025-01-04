@@ -43,154 +43,35 @@
                         </thead>
 
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Laskar Pelangi</td>
-                                <td>Andrea Hirata</td>
-                                <td>Bentang Pustaka</td>
-                                <td>2012</td>
-                                <td>Fiksi</td>
-                                <td>80</td>
-                                <td>
-                                    <img
-                                        src="<?= base_url("img/gambar.png") ?>"
-                                        alt="Sampul Buku"
-                                        class="book-cover" />
-                                </td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="btn btn-view">
-                                            <i class="bx bx-show"></i> Lihat
-                                        </button>
-                                        <button class="btn btn-edit">
-                                            <i class="bx bx-edit"></i> Edit
-                                        </button>
-                                        <button class="btn btn-delete">
-                                            <i class="bx bx-trash"></i> Hapus
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Laskar Pelangi</td>
-                                <td>Andrea Hirata</td>
-                                <td>Bentang Pustaka</td>
-                                <td>2012</td>
-                                <td>Fiksi</td>
-                                <td>80</td>
-                                <td>
-                                    <img
-                                        src="<?= base_url("img/gambar.png") ?>"
-                                        alt="Sampul Buku"
-                                        class="book-cover" />
-                                </td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="btn btn-view">
-                                            <i class="bx bx-show"></i> Lihat
-                                        </button>
-                                        <button class="btn btn-edit">
-                                            <i class="bx bx-edit"></i> Edit
-                                        </button>
-                                        <button class="btn btn-delete">
-                                            <i class="bx bx-trash"></i> Hapus
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Laskar Pelangi</td>
-                                <td>Andrea Hirata</td>
-                                <td>Bentang Pustaka</td>
-                                <td>2012</td>
-                                <td>Fiksi</td>
-                                <td>80</td>
-                                <td>
-                                    <img
-                                        src="<?= base_url("img/gambar.png") ?>"
-                                        alt="Sampul Buku"
-                                        class="book-cover" />
-                                </td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="btn btn-view">
-                                            <i class="bx bx-show"></i> Lihat
-                                        </button>
-                                        <button class="btn btn-edit">
-                                            <i class="bx bx-edit"></i> Edit
-                                        </button>
-                                        <button class="btn btn-delete">
-                                            <i class="bx bx-trash"></i> Hapus
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Laskar Pelangi</td>
-                                <td>Andrea Hirata</td>
-                                <td>Bentang Pustaka</td>
-                                <td>2012</td>
-                                <td>Fiksi</td>
-                                <td>80</td>
-                                <td>
-                                    <img
-                                        src="<?= base_url("img/gambar.png") ?>"
-                                        alt="Sampul Buku"
-                                        class="book-cover" />
-                                </td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="btn btn-view">
-                                            <i class="bx bx-show"></i> Lihat
-                                        </button>
-                                        <button class="btn btn-edit">
-                                            <i class="bx bx-edit"></i> Edit
-                                        </button>
-                                        <button class="btn btn-delete">
-                                            <i class="bx bx-trash"></i> Hapus
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Laskar Pelangi</td>
-                                <td>Andrea Hirata</td>
-                                <td>Bentang Pustaka</td>
-                                <td>2012</td>
-                                <td>Fiksi</td>
-                                <td>80</td>
-                                <td>
-                                    <img
-                                        src="<?= base_url("img/gambar.png") ?>"
-                                        alt="Sampul Buku"
-                                        class="book-cover" />
-                                </td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="btn btn-view">
-                                            <i class="bx bx-show"></i> Lihat
-                                        </button>
-                                        <button class="btn btn-edit">
-                                            <i class="bx bx-edit"></i> Edit
-                                        </button>
-                                        <button class="btn btn-delete">
-                                            <i class="bx bx-trash"></i> Hapus
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
+                            <?php if (!empty($book)): ?>
+                                <?php foreach ($book as $index => $key): ?>
+                                    <tr>
+                                        <td><?= $index + 1 ?></td>
+                                        <td class="buku"><?= $key['book_name']  ?> </td>
+                                        <td class="buku"><?= $key['author']  ?> </td>
+                                        <td>
+                                            <div class="action-buttons">
+
+                                                <a href="<?= base_url('user/detail') ?> ?users=<?= urlencode(base64_encode($encrypter->encrypt($key['id']))) ?>" class="btn btn-view">
+                                                    <i class="bx bx-show"></i> Lihat
+                                                </a>
+
+
+                                                <button class="btn btn-edit">
+                                                    <i class="bx bx-edit"></i> Edit
+                                                </button>
+                                                <button class="btn btn-delete">
+                                                    <i class="bx bx-trash"></i> Hapus
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php endforeach ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="7" style="text-align: center;">Data tidak tersedia.</td>
+                                </tr>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>

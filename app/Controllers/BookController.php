@@ -58,7 +58,7 @@ class BookController extends BaseController
     public function index()
     {
         $data['books'] = $this->book->getAllBook();
-        return view('book/index', $data);
+        dd($data);
     }
 
 
@@ -71,7 +71,11 @@ class BookController extends BaseController
      * @param string $book_id id buku yang akan ditampilkan
      * 
      * @return \CodeIgniter\HTTP\ResponseInterface
+     * 
      */
+
+
+
     public function viewDetailBook($book_id)
     {
         $id_book = $this->decryptId($book_id);
@@ -83,10 +87,10 @@ class BookController extends BaseController
             'count_loans' => $count_loans
         ];
 
-        return view('book/detail', $data);
+        return view('Content/MasterData/buku', $data);
     }
 
-    public function addBook() 
+    public function addBook()
     {
         $validationRules = $this->getValidationRules(false);
 
