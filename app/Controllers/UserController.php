@@ -69,16 +69,28 @@ class UserController extends BaseController
      * 
      * @return \CodeIgniter\HTTP\ResponseInterface
      */
-    public function listUser()
+    public function listUser($type)
     {
         $id_user = session('id_user');
-        $decode_id = $this->encrypter->decrypt(base64_decode($id_user['id']));
+        if (!$id_user || !isset($id_user['id'])) {
+            return redirect()->back()->with('error', 'Session tidak valid');
+        }
 
-        $data['list_admin'] = $this->user->getAllRoleByRole('Admin');
-        $data['list_users'] = $this->user->getAllRoleByRole('User');
+        try {
+            $decode_id = $this->encrypter->decrypt(base64_decode($id_user['id']));
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Dekripsi ID gagal');
+        }
+
+        $data['list_user'] = $this->user->getAllRoleByRole($type === 'Admin' ? 'Admin' : 'User');
         $data['user'] = $this->user->getDataUserById($decode_id);
 
-        return view('content/MasterData/anggota', $data);
+        if (!$data['user']) {
+            return redirect()->back()->with('error', 'Pengguna tidak ditemukan');
+        }
+
+        $view = $type === 'Admin' ? 'content/Admin/admin' : 'content/MasterData/anggota';
+        return view($view, $data);
     }
 
     /**
@@ -130,7 +142,6 @@ class UserController extends BaseController
             return ResponHelper::handlerErrorResponJson($e->getMessage(), 500);
         }
     }
-
 
     /**
      * Fungsi untuk mengedit data user yang sudah ada
@@ -504,7 +515,7 @@ class UserController extends BaseController
                 'date_birth' => $data['date_birth'],
                 'gender' => $data['gender'],
                 'religion' => $data['religion'],
-                'birth_date' => $data['class_name'],
+
             ]);
 
             $this->db->transCommit();
@@ -590,7 +601,11 @@ class UserController extends BaseController
             $id_user = $id['id'];
         }
 
-        $decode_id = $this->encrypter->decrypt(base64_decode($id_user));
-        return $decode_id;
+        try {
+            $decode_id = $this->encrypter->decrypt(base64_decode($id_user));
+            return $decode_id;
+        } catch (\Exception $e) {
+            throw new \Exception('Dekripsi ID gagal: ' . $e->getMessage());
+        }
     }
 }

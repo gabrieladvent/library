@@ -82,9 +82,13 @@ class BooksModel extends Model
                 books.book_name, 
                 books.isbn, 
                 books.author, 
+                books.publisher,
+                books.year_published,
                 books.total_books, 
                 books.category_id, 
                 books.cover_img, 
+                books.created_at,
+                
                 categories.category_name as category_name
                     ')
             ->join('categories', 'categories.id = books.category_id', 'left')

@@ -7,6 +7,7 @@ use App\Models\LoansModel;
 use App\Helpers\ResponHelper;
 use App\Models\CategoriesModel;
 use App\Controllers\BaseController;
+use App\Models\UsersModel;
 
 class BookController extends BaseController
 {
@@ -15,6 +16,7 @@ class BookController extends BaseController
     protected $encrypter;
     protected $db;
     protected $category;
+    protected $user;
 
 
     /**
@@ -28,6 +30,7 @@ class BookController extends BaseController
     public function __construct()
     {
         // Buat instance dari model yang digunakan
+        $this->user = new UsersModel();
         $this->book = new BooksModel();
         $this->loan = new LoansModel();
         $this->encrypter = \Config\Services::encrypter();
@@ -46,9 +49,50 @@ class BookController extends BaseController
      */
     public function index()
     {
-        $data['books'] = $this->book->getAllBook();
-        return view('book/index', $data);
+        $id_user = session('id_user');
+        if (!$id_user || !isset($id_user['id'])) {
+            return redirect()->back()->with('error', 'Session tidak valid');
+        }
+
+        try {
+            $decode_id = $this->encrypter->decrypt(base64_decode($id_user['id']));
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Dekripsi ID gagal');
+        }
+
+        $books = $this->book->getAllBook();
+
+        // Decode author JSON string into an array, then join to string
+        foreach ($books as &$book) {
+            $book['author'] = implode(', ', json_decode($book['author']));
+        }
+
+        $data['books'] = $books;
+        $data['user'] = $this->user->getDataUserById($decode_id);
+
+        return view('Content/MasterData/buku', $data);
     }
+
+
+    // public function index()
+    // {
+    //     $id_user = session('id_user');
+    //     if (!$id_user || !isset($id_user['id'])) {
+    //         return redirect()->back()->with('error', 'Session tidak valid');
+    //     }
+
+    //     try {
+    //         $decode_id = $this->encrypter->decrypt(base64_decode($id_user['id']));
+    //     } catch (\Exception $e) {
+    //         return redirect()->back()->with('error', 'Dekripsi ID gagal');
+    //     }
+
+    //     // Mengambil data buku
+    //     $books = $this->book->getAllBook();
+
+    //     // Mengembalikan data sebagai JSON
+    //     return $this->response->setJSON($books);
+    // }
 
 
     /**
@@ -60,7 +104,11 @@ class BookController extends BaseController
      * @param string $book_id id buku yang akan ditampilkan
      * 
      * @return \CodeIgniter\HTTP\ResponseInterface
+     * 
      */
+
+
+
     public function viewDetailBook($book_id)
     {
         $id_book = $this->decryptId($book_id);
@@ -72,19 +120,8 @@ class BookController extends BaseController
             'count_loans' => $count_loans
         ];
 
-        return view('book/detail', $data);
+        return view('Content/MasterData/buku', $data);
     }
-
-    /**
-     * Tambahkan data buku
-     * 
-     * Fungsi ini akan menambahkan data buku berdasarkan data yang dikirimkan
-     * Fungsi ini akan mengembalikan respon dalam format json
-     * Jika data yang dikirimkan tidak valid, maka akan mengembalikan respon error 400
-     * Jika data yang dikirimkan valid, maka akan mengembalikan respon success 201
-     * 
-     * @return \CodeIgniter\HTTP\ResponseInterface
-     */
     public function addBook()
     {
         $validationRules = $this->getValidationRules(false);
@@ -93,38 +130,28 @@ class BookController extends BaseController
             return ResponHelper::handlerErrorResponJson($this->validator->getErrors(), 400);
         }
 
+        // Ambil data yang dikirim dari form atau API
         $data_book = $this->request->getPost();
         $book_name = $this->request->getPost('book_name');
 
-        try {
-            $handle_sampul = $this->uploadFiles($book_name);
-            $author_json = json_encode($this->request->getPost('author'));
-            $data_book['author'] = $author_json;
-        } catch (\Throwable $th) {
-            $message = 'Gagal mengupload file: ' . $th->getMessage();
-            return ResponHelper::handlerErrorResponJson($message, 400);
+        // Pastikan author diubah menjadi format JSON sebelum disimpan
+        if (isset($data_book['author']) && is_array($data_book['author'])) {
+            $data_book['author'] = json_encode($data_book['author']);
         }
 
         try {
-            $data_book = array_merge($data_book, $handle_sampul);
-            $this->book->insert($data_book);
-            return ResponHelper::handlerSuccessResponJson($data_book, 201);
+            // Simpan data ke database
+            if ($this->book->save($data_book)) {
+                return ResponHelper::handlerSuccessResponJson($data_book, 201);  // Response sukses
+            } else {
+                return ResponHelper::handlerErrorResponJson('Gagal menyimpan data', 500);
+            }
         } catch (\Exception $e) {
             return ResponHelper::handlerErrorResponJson($e->getMessage(), 500);
         }
     }
 
 
-    /**
-     * Edit data buku
-     * 
-     * Fungsi ini akan mengedit data buku berdasarkan data yang dikirimkan
-     * Fungsi ini akan mengembalikan respon dalam format json
-     * Jika data yang dikirimkan tidak valid, maka akan mengembalikan respon error 400
-     * Jika data yang dikirimkan valid, maka akan mengembalikan respon success 200
-     * 
-     * @return \CodeIgniter\HTTP\ResponseInterface
-     */
     public function editBook()
     {
         $data_book = $this->request->getPost();
