@@ -61,7 +61,10 @@ class BooksModel extends Model
      *
      * @return int
      */
-    public function countAllBook() { return $this->countAll(); }
+    public function countAllBook()
+    {
+        return $this->countAll();
+    }
 
     /**
      * Mendapatkan semua data buku di database
@@ -71,8 +74,8 @@ class BooksModel extends Model
      *
      * @return array
      */
-    public function getAllBook() 
-    { 
+    public function getAllBook()
+    {
         return $this
             ->select('
                 books.id, 
@@ -85,7 +88,7 @@ class BooksModel extends Model
                 categories.category_name as category_name
                     ')
             ->join('categories', 'categories.id = books.category_id', 'left')
-            ->findAll(); 
+            ->findAll();
     }
 
 
@@ -107,7 +110,7 @@ class BooksModel extends Model
                     ')
             ->join('categories', 'categories.id = books.category_id', 'left')
             ->where('books.id', $id)
-            ->first(); 
+            ->first();
     }
 
 
