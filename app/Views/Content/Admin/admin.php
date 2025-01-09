@@ -51,17 +51,17 @@ $encrypter = \Config\Services::encrypter(); ?>
                                         <td>
                                             <div class="action-buttons">
 
-                                                <a href="#popup" class="btn btn-view">
+                                                <a href="#popup__lihat" class="btn btn-view">
                                                     <i class="bx bx-show"></i> Lihat
                                                 </a>
 
 
-                                                <button class="btn btn-edit">
+                                                <a href="#popup__edit" class="btn btn-edit">
                                                     <i class="bx bx-edit"></i> Edit
-                                                </button>
-                                                <button class="btn btn-delete">
+                                                </a>
+                                                <a href="popup__delete" class="btn btn-delete">
                                                     <i class="bx bx-trash"></i> Hapus
-                                                </button>
+                                                </a>
                                             </div>
                                         </td>
                                     </tr>
@@ -79,7 +79,8 @@ $encrypter = \Config\Services::encrypter(); ?>
                                 <h1>Tambah Anggota</h1>
                                 <a href="#" class="popup-close">&times;</a>
                             </div>
-                            <form action="">
+                            <form action="<?= base_url('user/add') ?>" method="post" autocomplete="off">
+                                <?= csrf_field() ?>
                                 <div class="container__input">
                                     <div class="satu">
                                         <div class="input-content">
@@ -88,15 +89,27 @@ $encrypter = \Config\Services::encrypter(); ?>
                                         </div>
                                         <div class="input-content">
                                             <label class="label" for="">Nomor Induk Siswa</label>
-                                            <input class="input" type="text" name="identifiction" />
+                                            <input class="input" type="text" name="identification" />
                                         </div>
                                         <div class="input-content">
                                             <label class="label" for="">Jenis kelamin</label>
-                                            <input class="input" type="text" name="gender" />
+                                            <select class="input" id="gender" name="gender" required>
+                                                <option value="">Pilih Jenis Kelamin</option>
+                                                <option value="Laki-Laki">Laki-laki</option>
+                                                <option value="Perempuan">Perempuan</option>
+                                            </select>
                                         </div>
                                         <div class="input-content">
                                             <label class="label" for="">agama</label>
-                                            <input class="input" type="text" name="religion" />
+                                            <select class="input" id="religius" name="religius" required>
+                                                <option value="">Pilih Agama</option>
+                                                <option value="Islam">Islam</option>
+                                                <option value="Kristen">Kristen</option>
+                                                <option value="Katolik">Katolik</option>
+                                                <option value="Hindu">Hindu</option>
+                                                <option value="Budha">Budha</option>
+                                                <option value="Konghucu">Konghucu</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="dua">
@@ -110,7 +123,7 @@ $encrypter = \Config\Services::encrypter(); ?>
                                         </div>
                                         <div class="input-content">
                                             <label class="label" for="">Nomor Telpon</label>
-                                            <input class="input" type="tel" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}">
+                                            <input class="input" type="tel" id="phone" name="phone" autocomplete="off">
                                         </div>
                                         <div class="input-content">
                                             <label class="label" for="">Alamat Domisili </label>
@@ -130,13 +143,67 @@ $encrypter = \Config\Services::encrypter(); ?>
                             </form>
                         </div>
                     </div>
-                    <div class="container__popup" id="popuplihat">
+                    <div class="container__popup" id="popup__lihat">
+                        <div class="popup">
+                            <div class="title">
+                                <h1>Lihat Detail</h1>
+                                <a href="#" class="popup-close">&times;</a>
+                            </div>
+                            <form id="formDetailUser" method="post" autocomplete="off">
+                                <?= csrf_field() ?>
+                                <div class="container__input">
+                                    <div class="satu">
+                                        <div class="input-content">
+                                            <label class="label">Nama Anggota</label>
+                                            <input class="input" type="text" id="fullname" name="fullname" readonly />
+                                        </div>
+                                        <div class="input-content">
+                                            <label class="label">Nomor Induk Siswa</label>
+                                            <input class="input" type="text" id="identifiction" name="identifiction" readonly />
+                                        </div>
+                                        <div class="input-content">
+                                            <label class="label">Jenis kelamin</label>
+                                            <input class="input" type="text" id="gender" name="gender" readonly />
+                                        </div>
+                                        <div class="input-content">
+                                            <label class="label">Agama</label>
+                                            <input class="input" type="text" id="religion" name="religion" readonly />
+                                        </div>
+                                    </div>
+                                    <div class="dua">
+                                        <div class="input-content">
+                                            <label class="label">Tempat Lahir</label>
+                                            <input class="input" type="text" id="place_birth" name="place_birth" readonly />
+                                        </div>
+                                        <div class="input-content">
+                                            <label class="label">Tanggal Lahir</label>
+                                            <input class="input" type="date" id="date_birth" name="date_birth" readonly />
+                                        </div>
+                                        <div class="input-content">
+                                            <label class="label">Nomor Telepon</label>
+                                            <input class="input" type="text" id="phone" name="phone" readonly />
+                                        </div>
+                                        <div class="input-content">
+                                            <label class="label">Alamat Domisili</label>
+                                            <textarea class="input alamat" id="address" name="address" rows="4" cols="50" readonly></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="button">
+                                    <button class="batal" type="button">Batal</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="container__popup" id="popup__edit">
                         <div class="popup">
                             <div class="title">
                                 <h1>Tambah Anggota</h1>
                                 <a href="#" class="popup-close">&times;</a>
                             </div>
-                            <form action="">
+                            <form action="user/add" method="post" autocomplete="off">
+                                <?= csrf_field() ?>
                                 <div class="container__input">
                                     <div class="satu">
                                         <div class="input-content">
@@ -167,7 +234,7 @@ $encrypter = \Config\Services::encrypter(); ?>
                                         </div>
                                         <div class="input-content">
                                             <label class="label" for="">Nomor Telpon</label>
-                                            <input class="input" type="tel" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}">
+                                            <input class="input" type="tel" id="phone" name="phone" autocomplete="off">
                                         </div>
                                         <div class="input-content">
                                             <label class="label" for="">Alamat Domisili </label>

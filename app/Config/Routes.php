@@ -11,20 +11,21 @@ $routes->post('login/proses', 'Home::login_process');
 
 $routes->group("home", ['filter' => 'auth'], function ($routes) {
     $routes->get('dashboard', 'Home::Dashboard');
-    $routes->get('list', 'userController::listUser');
+    $routes->get('list', 'UserController::listUser');
     $routes->get('logout', 'Home::logout');
 });
 
-$routes->group("user", ['filter' => 'auth'], function ($routes) {
+$routes->group("user", function ($routes) {
     $routes->get('profile', 'UserController::index');
     // $routes->get('list', 'userController::listUser');
-    $routes->get('detail', 'userController::viewDetailUser');
+    $routes->get('detail', 'UserController::viewDetailUser');
 
-    $routes->post('add', 'userController::addUser');
-    $routes->get('list/(:any)', 'userController::listUser/$1');
-    $routes->post('edit/(:any)', 'userController::editUser/$1');
-    $routes->get('delete/(:any)', 'userController::deleteUser/$1');
+    $routes->post('add', 'UserController::addUser');
+    $routes->get('list/(:any)', 'UserController::listUser/$1');
+    $routes->post('edit/(:any)', 'UserController::editUser/$1');
+    $routes->get('delete/(:any)', 'UserController::deleteUser/$1');
 });
+
 
 $routes->group("book", function ($routes) {
     $routes->get('dashboard', 'BookController::index');

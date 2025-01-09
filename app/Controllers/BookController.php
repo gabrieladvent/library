@@ -6,6 +6,7 @@ use App\Models\BooksModel;
 use App\Models\LoansModel;
 use App\Helpers\ResponHelper;
 use App\Controllers\BaseController;
+use App\Models\UsersModel;
 
 class BookController extends BaseController
 {
@@ -27,6 +28,7 @@ class BookController extends BaseController
     protected $loan;
     protected $encrypter;
     protected $db;
+    protected $user;
 
 
     /**
@@ -40,6 +42,7 @@ class BookController extends BaseController
     public function __construct()
     {
         // Buat instance dari model yang digunakan
+        $this->user = new UsersModel();
         $this->book = new BooksModel();
         $this->loan = new LoansModel();
         $this->encrypter = \Config\Services::encrypter();
@@ -57,9 +60,50 @@ class BookController extends BaseController
      */
     public function index()
     {
-        $data['books'] = $this->book->getAllBook();
-        dd($data);
+        $id_user = session('id_user');
+        if (!$id_user || !isset($id_user['id'])) {
+            return redirect()->back()->with('error', 'Session tidak valid');
+        }
+
+        try {
+            $decode_id = $this->encrypter->decrypt(base64_decode($id_user['id']));
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Dekripsi ID gagal');
+        }
+
+        $books = $this->book->getAllBook();
+
+        // Decode author JSON string into an array, then join to string
+        foreach ($books as &$book) {
+            $book['author'] = implode(', ', json_decode($book['author']));
+        }
+
+        $data['books'] = $books;
+        $data['user'] = $this->user->getDataUserById($decode_id);
+
+        return view('Content/MasterData/buku', $data);
     }
+
+
+    // public function index()
+    // {
+    //     $id_user = session('id_user');
+    //     if (!$id_user || !isset($id_user['id'])) {
+    //         return redirect()->back()->with('error', 'Session tidak valid');
+    //     }
+
+    //     try {
+    //         $decode_id = $this->encrypter->decrypt(base64_decode($id_user['id']));
+    //     } catch (\Exception $e) {
+    //         return redirect()->back()->with('error', 'Dekripsi ID gagal');
+    //     }
+
+    //     // Mengambil data buku
+    //     $books = $this->book->getAllBook();
+
+    //     // Mengembalikan data sebagai JSON
+    //     return $this->response->setJSON($books);
+    // }
 
 
     /**

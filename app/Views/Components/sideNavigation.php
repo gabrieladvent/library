@@ -73,7 +73,7 @@
 
                     <!-- Admin -->
                     <div class="nav">
-                        <a class="nav-admin" href="/user/list/Admin" id="pinjam-admin-link">
+                        <a class="nav-admin" href="<?= base_url('/user/list/Admin') ?>" id="pinjam-admin-link">
                             <img src="<?= base_url("img/Group 19.png") ?>" alt="" />
                             <h3 class="text-nav">Admin</h3>
                         </a>

@@ -1,5 +1,6 @@
 
 
+
 .container__popup{
     background-color: rgba(96, 95, 94, 0.5);
     padding: 20px;
@@ -15,7 +16,21 @@
     transition: all .3s ;
 
 }
+.container__popup-lihat{
+    background-color: rgba(96, 95, 94, 0.5);
+    padding: 20px;
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 999;
 
+    opacity: 0;
+    visibility: hidden;
+    transition: all .3s ;
+
+}
 .container__input{
     display: flex;
 }
@@ -32,12 +47,73 @@
     transform: translate(-50%, -50%) scale(.25);
     transition: all .5s .1s;
 }
-
+p
 .form{
     display: flex;
     flex-direction: column;
 }
 
+
+
+
+/* input author */
+.content-author{
+    display: flex;
+    flex-direction: column;
+    /* background-color: aqua; */
+    width: 30rem;
+    gap: 2px;
+    padding: 15px;
+    
+}
+
+.author-view{
+    width: 20rem;
+    background-color: red;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.author{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+}
+.input-author{
+    width: 250px;
+    height: 33px;
+    flex-shrink: 0;
+    border-radius: 4px;
+    background: #e2e1e1;
+    padding-left: 10px;
+    
+}
+
+.button-author{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: #e2e1e1;
+    height: 33px;
+    width: 40px;
+    
+    flex-shrink: 0;
+    border-radius: 4px;
+    background: #e2e1e1;
+    
+}
+ .author-text {
+  font-size: small;
+    
+}
+
+
+/* end input author */
+
+/* input umum */
 .input-content{
     display: flex;
     flex-direction: column;
@@ -46,23 +122,33 @@
     gap: 2px;
     padding: 15px;
     
-    .input{
-        width: 370px;
-        height: 33px;
-        flex-shrink: 0;
-        border-radius: 4px;
-        background: #e2e1e1;
-        padding-left: 10px;
-        
-    }
-   
+}
+
+.input{
+    width: 370px;
+    height: 33px;
+    flex-shrink: 0;
+    border-radius: 4px;
+    background: #e2e1e1;
+    padding-left: 10px;
     
 }
 
+.input-count {
+  
+    width: 160px;
+    height: 33px;
+    flex-shrink: 0;
+    border-radius: 4px;
+    background: #e2e1e1;
+    padding:0px 10px;
+}
 .input-content .alamat{
     height: 100px;
     padding: 10px;
 }
+
+/* end input umum */
 
 .deskripsi-footer{
     padding-left: 1rem;
@@ -135,6 +221,36 @@
 }
 
 #popup:target .popup{
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+
+}
+#popup__lihat:target{
+    opacity: 1;
+    visibility: visible;
+}
+
+#popup__lihat:target .popup{
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+
+}
+#popup__edit:target{
+    opacity: 1;
+    visibility: visible;
+}
+
+#popup__edit:target .popup{
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+
+}
+#popup__delete:target{
+    opacity: 1;
+    visibility: visible;
+}
+
+#popup__delete:target .popup{
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
 
