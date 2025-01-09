@@ -96,18 +96,15 @@
                                         <input class="input" type="text" name="isbn" />
                                     </div>
                                     <div class="content-author">
-                                        <label class="label" for="author">Authors (Pisahkan dengan koma atau tambah input baru)</label>
-                                        <div class="author">
-                                            <input class="input-author" type="text" name="author[]" placeholder="Penulis 1" required />
-                                            <button class="button-author" type="button" id="add-author">+</button>
+                                        <label class="label" for="author">Authors (Pisahkan dengan koma)</label>
+                                        <div class="author" id="author-container">
+                                            <input class="input-author" type="text" id="author-input"
+                                                name="author[]" placeholder="Masukkan nama author (Pisahkan dengan koma)"
+                                                required />
                                         </div>
-                                        <div class="author-view"></div>
+                                        <div id="result"></div>
+                                    </div>
 
-                                    </div>
-                                    <div class="input-content">
-                                        <label class="label" for="">jumlah Buku</label>
-                                        <input class="input-count" type="number" id="quantity" name="total_books" min="1" max="1000" step="1" required>
-                                    </div>
                                     <div class="input-content">
                                         <label for="fileInput">Pilih Gambar:</label>
                                         <input class="" type="file" id="fileInput" name="image" accept="image/*" required>
@@ -124,10 +121,16 @@
                                         <label class="label" for="">Tahun Terbit</label>
                                         <input class="input" type="text" name="year_published" />
                                     </div>
-                                    <div class="input-content">
-                                        <label class="label" for="">Total copy</label>
-                                        <input class="input-count" type="number" id="quantity" name="total_copies" min="1" max="1000" step="1" required>
+                                    <div class="count_book">
+                                        <div class="input-jumlah">
+                                            <label class="label" for="">Total copy</label>
+                                            <input class="input-count" type="number" id="quantity" name="total_copies" min="1" max="1000" step="1" required>
 
+                                        </div>
+                                        <div class="input-jumlah">
+                                            <label class="label" for="">jumlah Buku</label>
+                                            <input class="input-count" type="number" id="quantity" name="total_books" min="1" max="1000" step="1" required>
+                                        </div>
                                     </div>
                                     <div class="input-content">
                                         <label class="label" for="">Deskripsi Buku </label>
@@ -152,22 +155,22 @@
     </div>
 </div>
 <script>
-    document.getElementById('add-author').addEventListener('click', function() {
-        // Ambil nilai dari input yang sudah ada
-        var existingAuthorInput = document.querySelector('.input-author');
-        var placeholderText = existingAuthorInput ? existingAuthorInput.value : 'Penulis Baru'; // Ambil nilai atau default
+    const authorInput = document.getElementById('author-input');
+    const resultDiv = document.getElementById('result');
 
-        // Buat elemen span untuk menampilkan teks
-        var newAuthorText = document.createElement('span');
-        newAuthorText.classList.add('author-text'); // Menambahkan kelas untuk styling
-        newAuthorText.textContent = placeholderText; // Menetapkan teks
+    authorInput.addEventListener('input', function() {
+        // Mengambil nilai input dan memisahkan berdasarkan koma
+        const authors = this.value.split(',').map(author => author.trim());
 
-        // Cek jika sudah ada elemen, dan pisahkan dengan koma
-        var authorContainer = document.querySelector('.author-view');
-        if (authorContainer.querySelector('.author-text')) {
-            authorContainer.appendChild(document.createTextNode(', ')); // Menambahkan koma pemisah
-        }
-        authorContainer.appendChild(newAuthorText); // Menambahkan teks penulis baru
+        // Membuat format output
+        let output = '';
+        authors.forEach(author => {
+            if (author) {
+                output += `author[]: ${author}\n`;
+            }
+        });
+
+
     });
 </script>
 

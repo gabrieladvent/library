@@ -35,6 +35,7 @@
     display: flex;
 }
 
+
 .popup{
     /* background-color: antiquewhite; */
     background-color:whitesmoke;
@@ -68,8 +69,8 @@ p
 }
 
 .author-view{
-    width: 20rem;
-    background-color: red;
+    width: 30rem;
+    /* background-color: ; */
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -77,9 +78,10 @@ p
 
 .author{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: 10px;
-    align-items: center;
+    /*  */
+    
 }
 .input-author{
     width: 250px;
@@ -93,6 +95,7 @@ p
 
 .button-author{
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
@@ -105,10 +108,17 @@ p
     background: #e2e1e1;
     
 }
- .author-text {
-  font-size: small;
-    
-}
+.author-text {
+    font-size: small;
+    border: none; /* Menghilangkan border */
+    background:transparent; /* Membuat background menjadi transparan */
+    width: 10rem; /* Membuat lebar input menyesuaikan panjang teks */
+    outline: none; /* Menghilangkan outline saat fokus */
+    padding: 0; /* Menghilangkan padding */
+    box-sizing: content-box; /* Agar padding dan border tidak memengaruhi lebar */
+    white-space: nowrap; /* Menjaga teks tetap dalam satu baris */
+  }
+  
 
 
 /* end input author */
@@ -149,6 +159,20 @@ p
 }
 
 /* end input umum */
+
+.count_book{
+    display: flex;
+    /* background-color: rebeccapurple; */
+}
+.input-jumlah{
+    display: flex;
+    flex-direction: column;
+    /* background-color: aqua; */
+    width: 10rem;
+    gap: 2px;
+    padding: 15px;
+    
+}
 
 .deskripsi-footer{
     padding-left: 1rem;
