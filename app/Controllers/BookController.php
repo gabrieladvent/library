@@ -133,7 +133,6 @@ class BookController extends BaseController
 
         return view('Content/MasterData/buku', $data);
     }
-
     public function addBook()
     {
         $validationRules = $this->getValidationRules(false);
@@ -142,14 +141,26 @@ class BookController extends BaseController
             return ResponHelper::handlerErrorResponJson($this->validator->getErrors(), 400);
         }
 
+        // Ambil data yang dikirim dari form atau API
         $data_book = $this->request->getPost();
 
+        // Pastikan author diubah menjadi format JSON sebelum disimpan
+        if (isset($data_book['author']) && is_array($data_book['author'])) {
+            $data_book['author'] = json_encode($data_book['author']);
+        }
+
         try {
-            return ResponHelper::handlerSuccessResponJson($data_book, 201);
+            // Simpan data ke database
+            if ($this->book->save($data_book)) {
+                return ResponHelper::handlerSuccessResponJson($data_book, 201);  // Response sukses
+            } else {
+                return ResponHelper::handlerErrorResponJson('Gagal menyimpan data', 500);
+            }
         } catch (\Exception $e) {
             return ResponHelper::handlerErrorResponJson($e->getMessage(), 500);
         }
     }
+
 
     public function editBook()
     {

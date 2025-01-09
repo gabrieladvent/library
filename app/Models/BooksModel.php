@@ -106,4 +106,8 @@ class BooksModel extends Model
             ->where('books.id', $id)
             ->first();
     }
+    // Callbacks
+
+
+
 }
