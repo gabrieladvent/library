@@ -9,7 +9,7 @@ class BookSeeder extends Seeder
     public function run()
     {
         $data = [
-            [
+            [   
                 'category_id' => 1,
                 'book_name' => 'Laskar Pelangi',
                 'isbn' => '978-3-16-148410-0',
