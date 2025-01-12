@@ -107,7 +107,7 @@
 
                                     <div class="input-content">
                                         <label for="fileInput">Pilih Gambar:</label>
-                                        <input class="" type="file" id="fileInput" name="image" accept="image/*" required>
+                                        <input class="" type="file" id="fileInput" name="cover-_img" accept="image/*" required>
                                     </div>
 
 
