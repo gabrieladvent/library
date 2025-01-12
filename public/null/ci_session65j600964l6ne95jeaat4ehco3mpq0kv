@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 __ci_last_regenerate|i:1736675992;_ci_previous_url|s:46:"http://localhost:8080/index.php/home/dashboard";id_user|a:2:{s:2:"id";s:108:"o5bV38J6Tr3v6OA0OYL8RqFTF/t1KQZdXo0H1LkQDi9o5dCtCPgPSYUdvfrcD1Ni5tOJBUxGw6GnXksS3JZu+ZP4DmrEuStkuI+ZLOg5EwvU";s:8:"username";s:9:"adminsatu";}success|s:14:"Login Berhasil";__ci_vars|a:2:{s:7:"success";s:3:"old";s:13:"_ci_old_input";s:3:"old";}_ci_old_input|a:2:{s:3:"get";a:0:{}s:4:"post";a:2:{s:8:"username";s:9:"adminsatu";s:8:"password";s:10:"admin_satu";}}
+=======
+__ci_last_regenerate|i:1736676328;_ci_previous_url|s:46:"http://localhost:8080/index.php/book/dashboard";id_user|a:2:{s:2:"id";s:108:"/A7jKrdi9Zvo9xQ9C+gCWKWXmQSMIdbU5TuA/8HyE/kLEMlEDdm4upHWDXsSEJAZJ+HMfGQThI44eDW5abpnUHtPrK5WUuAT3p2g/o7wL1Ns";s:8:"username";s:9:"adminsatu";}
+>>>>>>> view/anggota
