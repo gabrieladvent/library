@@ -16,7 +16,7 @@ $routes->group("home", ['filter' => 'auth'], function ($routes) {
 
 $routes->group("user", ['filter' => 'auth'], function ($routes) {
     $routes->get('profile', 'UserController::index');
-    $routes->get('list', 'userController::listUser');
+    $routes->get('list/(:any))', 'userController::listUser/$1');
     $routes->get('detail', 'userController::viewDetailUser');
 
     $routes->post('add', 'userController::addUser');
@@ -24,7 +24,7 @@ $routes->group("user", ['filter' => 'auth'], function ($routes) {
     $routes->get('delete', 'userController::deleteUser');
 });
 
-$routes->group("book", ['filter' => 'auth'], function ($routes) {
+$routes->group("book", function ($routes) {
     $routes->get('dashboard', 'BookController::index');
     $routes->get('detail/(:any)', 'BookController::viewDetailBook/$1');
 

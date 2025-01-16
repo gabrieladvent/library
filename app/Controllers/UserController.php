@@ -61,25 +61,30 @@ class UserController extends BaseController
     }
 
 
-    /**
-     * Menampilkan halaman list user
-     * 
-     * Fungsi ini akan menampilkan halaman yang berisi list dari user yang terdaftar
-     * Fungsi ini akan mengirimkan 2 data ke view, yaitu list_admin dan list_users
-     * 
-     * @return \CodeIgniter\HTTP\ResponseInterface
-     */
-    public function listUser()
+    public function listUser($type)
     {
         $id_user = session('id_user');
-        $decode_id = $this->encrypter->decrypt(base64_decode($id_user['id']));
+        if (!$id_user || !isset($id_user['id'])) {
+            return redirect()->back()->with('error', 'Session tidak valid');
+        }
 
-        $data['list_admin'] = $this->user->getAllRoleByRole('Admin');
-        $data['list_users'] = $this->user->getAllRoleByRole('User');
+        try {
+            $decode_id = $this->encrypter->decrypt(base64_decode($id_user['id']));
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Dekripsi ID gagal');
+        }
+
+        $data['list_user'] = $this->user->getAllRoleByRole($type === 'Admin' ? 'Admin' : 'User');
         $data['user'] = $this->user->getDataUserById($decode_id);
 
-        return view('content/MasterData/anggota', $data);
+        if (!$data['user']) {
+            return redirect()->back()->with('error', 'Pengguna tidak ditemukan');
+        }
+
+        $view = $type === 'Admin' ? 'content/MasterData/admin' : 'content/MasterData/anggota';
+        return view($view, $data);
     }
+
 
     /**
      * Menampilkan halaman detail user
@@ -115,18 +120,35 @@ class UserController extends BaseController
      */
     public function addUser()
     {
-        $validationRules = $this->getValidationRules(false);
-
-        if (!$this->validate($validationRules)) {
-            return ResponHelper::handlerErrorResponJson($this->validator->getErrors(), 400);
-        }
-
-        $data_user = $this->request->getPost();
-
         try {
+            // $valid = \Config\Services::validation();
+            // $validate = $this->getValidationRules();
+
+            // dd(!$valid->setRules($validate)->run($this->request->getPost()));
+
+            // if (!$valid->setRules($validate)->run($this->request->getPost())) {
+            //     $message = $valid->getErrors();
+            //     return ResponHelper::handlerErrorResponRedirect('registrasi/employee', $message);
+            // }
+
+            // Mendapatkan data input
+            $data_user = $this->request->getPost();
+
+            // Pastikan data input berupa array
+            if (!$data_user || !is_array($data_user)) {
+                return ResponHelper::handlerErrorResponJson(['error' => 'Data input tidak valid'], 400);
+            }
+
+            // Menyimpan data ke database
             $insert_user = $this->insertUser($data_user);
-            return ResponHelper::handlerSuccessResponJson(['user' => $insert_user[0], 'biodata' => $insert_user[1]], 201);
+
+            // Mengembalikan respons sukses
+            return ResponHelper::handlerSuccessResponJson(
+                ['user' => $insert_user[0], 'biodata' => $insert_user[1]],
+                201
+            );
         } catch (\Exception $e) {
+            // Menangani error dan mengembalikan pesan error
             return ResponHelper::handlerErrorResponJson($e->getMessage(), 500);
         }
     }
@@ -152,11 +174,11 @@ class UserController extends BaseController
             return ResponHelper::handlerErrorResponJson('Data tidak valid.', 400);
         }
 
-        $validationRules = $this->getValidationRules(true);
-        if (empty($validationRules)) {
-            log_message('error', 'Validation rules are empty.');
-            return ResponHelper::handlerErrorResponJson('Kesalahan server internal.', 500);
-        }
+        // $validationRules = $this->getValidationRules(true);
+        // if (empty($validationRules)) {
+        //     log_message('error', 'Validation rules are empty.');
+        //     return ResponHelper::handlerErrorResponJson('Kesalahan server internal.', 500);
+        // }
 
         try {
             $updatedData = $this->updateUser($id_user, $data_user);
@@ -491,10 +513,11 @@ class UserController extends BaseController
             $user_id = $this->user->insertData([
                 'username' => $username,
                 'email' => $email,
-                'password' => password_hash($data['password'], PASSWORD_DEFAULT),
+                'password' => !empty($data['password']) ? password_hash($data['password'], PASSWORD_DEFAULT) : null,
+                'role' => empty($data['role']) ? 'User' : 'Admin',
             ]);
 
-            $this->biodata->insertData([
+            $data_biodata = $this->biodata->insertData([
                 'user_id' => $user_id,
                 'fullname' => $data['fullname'],
                 'identification' => $data['identification'],
@@ -504,8 +527,13 @@ class UserController extends BaseController
                 'date_birth' => $data['date_birth'],
                 'gender' => $data['gender'],
                 'religion' => $data['religion'],
-                'birth_date' => $data['class_name'],
+                'class_id' => $data['class_name'],
             ]);
+
+            if ($data_biodata == false) {
+                $this->db->transRollback();
+                throw new \Exception('Failed to insert biodata');
+            }
 
             $this->db->transCommit();
 
