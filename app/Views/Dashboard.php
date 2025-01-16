@@ -1,30 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
+<?= $this->extend('Layouts/default') ?>
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>sidebar</title>
+<?= $this->section('content') ?>
+<div class="dashboard-container">
 
-</head>
+    <div class="view-container" id="loans-container">
+        <h1><?= $count_newborrower ?></h1>
+        <p>Peminjaman Baru</p>
+        <div class="container_img">
+            <img src="<?= base_url("img/Peminjaman.png") ?>" alt="" />
+        </div>
+    </div>
+    <div class="view-container" id="book-container">
+        <h1><?= $count_book ?></h1>
+        <p>Buku Tersedia</p>
+        <div class="container_img">
+            <img src="<?= base_url("img/Buku.png") ?>" alt="" />
+        </div>
 
-<body>
+    </div>
+    <div class="view-container" id="users-container">
+        <h1><?= $count_users['count_user'] ?></h1>
 
-    <?= $this->extend('Layouts/default') ?>
+        <p>jumlah Anggota</p>
+        <div class="container_img">
+            <img src="<?= base_url("img/Anggota.png") ?>" alt="" />
+        </div>
 
-    <?= $this->section('content') ?>
-    <button class="primary" onclick="window.dialog.showModal();">Open Dialog</button>
+    </div>
+</div>
 
-    <dialog id="dialog">
-        <h2>Hello.</h2>
-        <p>A CSS-only modal based on the <a href="https://developer.mozilla.org/es/docs/Web/CSS/::backdrop" target="_blank">::backdrop</a> pseudo-class. Hope you find it helpful.</p>
-        <p>You can also change the styles of the <code>::backdrop</code> from the CSS.</p>
-        <button onclick="window.dialog.close();" aria-label="close" class="x">❌</button>
-    </dialog>
-    <?= $this->endSection() ?>
-
-
-</body>
-
-
-</html>
+<?= $this->endSection() ?>

@@ -30,6 +30,28 @@
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
+        // Cek apakah ada pesan sukses atau error
+        <?php if (session()->getFlashdata('success')): ?>
+            Toastify({
+                text: "<?= session()->getFlashdata('success') ?>",
+                duration: 3000,
+                gravity: "top", // top or bottom
+                position: "right", // left, center, or right
+                backgroundColor: "green",
+            }).showToast();
+        <?php endif; ?>
+
+        <?php if (session()->getFlashdata('error')): ?>
+            Toastify({
+                text: "<?= session()->getFlashdata('error') ?>",
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "red",
+            }).showToast();
+        <?php endif; ?>
+    </script>
+    <script>
         document.addEventListener("DOMContentLoaded", () => {
             const auth = document.querySelector(".user");
             const subMenu = auth.nextElementSibling;

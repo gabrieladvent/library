@@ -6,3 +6,97 @@
 
     /* background-color: antiquewhite; */
 }
+
+.dashboard-container {
+   padding-top: 40px;
+    display: flex;
+    /* align-items: center; */
+    justify-content: space-around;
+    width: calc(100% - 20%); /* Tambahkan ini */
+}
+
+.view-container{
+    display: flex;
+  width: 215px;
+  height: 67px;
+  color: var(--font-logo, #383838);
+  gap: 20px;
+  align-items: center;
+  /* padding: 7px; */
+  justify-content: center;
+  /* border: solid black 3px; */
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  border-radius: 3px 3px 3px 3px;
+
+}
+
+.view-container h1 {
+    color: var(--font-logo, #383838);
+    font-family: Poppins;
+    font-size: 34px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    display: flex;
+    flex-wrap: wrap;
+    /* background-color: brown; */
+    width: 10%;
+    padding-left: 10px;
+
+}
+
+.view-container p {
+    color: var(--font-logo, #383838);
+    font-family: Poppins;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    display: flex;
+    flex-wrap: wrap;
+    /* background-color: brown; */
+    width: 40%;
+
+}
+
+
+
+#loans-container{
+    background-color: #A1EEBD; 
+    .container_img{
+        width: 4rem;
+        height: 4.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #54B176;
+    }
+}
+
+#book-container{
+    background-color: #A1D9EE;
+    
+    .container_img{
+        width: 4rem;
+        height: 4.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #558A9D;
+      
+    }
+}
+
+#users-container{
+    background-color: #EEB3A1;
+
+    .container_img{
+        width: 4rem;
+        height: 4.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #C14444;
+      
+    }
+}
