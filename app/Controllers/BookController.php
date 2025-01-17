@@ -152,12 +152,12 @@ class BookController extends BaseController
         try {
             // Simpan data ke database
             if ($this->book->save($data_book)) {
-                return ResponHelper::handlerSuccessResponJson($data_book, 201);  // Response sukses
+                return ResponHelper::handlerSuccessResponRedirect('book/dashboard', "Data Berhasil Ditambahkan");  // Response sukses
             } else {
-                return ResponHelper::handlerErrorResponJson('Gagal menyimpan data', 500);
+                return ResponHelper::handlerErrorResponRedirect('book/dashboard', "Data Gagal Ditambahkan   ");
             }
         } catch (\Exception $e) {
-            return ResponHelper::handlerErrorResponJson($e->getMessage(), 500);
+            return ResponHelper::handlerErrorResponRedirect('book/dashboard', $e->getMessage(), 500);
         }
     }
 
