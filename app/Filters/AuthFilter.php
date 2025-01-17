@@ -111,6 +111,14 @@ class AuthFilter implements FilterInterface
         return;
     }
 
+
+    // public function before(RequestInterface $request, $arguments = null)
+    // {
+    //     if (!session('id_user')) {
+    //         return redirect()->to(base_url('login/proses'));
+    //     }
+    // }
+
     /**
      * Allows After filters to inspect and modify the response
      * object as needed. This method does not allow any way
