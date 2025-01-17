@@ -30,11 +30,11 @@
                                     <i class="bx bx-category-alt"></i>
                                     <p>Kategori</p>
                                 </a>
-                                <a href="<?= base_url('home/buku') ?>" class="sub-menu-item buku" id="buku-link">
+                                <a href="<?= base_url('book/dashboard') ?>" class="sub-menu-item buku" id="buku-link">
                                     <i class="bx bx-book-alt"></i>
                                     <p>Buku</p>
                                 </a>
-                                <a href="<?= base_url('home/anggota') ?>" class="sub-menu-item" id="anggota-link">
+                                <a href="<?= base_url('user/list/Anggota') ?>" class="sub-menu-item" id="anggota-link">
                                     <i class="bx bx-group"></i>
                                     <p>Anggota</p>
                                 </a>
@@ -44,7 +44,7 @@
 
                     <!-- Peminjaman Buku -->
                     <div class="nav">
-                        <a class="nav-pinjam" href="/home/dashboard" id="pinjam-buku-link">
+                        <a class="nav-pinjam" href="/home/list" id="pinjam-buku-link">
                             <img src="<?= base_url("img/Group 17.png") ?>" alt="" />
                             <h3 class="text-nav">Peminjaman Buku</h3>
                         </a>
@@ -73,7 +73,7 @@
 
                     <!-- Admin -->
                     <div class="nav">
-                        <a class="nav-admin" href="/home/dashboard" id="admin-link">
+                        <a class="nav-admin" href="<?= base_url('/user/list/Admin') ?>" id="pinjam-admin-link">
                             <img src="<?= base_url("img/Group 19.png") ?>" alt="" />
                             <h3 class="text-nav">Admin</h3>
                         </a>

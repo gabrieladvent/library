@@ -64,11 +64,10 @@ class LoansModel extends Model
      */
     public function countNewLoans()
     {
-        // Hitung jumlah peminjaman yang dilakukan dalam 7 hari terakhir
-        // dengan menggunakan fungsi where dan findAll
-        return $this->where('created_at >=', date('Y-m-d H:i:s', strtotime('-7 days')))->findAll();
+        // Untuk menghitung jumlah record, gunakan countAllResults()
+        return $this->where('created_at >=', date('Y-m-d H:i:s', strtotime('-7 days')))
+            ->countAllResults();
     }
-
     /**
      * Mengambil data peminjaman berdasarkan id user yang dikirimkan
      * 
@@ -133,5 +132,5 @@ class LoansModel extends Model
             ->where('book_id', $id_book)
             ->where('status', 'Borrowed')
             ->countAllResults();
-    } 
+    }
 }

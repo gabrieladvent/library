@@ -61,6 +61,14 @@ class UserController extends BaseController
     }
 
 
+    /**
+     * Menampilkan halaman list user
+     * 
+     * Fungsi ini akan menampilkan halaman yang berisi list dari user yang terdaftar
+     * Fungsi ini akan mengirimkan 2 data ke view, yaitu list_admin dan list_users
+     * 
+     * @return \CodeIgniter\HTTP\ResponseInterface
+     */
     public function listUser($type)
     {
         $id_user = session('id_user');
@@ -81,7 +89,7 @@ class UserController extends BaseController
             return redirect()->back()->with('error', 'Pengguna tidak ditemukan');
         }
 
-        $view = $type === 'Admin' ? 'content/MasterData/admin' : 'content/MasterData/anggota';
+        $view = $type === 'Admin' ? 'content/Admin/admin' : 'content/MasterData/anggota';
         return view($view, $data);
     }
 
@@ -152,7 +160,6 @@ class UserController extends BaseController
             return ResponHelper::handlerErrorResponJson($e->getMessage(), 500);
         }
     }
-
 
     /**
      * Fungsi untuk mengedit data user yang sudah ada
@@ -618,7 +625,11 @@ class UserController extends BaseController
             $id_user = $id['id'];
         }
 
-        $decode_id = $this->encrypter->decrypt(base64_decode($id_user));
-        return $decode_id;
+        try {
+            $decode_id = $this->encrypter->decrypt(base64_decode($id_user));
+            return $decode_id;
+        } catch (\Exception $e) {
+            throw new \Exception('Dekripsi ID gagal: ' . $e->getMessage());
+        }
     }
 }
