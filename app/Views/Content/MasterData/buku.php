@@ -1,6 +1,7 @@
 <?= $this->extend('Layouts/default') ?>
 
-<?= $this->section('content') ?>
+<?php $this->section('content');
+$encrypter = \Config\Services::encrypter(); ?>
 
 <div class="container-book">
     <div class="container-buku">
@@ -39,7 +40,7 @@
                                     <td><?= esc($book['author']) ?></td>
                                     <td><?= esc($book['publisher'] ?? '') ?></td>
                                     <td><?= esc($book['year_published'] ?? '') ?></td>
-                                    <td><?= esc($book['created_at'] ?? '') ?></td>
+                                    <td><?= $book['created_at']  ?></td>
                                     <td>
                                         <img
                                             src="<?= esc($book['cover_img'] ?? '') ?>"
@@ -49,12 +50,13 @@
 
                                     <td>
                                         <div class="action-buttons">
-                                            <a href="<?= base_url('buku/lihat/' . $book['id']) ?>" class="btn btn-view">
+                                            <button onclick="" class="btn btn-view">
                                                 <i class="bx bx-show"></i> Lihat
-                                            </a>
+                                            </button>
                                             <a href="<?= base_url('buku/edit/' . $book['id']) ?>" class="btn btn-edit">
                                                 <i class="bx bx-edit"></i> Edit
                                             </a>
+
                                             <a href="<?= base_url('buku/delete/' . $book['id']) ?>" class="btn btn-delete" onclick="return confirm('Apakah Anda yakin ingin menghapus buku ini?')">
                                                 <i class="bx bx-trash"></i> Hapus
                                             </a>
@@ -147,6 +149,58 @@
                             <div class="button">
                                 <button class="batal" type="button">Batal</button>
                                 <button class="simpan" type="submit">Simpan</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="container__popup" id="popup__lihat">
+                    <div class="popup">
+                        <div class="title">
+                            <h1>Lihat Detail</h1>
+                            <a href="#" class="popup-close">&times;</a>
+                        </div>
+                        <form id="formDetailUser" method="get" autocomplete="off">
+                            <?= csrf_field() ?>
+                            <div class="container__input">
+                                <div class="satu">
+                                    <div class="input-content">
+                                        <label class="label">Nama Buku</label>
+                                        <input class="input" type="text" id="fullname" name="book_name" readonly />
+                                    </div>
+                                    <div class="input-content">
+                                        <label class="label">Nomor Induk Siswa</label>
+                                        <input class="input" type="text" id="identifiction" name="isbn" readonly />
+                                    </div>
+                                    <div class="input-content">
+                                        <label class="label">Jenis kelamin</label>
+                                        <input class="input" type="text" id="gender" name="athor" readonly />
+                                    </div>
+                                    <div class="input-content">
+                                        <label class="label">Agama</label>
+                                        <input class="input" type="text" id="religion" name="punli" readonly />
+                                    </div>
+                                </div>
+                                <div class="dua">
+                                    <div class="input-content">
+                                        <label class="label">Tempat Lahir</label>
+                                        <input class="input" type="text" id="place_birth" name="place_birth" readonly />
+                                    </div>
+                                    <div class="input-content">
+                                        <label class="label">Tanggal Lahir</label>
+                                        <input class="input" type="date" id="date_birth" name="date_birth" readonly />
+                                    </div>
+                                    <div class="input-content">
+                                        <label class="label">Nomor Telepon</label>
+                                        <input class="input" type="text" id="phone" name="phone" readonly />
+                                    </div>
+                                    <div class="input-content">
+                                        <label class="label">Alamat Domisili</label>
+                                        <textarea class="input alamat" id="address" name="address" rows="4" cols="50" readonly></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="button">
+                                <button class="batal" type="button">Batal</button>
                             </div>
                         </form>
                     </div>
