@@ -54,7 +54,7 @@ class ResponHelper
      * @param string $message
      * @return \CodeIgniter\HTTP\RedirectResponse|false
      */
-    public static function handlerErrorResponRedirect($redirectUrl, $message = '')
+    public static function handlerErrorResponRedirect($redirectUrl, $message = 'error')
     {
         log_message('error', is_array($message) ? json_encode($message) : $message);
         session()->setFlashdata('error', $message);
@@ -68,7 +68,7 @@ class ResponHelper
      * @param string $message
      * @return \CodeIgniter\HTTP\RedirectResponse
      */
-    public static function handlerSuccessResponRedirect($redirectUrl, $message = '')
+    public static function handlerSuccessResponRedirect($redirectUrl, $message = 'success')
     {
         log_message('info', is_array($message) ? json_encode($message) : $message);
         session()->setFlashdata('success', $message);
