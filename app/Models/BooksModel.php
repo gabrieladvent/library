@@ -88,8 +88,8 @@ class BooksModel extends Model
                 books.category_id, 
                 books.cover_img, 
                 books.publisher,
-                books.created_at
-                categories.category_name as category_name
+                books.created_at,
+                categories.category_name as category_name,
                     ')
             ->join('categories', 'categories.id = books.category_id', 'left')
             ->findAll();
