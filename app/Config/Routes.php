@@ -28,7 +28,7 @@ $routes->group("user", function ($routes) {
 
 $routes->group("book", function ($routes) {
     $routes->get('dashboard', 'BookController::index');
-    $routes->get('detail/(:any)', 'BookController::viewDetailBook/$1');
+    $routes->get('detail/(:segment)', 'BookController::viewDetailBook/$1');
 
     $routes->post('add', 'BookController::addBook');
     $routes->post('edit', 'BookController::editBook');
