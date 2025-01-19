@@ -22,13 +22,13 @@ $routes->group("user", function ($routes) {
 
     $routes->post('add', 'UserController::addUser');
     $routes->get('list/(:any)', 'UserController::listUser/$1');
-    $routes->post('edit/(:any)', 'UserController::editUser/$1');
-    $routes->get('delete/(:any)', 'UserController::deleteUser/$1');
+    $routes->post('edit', 'UserController::editUser');
+    $routes->get('delete', 'UserController::deleteUser');
 });
 
 $routes->group("book", function ($routes) {
     $routes->get('dashboard', 'BookController::index');
-    $routes->get('detail/(:any)', 'BookController::viewDetailBook/$1');
+    $routes->get('detail/(:segment)', 'BookController::viewDetailBook/$1');
 
     $routes->post('add', 'BookController::addBook');
     $routes->post('edit', 'BookController::editBook');

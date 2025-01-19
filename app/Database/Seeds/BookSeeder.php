@@ -9,15 +9,15 @@ class BookSeeder extends Seeder
     public function run()
     {
         $data = [
-            [   
+            [
                 'category_id' => 1,
                 'book_name' => 'Laskar Pelangi',
                 'isbn' => '978-3-16-148410-0',
                 'author' => json_encode(['Andrea Hirata']),
                 'publisher' => 'Gramedia',
                 'year_published' => '2017',
-                'description' => 
-                        'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatum harum voluptates odio quisquam, hic nam neque ab itaque non nostrum voluptate, dicta doloremque corporis voluptatem provident officia? Earum, quasi libero.',
+                'description' =>
+                'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatum harum voluptates odio quisquam, hic nam neque ab itaque non nostrum voluptate, dicta doloremque corporis voluptatem provident officia? Earum, quasi libero.',
                 'total_books' => 20,
                 'total_copies' => 20,
                 'cover_img' => null,
@@ -29,8 +29,8 @@ class BookSeeder extends Seeder
                 'author' => json_encode(['Andrea Hirata', 'J. K. Rowling']),
                 'publisher' => 'Dapus Media',
                 'year_published' => '2005',
-                'description' => 
-                        'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatum harum voluptates odio quisquam, hic nam neque ab itaque non nostrum voluptate, dicta doloremque corporis voluptatem provident officia? Earum, quasi libero. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatum harum voluptates odio quisquam, hic nam neque ab itaque non nostrum voluptate, dicta doloremque corporis voluptatem provident officia? Earum, quasi libero.',
+                'description' =>
+                'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatum harum voluptates odio quisquam, hic nam neque ab itaque non nostrum voluptate, dicta doloremque corporis voluptatem provident officia? Earum, quasi libero. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatum harum voluptates odio quisquam, hic nam neque ab itaque non nostrum voluptate, dicta doloremque corporis voluptatem provident officia? Earum, quasi libero.',
                 'total_books' => 40,
                 'total_copies' => 20,
                 'cover_img' => null,
@@ -42,8 +42,8 @@ class BookSeeder extends Seeder
                 'author' => json_encode(['J. K. Rowling', 'J. R. R. Tolkien']),
                 'publisher' => 'Gramedias',
                 'year_published' => '2010',
-                'description' => 
-                        'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatum harum voluptates odio quisquam, hic nam neque ab itaque non nostrum voluptate, dicta doloremque corporis voluptatem provident officia? Earum, quasi libero. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatum harum voluptates odio quisquam, hic nam neque ab itaque non nostrum voluptate, dicta doloremque corporis voluptatem provident officia? Earum, quasi libero. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatum harum voluptates odio quisquam, hic nam neque ab itaque non nostrum voluptate, dicta doloremque corporis voluptatem provident officia? Earum, quasi libero.',
+                'description' =>
+                'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatum harum voluptates odio quisquam, hic nam neque ab itaque non nostrum voluptate, dicta doloremque corporis voluptatem provident officia? Earum, quasi libero. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatum harum voluptates odio quisquam, hic nam neque ab itaque non nostrum voluptate, dicta doloremque corporis voluptatem provident officia? Earum, quasi libero. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatum harum voluptates odio quisquam, hic nam neque ab itaque non nostrum voluptate, dicta doloremque corporis voluptatem provident officia? Earum, quasi libero.',
                 'total_books' => 10,
                 'total_copies' => 10,
                 'cover_img' => null,

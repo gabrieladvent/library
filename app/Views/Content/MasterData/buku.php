@@ -50,7 +50,8 @@ $encrypter = \Config\Services::encrypter(); ?>
 
                                     <td>
                                         <div class="action-buttons">
-                                            <button onclick="" class="btn btn-view">
+                                            <!-- Ubah button view menjadi: -->
+                                            <button onclick="viewDetail(this)" class="btn btn-view" data-id="<?= $book['id'] ?>">
                                                 <i class="bx bx-show"></i> Lihat
                                             </button>
                                             <a href="<?= base_url('buku/edit/' . $book['id']) ?>" class="btn btn-edit">
@@ -127,12 +128,12 @@ $encrypter = \Config\Services::encrypter(); ?>
                                     <div class="count_book">
                                         <div class="input-jumlah">
                                             <label class="label" for="">Total copy</label>
-                                            <input class="input-count" type="number" id="quantity" name="total_copies" min="1" max="1000" step="1" required>
+                                            <input class="input-count" type="number" name="total_copies" min="1" max="1000" step="1" required>
 
                                         </div>
                                         <div class="input-jumlah">
                                             <label class="label" for="">jumlah Buku</label>
-                                            <input class="input-count" type="number" id="quantity" name="total_books" min="1" max="1000" step="1" required>
+                                            <input class="input-count" type="number" name="total_books" min="1" max="1000" step="1" required>
                                         </div>
                                     </div>
                                     <div class="input-content">
@@ -157,51 +158,65 @@ $encrypter = \Config\Services::encrypter(); ?>
                     <div class="popup">
                         <div class="title">
                             <h1>Lihat Detail</h1>
-                            <a href="#" class="popup-close">&times;</a>
+                            <a href="#" id="popup__close" class="popup-close">&times;</a>
                         </div>
                         <form id="formDetailUser" method="get" autocomplete="off">
                             <?= csrf_field() ?>
+
                             <div class="container__input">
                                 <div class="satu">
                                     <div class="input-content">
+                                        <label class="label">Jenis Buku</label>
+                                        <input class="input" id="category_name" readonly>
+
+                                    </div>
+                                    <div class="input-content">
                                         <label class="label">Nama Buku</label>
-                                        <input class="input" type="text" id="fullname" name="book_name" readonly />
+                                        <input class="input" type="text" id="fullname" readonly />
                                     </div>
                                     <div class="input-content">
-                                        <label class="label">Nomor Induk Siswa</label>
-                                        <input class="input" type="text" id="identifiction" name="isbn" readonly />
+                                        <label class="label">ISBN</label>
+                                        <input class="input" type="text" id="isbn" readonly />
                                     </div>
                                     <div class="input-content">
-                                        <label class="label">Jenis kelamin</label>
-                                        <input class="input" type="text" id="gender" name="athor" readonly />
+                                        <label class="label" for="">Author</label>
+                                        <input class="input" type="text" id="author" readonly />
                                     </div>
                                     <div class="input-content">
-                                        <label class="label">Agama</label>
-                                        <input class="input" type="text" id="religion" name="punli" readonly />
+                                        <label class="label" for="">Cover Image</label>
+                                        <img src="" id="cover_img" alt="cover image" width="500">
                                     </div>
                                 </div>
                                 <div class="dua">
-                                    <div class="input-content">
-                                        <label class="label">Tempat Lahir</label>
-                                        <input class="input" type="text" id="place_birth" name="place_birth" readonly />
+                                    <div class=" input-content">
+                                        <label class="label">Penebit</label>
+                                        <input class="input" type="text" id="publisher" readonly />
                                     </div>
+
                                     <div class="input-content">
-                                        <label class="label">Tanggal Lahir</label>
-                                        <input class="input" type="date" id="date_birth" name="date_birth" readonly />
+                                        <label class="label" for="">Tahun Terbit</label>
+                                        <input class="input" type="text" id="year_published" readonly />
                                     </div>
+                                    <div class="count_book">
+                                        <div class="input-jumlah">
+                                            <label class="label" for="">Total copy</label>
+                                            <input class="input-count" type="number" id="total_copies" readonly>
+                                        </div>
+                                        <div class="input-jumlah">
+                                            <label class="label" for="">jumlah Buku</label>
+                                            <input class="input-count" type="number" id="total_books" min="1" max="1000" step="1" required>
+                                        </div>
+                                    </div>
+
                                     <div class="input-content">
-                                        <label class="label">Nomor Telepon</label>
-                                        <input class="input" type="text" id="phone" name="phone" readonly />
+                                        <label class="label" for="">Deskripsi Buku </label>
+                                        <textarea class="input alamat" id="description" rows="4" cols="50" placeholder="Masukkan alamat lengkap Anda" readonly></textarea>
+
+                                        <div>
+                                        </div>
                                     </div>
-                                    <div class="input-content">
-                                        <label class="label">Alamat Domisili</label>
-                                        <textarea class="input alamat" id="address" name="address" rows="4" cols="50" readonly></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="button">
-                                <button class="batal" type="button">Batal</button>
-                            </div>
+
+
                         </form>
                     </div>
                 </div>
@@ -209,6 +224,68 @@ $encrypter = \Config\Services::encrypter(); ?>
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function viewDetail(button) {
+        const id = button.getAttribute('data-id');
+        const cover_img_id = document.getElementById('cover_img');
+
+        // Tampilkan popup
+        const popup = document.getElementById('popup__lihat');
+        document.getElementById('popup__lihat').classList.add('active');
+
+        popup.style.display = 'flex';
+        popup.style.opacity = "1"
+        popup.style.visibility = 'visible';
+        popup.querySelector('.popup').style.opacity = "1"
+        popup.querySelector('.popup').style.transform = 'translate(-50%, -50%) scale(1)'
+
+        $.ajax({
+            url: `${window.location.origin}/book/detail/${id}`,
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                console.log('Response:', response); // Debugging
+                if (response.success) {
+                    const book = response.data.book_detail;
+                    console.log(book.cover_img);
+                    
+
+                    // Isi form dengan data buku
+
+                    $('#category_name').val(book.category_name || '');
+                    $('#fullname').val(book.book_name || '');
+                    $('#isbn').val(book.isbn || '');
+                    $('#author').val(book.author || '');
+                    cover_img_id.src = `${window.location.origin}/${encodeURIComponent(book.cover_img)}`;
+                    $('#publisher').val(book.publisher || '');
+                    $('#year_published').val(book.year_published || '');
+                    $('#total_copies').val(book.total_copies || '');
+                    $('#total_books').val(book.total_books || '');
+                    $('#description').val(book.description || '');
+                    // Tambahkan data lainnya di sini...
+                } else {
+                    alert(response.message || 'Gagal mengambil data buku');
+                    closePopup();
+                }
+            },
+
+        });
+    }
+
+    document.getElementById('popup__close').addEventListener('click', (event) => {
+        event.preventDefault(); // Mencegah reload halaman jika tombol adalah <a href="#">
+        closePopup(); // Panggil fungsi closePopup
+    });
+
+    function closePopup() {
+        const popup = document.getElementById('popup__lihat'); // Target elemen popup utama
+        popup.style.opacity = '0';
+        popup.style.visibility = 'hidden';
+        setTimeout(() => popup.style.display = 'none', 300); // Delay sesuai durasi transisi CSS
+    }
+</script>
+
 <script>
     const authorInput = document.getElementById('author-input');
     const resultDiv = document.getElementById('result');

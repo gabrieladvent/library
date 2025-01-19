@@ -122,17 +122,40 @@ class BookController extends BaseController
 
     public function viewDetailBook($book_id)
     {
-        $id_book = $this->decryptId($book_id);
-        $book_detail = $this->book->getDataById($id_book);
-        $count_loans = $this->loan->getCountLoanByIdBook($id_book);
+        try {
+            // Langsung gunakan ID tanpa decode
+            $book_detail = $this->book->getDataById($book_id);
+            $count_loans = $this->loan->getCountLoanByIdBook($book_id);
 
-        $data = [
-            'book_detail' => $book_detail,
-            'count_loans' => $count_loans
-        ];
+            if (!$book_detail) {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => 'Data buku tidak ditemukan'
+                ])->setStatusCode(404);
+            }
 
-        return view('Content/MasterData/buku', $data);
+            // Jika author dalam bentuk JSON string, decode
+            if (isset($book_detail['author']) && is_string($book_detail['author'])) {
+                $book_detail['author'] = json_decode($book_detail['author'], true);
+            }
+
+            return $this->response->setJSON([
+                'success' => true,
+                'data' => [
+                    'book_detail' => $book_detail,
+                    'count_loans' => $count_loans
+                ]
+            ]);
+        } catch (\Exception $e) {
+            log_message('error', 'Error in viewDetailBook: ' . $e->getMessage());
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat mengambil data buku'
+            ])->setStatusCode(500);
+        }
     }
+
+
     public function addBook()
     {
         $validationRules = $this->getValidationRules(false);
@@ -151,14 +174,8 @@ class BookController extends BaseController
 
         try {
             // Simpan data ke database
-            $image_cover = $this->request->getFile('cover_img');
-            if($image_cover->isValid() && !$image_cover->hasMoved()){
-                $fileName = $data_book['book_name'] . time() . '.' . $image_cover->getClientExtension();
-                $image_cover->move('data/book/', $fileName);
-                $data_book['cover_img'] = 'data/book/' . $fileName;
-            }else{
-                return ResponHelper::handlerErrorResponRedirect('book/dashboard', "Gagal upload cover gambar");
-            }
+            $cover_book = $this->uploadFiles($this->request->getPost('book_name'));
+            $data_book['cover_img'] = $cover_book['cover_img'];
 
             if ($this->book->save($data_book)) {
                 return ResponHelper::handlerSuccessResponRedirect('book/dashboard', "Data Berhasil Ditambahkan");  // Response sukses
@@ -173,11 +190,80 @@ class BookController extends BaseController
 
     public function editBook()
     {
-        // edit book
+        $id_book = $_GET['books'] ?? null;
+        if (empty($id_book)) {
+            return ResponHelper::handlerErrorResponJson('ID buku wajib diisi.', 400);
+        }
+        $id_book = $this->decryptId($id_book);
+        $book = $this->book->getDataById($id_book);
+        if (empty($book)) {
+            return ResponHelper::handlerErrorResponJson('ID buku tidak valid.', 400);
+        }
+
+        $data_book = $this->request->getPost();
+        $data_book_from_db = $this->book->getDataById($id_book);
+
+        if (empty($data_book) || !$data_book_from_db) {
+            log_message('error', 'Request data is empty.');
+            return ResponHelper::handlerErrorResponJson('Data tidak valid.', 400);
+        }
+        $validationRules = $this->getValidationRules(true);
+        if (empty($validationRules)) {
+            log_message('error', 'Validation rules are empty.');
+            return ResponHelper::handlerErrorResponJson('Kesalahan server internal.', 500);
+        }
+        try {
+            $this->db->transStart();
+
+            $cover_book = $this->uploadFiles($this->request->getPost('book_name'));
+
+            $author_json = json_encode($this->request->getPost('author'));
+            $data_book['author'] = $author_json;
+            $data_book = array_merge($data_book, $cover_book);
+            $updated = $this->book->update($id_book, $data_book);
+            $this->db->transComplete();
+            if (!$updated) {
+                $this->db->transRollback();
+                return ResponHelper::handlerErrorResponJson(['error' => 'Tidak ada data yang di edit'], 400);
+            }
+            return ResponHelper::handlerSuccessResponJson($data_book, 200);
+        } catch (\Throwable $th) {
+            $this->db->transRollback();
+            return ResponHelper::handlerErrorResponJson($th->getMessage(), 500);
+        }
     }
     public function deleteBook()
     {
-        // delete data 
+        $id_book = $_GET['books'] ?? null;
+        if (empty($id_book)) {
+            return ResponHelper::handlerErrorResponJson('ID buku wajib diisi.', 400);
+        }
+        // $id_book = $this->decryptId($id_book);
+        $book = $this->book->getDataById($id_book);
+        if (empty($book)) {
+            return ResponHelper::handlerErrorResponJson('ID buku tidak valid.', 400);
+        }
+        $loans = $this->loan->getCountLoanByIdBook($id_book);
+        if ($loans > 0) {
+            return ResponHelper::handlerErrorResponJson('Buku sedang dipinjam.', 400);
+        }
+        try {
+            $this->db->transStart();
+            $cover_path = $book['cover_img'];
+            if (!empty($cover_path)) {
+                unlink($cover_path);
+            }
+            $deleted = $this->book->delete($id_book);
+            $this->db->transComplete();
+            if (!$deleted) {
+                $this->db->transRollback();
+                return ResponHelper::handlerErrorResponJson(['error' => 'Tidak ada data yang dihapus'], 400);
+            }
+            return ResponHelper::handlerSuccessResponJson(['message' => 'Data berhasil dihapus'], 200);
+        } catch (\Throwable $th) {
+            $this->db->transRollback();
+            return ResponHelper::handlerErrorResponJson($th->getMessage(), 500);
+        }
     }
 
     private function decryptId($id_book)
@@ -264,5 +350,42 @@ class BookController extends BaseController
                 ],
             ],
         ];
+    }
+
+    /**
+     * Mengupload file sampul buku ke server
+     * 
+     * @param string $book_name Nama buku
+     * @return array Array yang berisi nama file yang diupload
+     */
+    private function uploadFiles($book_name)
+    {
+        $field = "cover_img";
+        $uploadedFiles = [];
+        if ($file = $this->request->getFile($field)) {
+            if ($file->isValid() && !$file->hasMoved()) {
+                $fileName = $this->generateFileName($file, $book_name, $field);
+                $file->move($field . '/', $fileName);
+                $uploadedFiles[$field] = $field . '/' . $fileName;
+            }
+        }
+        return $uploadedFiles;
+    }
+    /**
+     * Mengenerate nama file yang unik untuk file yang diupload
+     * 
+     * @param \CodeIgniter\HTTP\Files\UploadedFile $file File yang diupload
+     * @param string $book_name Nama buku
+     * @param string $field Nama field yang diupload
+     * @return string Nama file yang diupload
+     */
+    private function generateFileName($file, $book_name, $field)
+    {
+        $ext = $file->getClientExtension();
+        // Buat nama file yang unik
+        // Format: nama_buku_field_waktu_ekstensi
+        // Contoh: buku_satu_cover_img_1627209312.png
+        $filename = strtolower($book_name . '_' . $field . '_' . time() . '.' . $ext);
+        return $filename;
     }
 }
