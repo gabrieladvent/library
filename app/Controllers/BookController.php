@@ -151,6 +151,15 @@ class BookController extends BaseController
 
         try {
             // Simpan data ke database
+            $image_cover = $this->request->getFile('cover_img');
+            if($image_cover->isValid() && !$image_cover->hasMoved()){
+                $fileName = $data_book['book_name'] . time() . '.' . $image_cover->getClientExtension();
+                $image_cover->move('data/book/', $fileName);
+                $data_book['cover_img'] = 'data/book/' . $fileName;
+            }else{
+                return ResponHelper::handlerErrorResponRedirect('book/dashboard', "Gagal upload cover gambar");
+            }
+
             if ($this->book->save($data_book)) {
                 return ResponHelper::handlerSuccessResponRedirect('book/dashboard', "Data Berhasil Ditambahkan");  // Response sukses
             } else {

@@ -43,7 +43,7 @@ $encrypter = \Config\Services::encrypter(); ?>
                                     <td><?= $book['created_at']  ?></td>
                                     <td>
                                         <img
-                                            src="<?= esc($book['cover_img'] ?? '') ?>"
+                                            src="<?= base_url($book['cover_img'] ?? '') ?>"
                                             alt="Sampul Buku"
                                             class="book-cover" />
                                     </td>
