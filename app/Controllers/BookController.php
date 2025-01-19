@@ -122,17 +122,40 @@ class BookController extends BaseController
 
     public function viewDetailBook($book_id)
     {
-        $id_book = $this->decryptId($book_id);
-        $book_detail = $this->book->getDataById($id_book);
-        $count_loans = $this->loan->getCountLoanByIdBook($id_book);
+        try {
+            // Langsung gunakan ID tanpa decode
+            $book_detail = $this->book->getDataById($book_id);
+            $count_loans = $this->loan->getCountLoanByIdBook($book_id);
 
-        $data = [
-            'book_detail' => $book_detail,
-            'count_loans' => $count_loans
-        ];
+            if (!$book_detail) {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => 'Data buku tidak ditemukan'
+                ])->setStatusCode(404);
+            }
 
-        return view('Content/MasterData/buku', $data);
+            // Jika author dalam bentuk JSON string, decode
+            if (isset($book_detail['author']) && is_string($book_detail['author'])) {
+                $book_detail['author'] = json_decode($book_detail['author'], true);
+            }
+
+            return $this->response->setJSON([
+                'success' => true,
+                'data' => [
+                    'book_detail' => $book_detail,
+                    'count_loans' => $count_loans
+                ]
+            ]);
+        } catch (\Exception $e) {
+            log_message('error', 'Error in viewDetailBook: ' . $e->getMessage());
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat mengambil data buku'
+            ])->setStatusCode(500);
+        }
     }
+
+
     public function addBook()
     {
         $validationRules = $this->getValidationRules(false);
