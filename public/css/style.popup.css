@@ -1,5 +1,10 @@
 
 
+#popup label::after{
+    content: "*" ;
+    padding: 2px;
+    color: red;
+}
 
 
 .container__popup{
@@ -15,9 +20,10 @@
     opacity: 0;
     visibility: hidden;
     transition: all .3s ;
+    /* color: #ffebeb; */
 
 }
-.container__popup-lihat{
+.container__popup_delete{
     background-color: rgba(96, 95, 94, 0.5);
     padding: 20px;
     width: 100%;
@@ -30,14 +36,31 @@
     opacity: 0;
     visibility: hidden;
     transition: all .3s ;
+    /* color: #ffebeb; */
 
 }
+
+
+
+
 .container__input{
     display: flex;
 }
 
 
 .popup{
+    /* background-color: antiquewhite; */
+    background-color:whitesmoke;
+    width: 60rem;
+    height: 600px;
+    padding: 20px;
+    position: absolute;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(.25);
+    transition: all .5s .1s;
+}
+.popup_delete{
     /* background-color: antiquewhite; */
     background-color:whitesmoke;
     width: 60rem;
@@ -255,21 +278,14 @@ p
     visibility: visible;
 }
 
-#popup__lihat:target .popup{
+#popup__lihat:target .popup_delete{
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
 
 }
-#popup__edit:target{
-    opacity: 1;
-    visibility: visible;
-}
 
-#popup__edit:target .popup{
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
 
-}
+
 #popup__delete:target{
     opacity: 1;
     visibility: visible;
@@ -280,3 +296,5 @@ p
     transform: translate(-50%, -50%) scale(1);
 
 }
+
+

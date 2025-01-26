@@ -3,8 +3,9 @@
 * {
   padding: 0;
   margin: 0;
-  font-family: Poppins;
+  font-family: "Poppins";
 }
+
 
 .container-navbar {
   background-color: #00c777;
@@ -164,4 +165,11 @@
 
 .masuk label a:hover {
   color: #f52727;
+}
+
+.notif{
+  padding: 20px;
+  display: flex;
+  text-align: center;
+  gap: 10px;
 }

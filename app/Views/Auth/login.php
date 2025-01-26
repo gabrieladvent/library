@@ -63,21 +63,37 @@
     // Cek apakah ada pesan sukses atau error
     <?php if (session()->getFlashdata('success')): ?>
       Toastify({
+        className: "notif bx bxs-check-circle",
         text: "<?= session()->getFlashdata('success') ?>",
         duration: 3000,
         gravity: "top", // top or bottom
         position: "right", // left, center, or right
-        backgroundColor: "green",
+        backgroundColor: "#D9FFF0",
+        style: {
+          marginTop: "60px",
+          color: "green",
+          borderRadius: "8px"
+
+        },
       }).showToast();
     <?php endif; ?>
 
     <?php if (session()->getFlashdata('error')): ?>
       Toastify({
+        className: "notif bx bxs-x-circle",
         text: "<?= session()->getFlashdata('error') ?>",
         duration: 3000,
-        gravity: "top",
-        position: "right",
-        backgroundColor: "red",
+        offset: {
+          x: 10, // horizontal axis - can be a number or a string indicating unity. eg: '2em'
+          y: 0 // vertical axis - can be a number or a string indicating unity. eg: '2em'
+        },
+        backgroundColor: "#ffebeb",
+        style: {
+          marginTop: "60px",
+          color: "red",
+          borderRadius: "8px"
+
+        },
       }).showToast();
     <?php endif; ?>
   </script>

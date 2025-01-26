@@ -3,12 +3,7 @@
 <?php $this->section('content');
 $encrypter = \Config\Services::encrypter(); ?>
 
-<head>
-    <link rel="stylesheet" href="<?= base_url("css/style.table.css") ?>" />
-    <link rel="stylesheet" href="<?= base_url("css/style.popup.css") ?>" />
 
-    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
-</head>
 
 <body>
     <div class="container-book">
@@ -51,7 +46,7 @@ $encrypter = \Config\Services::encrypter(); ?>
                                         <td>
                                             <div class="action-buttons">
 
-                                                <a href="#popup__lihat" class="btn btn-view">
+                                                <a href="#popup__delete" class="btn btn-view">
                                                     <i class="bx bx-show"></i> Lihat
                                                 </a>
 
@@ -59,7 +54,7 @@ $encrypter = \Config\Services::encrypter(); ?>
                                                 <a href="#popup__edit" class="btn btn-edit">
                                                     <i class="bx bx-edit"></i> Edit
                                                 </a>
-                                                <a href="popup__delete" class="btn btn-delete">
+                                                <a href="#popup__delete" class="btn btn-delete">
                                                     <i class="bx bx-trash"></i> Hapus
                                                 </a>
                                             </div>
@@ -143,7 +138,7 @@ $encrypter = \Config\Services::encrypter(); ?>
                             </form>
                         </div>
                     </div>
-                    <div class="container__popup" id="popup__lihat">
+                    <div class="container__popup" id="popup__delete">
                         <div class="popup">
                             <div class="title">
                                 <h1>Lihat Detail</h1>
