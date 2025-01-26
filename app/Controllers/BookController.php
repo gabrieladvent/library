@@ -174,7 +174,8 @@ class BookController extends BaseController
 
         try {
             // Simpan data ke database
-            $cover_book = $this->uploadFiles($this->request->getPost('book_name'));
+            $cover_book = $this->uploadFiles($this->request->getFile('cover_img'), $this->request->getPost('book_name'));
+
             $data_book['cover_img'] = $cover_book['cover_img'];
 
             if ($this->book->save($data_book)) {
@@ -207,15 +208,23 @@ class BookController extends BaseController
             log_message('error', 'Validation rules are empty.');
             return ResponHelper::handlerErrorResponJson('Kesalahan server internal.', 500);
         }
+
         try {
             $this->db->transStart();
+            
+            $image = $this->request->getFile('cover_img');
+            // $cover_img_old = $data_book_from_db['cover_img'];
+            $cover_img_new = $this->uploadFiles($image, $this->request->getPost('book_name'));
+            
+            $author = $this->request->getPost('author');
+            $convert_array = array($author);
+            $author_json = json_encode($convert_array);
 
-            $cover_book = $this->uploadFiles($this->request->getPost('book_name'));
-
-            $author_json = json_encode($this->request->getPost('author'));
             $data_book['author'] = $author_json;
-            $data_book = array_merge($data_book, $cover_book);
+            $data_book = array_merge($data_book, $cover_img_new);
+
             $updated = $this->book->update($id_book, $data_book);
+
             $this->db->transComplete();
             if (!$updated) {
                 $this->db->transRollback();
@@ -346,6 +355,12 @@ class BookController extends BaseController
                     'is_natural' => 'Jumlah total salinan harus berupa angka positif.',
                 ],
             ],
+            'cover_img' => [
+                'rules' => 'permit_empty',
+                'errors' => [
+                    'permit_empty' => 'Sampul buku wajib diisi.',
+                ],
+            ],
         ];
     }
 
@@ -355,66 +370,69 @@ class BookController extends BaseController
      * @param string $book_name Nama buku
      * @return array Array yang berisi nama file yang diupload
      */
+    private function uploadFiles($photo, $name)
+    {
+        $field = "cover_img";
+        $uploadedFiles = [];
+        $file = $photo;
+
+        if ($file && $file->isValid() && !$file->hasMoved()) {
+            $fileName = $this->generateFileName($file, $name, $field);
+            $file->move($field . '/', $fileName);
+            $uploadedFiles[$field] = $field . '/' . $fileName;
+        }
+
+        return $uploadedFiles;
+    }
+
+
     // private function uploadFiles($book_name)
     // {
     //     $field = "cover_img";
     //     $uploadedFiles = [];
-    //     if ($file = $this->request->getFile($field)) {
-    //         if ($file->isValid() && !$file->hasMoved()) {
-    //             $fileName = $this->generateFileName($file, $book_name, $field);
-    //             $file->move($field . '/', $fileName);
-    //             $uploadedFiles[$field] = $field . '/' . $fileName;
+
+    //     // Definisikan path upload yang benar
+    //     $uploadPath = FCPATH . 'public/uploads/' . $field;  // FCPATH mengarah ke root direktori public
+
+    //     // Cek dan buat direktori jika belum ada
+    //     if (!is_dir($uploadPath)) {
+    //         if (!mkdir($uploadPath, 0777, true)) {
+    //             throw new \RuntimeException('Gagal membuat direktori upload');
     //         }
     //     }
-    //     return $uploadedFiles;
+
+    //     // Ambil file yang diupload
+    //     $file = $this->request->getFile($field);
+
+    //     // Validasi file
+    //     if (!$file || !$file->isValid()) {
+    //         throw new \RuntimeException('File tidak valid atau tidak ditemukan');
+    //     }
+
+    //     if ($file->hasMoved()) {
+    //         throw new \RuntimeException('File sudah dipindahkan');
+    //     }
+
+    //     try {
+    //         // Generate nama file
+    //         $fileName = $this->generateFileName($file, $book_name, $field);
+
+    //         // Pindahkan file
+    //         if ($file->move($uploadPath, $fileName)) {
+    //             // Simpan path relatif ke database
+    //             $uploadedFiles[$field] = 'uploads/' . $field . '/' . $fileName;
+
+    //             return $uploadedFiles;
+    //         } else {
+    //             throw new \RuntimeException('Gagal memindahkan file');
+    //         }
+    //     } catch (\Exception $e) {
+    //         log_message('error', 'Upload error: ' . $e->getMessage());
+    //         throw new \RuntimeException('Error saat upload file: ' . $e->getMessage());
+    //     }
     // }
 
 
-    private function uploadFiles($book_name)
-    {
-        $field = "cover_img";
-        $uploadedFiles = [];
-
-        // Definisikan path upload yang benar
-        $uploadPath = FCPATH . 'public/uploads/' . $field;  // FCPATH mengarah ke root direktori public
-
-        // Cek dan buat direktori jika belum ada
-        if (!is_dir($uploadPath)) {
-            if (!mkdir($uploadPath, 0777, true)) {
-                throw new \RuntimeException('Gagal membuat direktori upload');
-            }
-        }
-
-        // Ambil file yang diupload
-        $file = $this->request->getFile($field);
-
-        // Validasi file
-        if (!$file || !$file->isValid()) {
-            throw new \RuntimeException('File tidak valid atau tidak ditemukan');
-        }
-
-        if ($file->hasMoved()) {
-            throw new \RuntimeException('File sudah dipindahkan');
-        }
-
-        try {
-            // Generate nama file
-            $fileName = $this->generateFileName($file, $book_name, $field);
-
-            // Pindahkan file
-            if ($file->move($uploadPath, $fileName)) {
-                // Simpan path relatif ke database
-                $uploadedFiles[$field] = 'uploads/' . $field . '/' . $fileName;
-
-                return $uploadedFiles;
-            } else {
-                throw new \RuntimeException('Gagal memindahkan file');
-            }
-        } catch (\Exception $e) {
-            log_message('error', 'Upload error: ' . $e->getMessage());
-            throw new \RuntimeException('Error saat upload file: ' . $e->getMessage());
-        }
-    }
     /**
      * Mengenerate nama file yang unik untuk file yang diupload
      * 

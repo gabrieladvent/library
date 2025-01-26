@@ -77,7 +77,7 @@ $encrypter = \Config\Services::encrypter();
                             <h1>Tambah Byu</h1>
                             <a href="#" class="popup-close">&times;</a>
                         </div>
-                        <form action="<?= base_url('book/add') ?>" method="post" autocomplete="off">
+                        <form action="<?= base_url('book/add') ?>" method="post" autocomplete="off" enctype="multipart/form-data">
                             <?= csrf_field() ?>
                             <div class="container__input">
                                 <div class="satu">
@@ -122,7 +122,7 @@ $encrypter = \Config\Services::encrypter();
                                     </div>
                                     <div class="input-content">
                                         <label class="label" for="">Tahun Terbit</label>
-                                        <input class="input" type="number" name="year_published" min="4" max="4" />
+                                        <input class="input" type="number" name="year_published" min="1999" max="2025" />
                                     </div>
                                     <div class="count_book">
                                         <div class="input-jumlah">
@@ -163,7 +163,7 @@ $encrypter = \Config\Services::encrypter();
 
                             <a href="#" id="popup__close" class="popup-close">&times;</a>
                         </div>
-                        <form id="formDetailUser" method=" post" autocomplete="off">
+                        <form id="formDetailUser" method=" post" autocomplete="off" enctype="multipart/form-data">
                             <?= csrf_field() ?>
 
                             <div class="container__input">
@@ -204,7 +204,7 @@ $encrypter = \Config\Services::encrypter();
 
                                     <div class="input-content">
                                         <label class="label" for="">Tahun Terbit</label>
-                                        <input class="input" type="number" id="year_published" name="year_published" min="4" disabled />
+                                        <input class="input" type="number" id="year_published" name="year_published" min="1900" disabled />
                                     </div>
                                     <div class="count_book">
                                         <div class="input-jumlah">
@@ -238,7 +238,7 @@ $encrypter = \Config\Services::encrypter();
                             <h1>Lihat Detail</h1>
                             <a href="#" class="popup-close">&times;</a>
                         </div>
-                        <form id="formDetailUser" method="post" autocomplete="off">
+                        <form id="formDetailUser" method="post" autocomplete="off" enctype="multipart/form-data">
                             <?= csrf_field() ?>
                             <div class="container__input">
                                 <div class="satu">
