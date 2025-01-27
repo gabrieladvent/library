@@ -213,8 +213,14 @@ class BookController extends BaseController
             $this->db->transStart();
             
             $image = $this->request->getFile('cover_img');
-            // $cover_img_old = $data_book_from_db['cover_img'];
-            $cover_img_new = $this->uploadFiles($image, $this->request->getPost('book_name'));
+            $cover_img_old = $data_book_from_db['cover_img'];
+            $cover_img_new = $this->uploadFiles($image, $this->request->getPost('fullname'));
+
+            if ($cover_img_old != $cover_img_new['cover_img']) {
+                if (file_exists($cover_img_old)){
+                    unlink($cover_img_old);
+                }
+            }
             
             $author = $this->request->getPost('author');
             $convert_array = array($author);
