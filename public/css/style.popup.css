@@ -140,6 +140,7 @@ p
 }
 
 .author{
+    width: 260px;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -151,10 +152,12 @@ p
     height: 33px;
     flex-shrink: 0;
     border-radius: 4px;
-    background: #e2e1e1;
+    background: #ffffff;
     padding-left: 10px;
     
 }
+
+
 
 .button-author{
     display: flex;
@@ -186,6 +189,8 @@ p
 
 /* end input author */
 
+    
+
 /* input umum */
 .input-content{
     display: flex;
@@ -202,7 +207,7 @@ p
     height: 33px;
     flex-shrink: 0;
     border-radius: 4px;
-    background: #e2e1e1;
+    background: #ffffff;
     padding-left: 10px;
     
 }
@@ -213,7 +218,7 @@ p
     height: 33px;
     flex-shrink: 0;
     border-radius: 4px;
-    background: #e2e1e1;
+    background: #ffffff;
     padding:0px 10px;
 }
 .input-content .alamat{

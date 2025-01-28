@@ -54,12 +54,12 @@ $encrypter = \Config\Services::encrypter();
                                         <div class="action-buttons">
                                             <!-- Ubah button view menjadi: -->
                                             <button onclick="viewDetail(this)" class="btn btn-view" data-id="<?= $book['id'] ?>">
-                                                <i class="bx bx-show"></i> Lihat
+                                                <i class="bx bx-edit"></i> Kelolah
                                             </button>
                                             <a href="<?= base_url('buku/edit/' . $book['id']) ?>" class="btn btn-edit">
-                                                <i class="bx bx-edit"></i> Edit
+                                                <i class="bx bx-trash"></i> Hapus
                                             </a>
-                                            <button onclick="PopupDelete"></button>
+
                                         </div>
                                     </td>
                                 </tr>

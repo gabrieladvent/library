@@ -1,14 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
-
-* {
-    padding: 0;
-    margin: 0;
-    font-family: Poppins;
-}
-
 .container-navbar {
     background-color: #00c777;
-    color: #383838;
+    color: #FFFFFF;
     width: auto;
     height: 2rem;
     display: flex;
@@ -18,52 +10,49 @@
 }
 
 .user {
-    color: var(--font-logo, #383838);
+    color: #FFFFFF;
     font-family: Poppins;
     font-size: 12px;
-    font-style: normal;
     font-weight: 400;
-    line-height: normal;
-
     display: flex;
     align-items: center;
-    /* background-color: #383838; */
+    cursor: pointer;
+}
 
+ a .bx {
+    color: #FFFFFF;
 }
 
 .sub-link {
+    
     position: absolute;
-    top:64px;
-    background-color:#00c777; /* Warna background sub-link */
+    top: 64px;
+    background-color: #ffffff;
     color: #333;
-    padding: 5px 40px;
+    padding: 5px 20px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 0px 0px 8px 8px;
-    display: none; /* Sembunyikan sub-link secara default */
+   
+    display: none;
     z-index: 1000;
     transition: all 0.3s ease;
 }
 
-/* Tampilkan sub-link saat kelas visible ditambahkan */
+
 .sub-link.visible {
     display: block;
 }
 
 /* Style untuk link di dalam sub-link */
-.sub-link .a {
+.sub-link a {
     text-decoration: none;
     color: #383838;
     font-size: 14px;
     font-weight: 600;
-    padding: 5px 0;
+    padding: 5px 10px;
     display: block;
     transition: color 0.3s ease;
 }
 
-.sub-link:hover {
-    background: linear-gradient(105deg, #00C777 27.17%, #FDFDFD 73.11%);
-}
-
-.sub-link:hover .a {
+.sub-link a:hover {
     color: red;
 }
