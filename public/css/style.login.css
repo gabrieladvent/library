@@ -103,12 +103,12 @@
 .information p {
     width: 70%;
     color: #838383;
-text-align: center;
-font-family: Poppins;
-font-size: 14px;
-font-style: normal;
-font-weight: 600;
-line-height: normal;
+    text-align: center;
+    font-family: Poppins;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
 }
 
 
@@ -128,7 +128,7 @@ line-height: normal;
   display: flex;
   flex-direction: column;
   margin: 2rem;
-  gap: 30px;
+  gap: 10px;
 }
 .title {
     margin-top: 30px;
@@ -217,7 +217,7 @@ line-height: normal;
   height: 55px;
   flex-shrink: 0;
   padding: 2px;
-  color: var(--font-logo, #383838);
+  color: var(--font-logo, #ffff);
   font-family: Poppins;
   font-size: 24px;
   font-style: normal;
@@ -226,6 +226,7 @@ line-height: normal;
   border: none;
   margin-bottom: 18px;
   cursor: pointer;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.20);
   /* transition: background-color 0.3s ease; */
 }
 .button-masuk:hover {
