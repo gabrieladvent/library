@@ -191,7 +191,7 @@ class BookController extends BaseController
 
     public function editBook()
     {
-        $id_book = $_GET['books'] ?? null;
+        $id_book = $_GET['books'];
         if (empty($id_book)) {
             return ResponHelper::handlerErrorResponJson('ID buku wajib diisi.', 400);
         }
@@ -204,49 +204,50 @@ class BookController extends BaseController
             return ResponHelper::handlerErrorResponJson('Data tidak valid.', 400);
         }
 
+
         try {
-            $this->db->transStart();
-
-            // Cek apakah ada file yang diupload
+            // Handle file upload jika ada
             $image = $this->request->getFile('cover_img');
-
-            // Jika ada file baru yang diupload
             if ($image && $image->isValid() && !$image->hasMoved()) {
-                // Upload file baru
-                $cover_img_new = $this->uploadFiles($image, $this->request->getPost('fullname'));
+                // Perbaikan disini: gunakan book_name bukan fullname
+                $cover_img_new = $this->uploadFiles($image, $data_book['book_name']);
 
-                // Hapus file lama jika ada
+                // Hapus file lama
                 $cover_img_old = $data_book_from_db['cover_img'];
-                if (file_exists($cover_img_old)) {
+                if (!empty($cover_img_old) && file_exists($cover_img_old)) {
                     unlink($cover_img_old);
                 }
 
-                // Gabungkan data cover baru ke data_book
                 $data_book = array_merge($data_book, $cover_img_new);
             } else {
-                // Jika tidak ada file baru, gunakan cover lama
                 $data_book['cover_img'] = $data_book_from_db['cover_img'];
             }
 
             // Proses author
             $author = $this->request->getPost('author');
-            $convert_array = array($author);
-            $author_json = json_encode($convert_array);
-            $data_book['author'] = $author_json;
+            $data_book['author'] = json_encode(is_array($author) ? $author : [$author]);
 
-            // Update data buku
+            // Debug: log final data
+            log_message('debug', 'Final data untuk update: ' . print_r($data_book, true));
+
+            // Update buku
             $updated = $this->book->update($id_book, $data_book);
 
-            $this->db->transComplete();
-
-            if (!$updated) {
-                $this->db->transRollback();
-                return ResponHelper::handlerErrorResponJson(['error' => 'Tidak ada data yang di edit'], 400);
+            if ($updated === false) {
+                throw new \Exception('Gagal mengupdate data buku');
             }
 
-            return ResponHelper::handlerSuccessResponJson($data_book, 200);
-        } catch (\Throwable $th) {
+            $this->db->transCommit();
+            return ResponHelper::handlerSuccessResponRedirect("book/dashboard", "Data berhasil diedit");
+        } catch (\Exception $e) {
             $this->db->transRollback();
+            log_message('error', 'Error saat update buku: ' . $e->getMessage());
+            return ResponHelper::handlerErrorResponJson($e->getMessage(), 500);
+        } catch (\Throwable $th) {
+            if ($this->db->transStatus() === false) {
+                $this->db->transRollback();
+            }
+            log_message('error', 'Error di editBook: ' . $th->getMessage());
             return ResponHelper::handlerErrorResponJson($th->getMessage(), 500);
         }
     }

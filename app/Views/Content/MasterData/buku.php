@@ -181,7 +181,7 @@ $encrypter = \Config\Services::encrypter();
                                     </div>
                                     <div class="input-content">
                                         <label class="label">Nama Buku</label>
-                                        <input class="input" type="text" id="fullname" name="fullname" disabled />
+                                        <input class="input" type="text" id="fullname" name="book_name" disabled />
                                     </div>
                                     <div class="input-content">
                                         <label class="label">ISBN</label>

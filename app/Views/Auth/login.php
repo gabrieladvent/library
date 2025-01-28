@@ -68,7 +68,42 @@
     </div>
   </main>
 
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
+
+  <script>
+    // Cek apakah ada pesan sukses atau error
+    <?php if (session()->getFlashdata('success')): ?>
+      Toastify({
+        className: "notif bx bxs-check-circle",
+        text: " <?= session()->getFlashdata('success') ?>",
+        duration: 3000,
+        gravity: "top", // top or bottom
+        position: "right", // left, center, or right
+        backgroundColor: "#D9FFF0",
+        style: {
+          marginTop: "60px",
+          color: "green",
+          borderRadius: "8px"
+        },
+        escapeHTML: false // Allow HTML content
+      }).showToast();
+    <?php endif; ?>
+
+    <?php if (session()->getFlashdata('error')): ?>
+      Toastify({
+        className: "notif bx bxs-x-circle",
+        text: " <?= session()->getFlashdata('error') ?>",
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+        style: {
+
+          color: "red",
+        }
+      }).showToast();
+    <?php endif; ?>
+  </script>
 
 
   <script>
