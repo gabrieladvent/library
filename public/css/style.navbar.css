@@ -8,6 +8,36 @@
     padding: 1rem;
     align-items: center;
 }
+.container_logo{
+    align-items: center;
+    
+    
+    /* justify-content: center; */
+    padding-left: 50px;
+    width: 100%;
+    display: flex;
+    gap: 20px;
+    /* background-color: red; */
+
+}
+.container_logo h1{
+    color: #FFF;
+    /* background-color: red; */
+
+    width: 17%;
+    font-family: Poppins;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+.container_logo img{
+    width: 57px;
+    height: 57px;
+    flex-shrink: 0;
+}
+
+
 
 .user {
     color: #FFFFFF;
@@ -19,7 +49,7 @@
     cursor: pointer;
 }
 
- a .bx {
+ .user .bx {
     color: #FFFFFF;
 }
 

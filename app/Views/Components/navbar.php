@@ -11,8 +11,9 @@
 <body>
 
     <nav class="container-navbar">
-        <div>
-            <h1>SMP SWASTA KATOLIK SANTA URSULA ENDE</h1>
+        <div class="container_logo">
+            <img src="<?= base_url('img/logo.png') ?>" alt="">
+            <h1>SMP KATOLIK SANTA URSULA ENDE </h1>
         </div>
         <div>
             <a href="javascript:void(0);" class="user">
