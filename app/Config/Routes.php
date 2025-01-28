@@ -2,6 +2,8 @@
 
 use CodeIgniter\Router\RouteCollection;
 
+use function PHPUnit\Framework\returnValueMap;
+
 /**
  * @var RouteCollection $routes
  */
@@ -52,4 +54,9 @@ $routes->group("category", ['filter' => 'auth'], function ($routes) {
 
 $routes->group("loans", ['filter' => 'auth'], function ($routes) {
     $routes->get('dashboard', 'Admin::LoansController');
+});
+
+
+$routes->set404Override(function () {
+    return view("errors/html/errorpage404");
 });
