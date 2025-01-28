@@ -101,12 +101,7 @@ class AuthFilter implements FilterInterface
     public function before(RequestInterface $request, $arguments = null)
     {
         if (!session('id_user')) {
-            return service('response')->setJSON([
-                'status' => 'error',
-                'message' => 'Login Dulu.'
-            ])->setStatusCode(500);
-
-            return redirect()->to(base_url('login/proses'));
+            return redirect()->to(base_url('/'));
         }
         return;
     }

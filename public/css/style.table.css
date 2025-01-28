@@ -87,7 +87,7 @@
 }
 
 .table td {
-  background-color: #f2faf0;
+  background-color: #F5F5F5;
   font-size: 12px;
   overflow: auto;
   margin-top: 50px;
@@ -144,21 +144,22 @@
 
 .btn {
   border: none;
-  padding: 8px 12px;
+  padding: 8px 0px 8px 8px;
   border-radius: 4px;
   color: #fff;
   cursor: pointer;
   display: flex;
   align-items: center;
+  
   gap: 5px;
 }
 
 .btn-view {
-  background-color: #00b4d8;
+  background-color: #4A90E2;
 }
 
 .btn-edit {
-  background-color: #ffc300;
+  background-color: #D32F2F ;
 }
 
 .btn-delete {
@@ -167,6 +168,7 @@
 
 .btn i {
   font-size: 16px;
+  color: white;
 }
 
 /* Responsive */

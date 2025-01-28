@@ -52,16 +52,14 @@ $encrypter = \Config\Services::encrypter(); ?>
                                             <div class="action-buttons">
 
                                                 <a href="#popup__lihat" class="btn btn-view">
-                                                    <i class="bx bx-show"></i> Lihat
+                                                    <i class="bx bx-edit"></i> Kelolah
                                                 </a>
 
 
                                                 <a href="#popup__edit" class="btn btn-edit">
-                                                    <i class="bx bx-edit"></i> Edit
-                                                </a>
-                                                <a href="popup__delete" class="btn btn-delete">
                                                     <i class="bx bx-trash"></i> Hapus
                                                 </a>
+
                                             </div>
                                         </td>
                                     </tr>

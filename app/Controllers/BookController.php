@@ -174,30 +174,26 @@ class BookController extends BaseController
 
         try {
             // Simpan data ke database
-            $cover_book = $this->uploadFiles($this->request->getPost('book_name'));
+            $cover_book = $this->uploadFiles($this->request->getFile('cover_img'), $this->request->getPost('book_name'));
+
             $data_book['cover_img'] = $cover_book['cover_img'];
 
             if ($this->book->save($data_book)) {
-                return ResponHelper::handlerSuccessResponRedirect('book/dashboard', "Data Berhasil Ditambahkan");  // Response sukses
+                return ResponHelper::handlerSuccessResponJson($data_book, 201);  // Response sukses
             } else {
-                return ResponHelper::handlerErrorResponRedirect('book/dashboard', "Data Gagal Ditambahkan   ");
+                return ResponHelper::handlerErrorResponJson('Gagal menyimpan data', 500);
             }
         } catch (\Exception $e) {
-            return ResponHelper::handlerErrorResponRedirect('book/dashboard', $e->getMessage(), 500);
+            return ResponHelper::handlerErrorResponJson($e->getMessage(), 500);
         }
     }
 
 
     public function editBook()
     {
-        $id_book = $_GET['books'] ?? null;
+        $id_book = $_GET['books'];
         if (empty($id_book)) {
             return ResponHelper::handlerErrorResponJson('ID buku wajib diisi.', 400);
-        }
-        $id_book = $this->decryptId($id_book);
-        $book = $this->book->getDataById($id_book);
-        if (empty($book)) {
-            return ResponHelper::handlerErrorResponJson('ID buku tidak valid.', 400);
         }
 
         $data_book = $this->request->getPost();
@@ -207,31 +203,55 @@ class BookController extends BaseController
             log_message('error', 'Request data is empty.');
             return ResponHelper::handlerErrorResponJson('Data tidak valid.', 400);
         }
-        $validationRules = $this->getValidationRules(true);
-        if (empty($validationRules)) {
-            log_message('error', 'Validation rules are empty.');
-            return ResponHelper::handlerErrorResponJson('Kesalahan server internal.', 500);
-        }
+
+
         try {
-            $this->db->transStart();
+            // Handle file upload jika ada
+            $image = $this->request->getFile('cover_img');
+            if ($image && $image->isValid() && !$image->hasMoved()) {
+                // Perbaikan disini: gunakan book_name bukan fullname
+                $cover_img_new = $this->uploadFiles($image, $data_book['book_name']);
 
-            $cover_book = $this->uploadFiles($this->request->getPost('book_name'));
+                // Hapus file lama
+                $cover_img_old = $data_book_from_db['cover_img'];
+                if (!empty($cover_img_old) && file_exists($cover_img_old)) {
+                    unlink($cover_img_old);
+                }
 
-            $author_json = json_encode($this->request->getPost('author'));
-            $data_book['author'] = $author_json;
-            $data_book = array_merge($data_book, $cover_book);
-            $updated = $this->book->update($id_book, $data_book);
-            $this->db->transComplete();
-            if (!$updated) {
-                $this->db->transRollback();
-                return ResponHelper::handlerErrorResponJson(['error' => 'Tidak ada data yang di edit'], 400);
+                $data_book = array_merge($data_book, $cover_img_new);
+            } else {
+                $data_book['cover_img'] = $data_book_from_db['cover_img'];
             }
-            return ResponHelper::handlerSuccessResponJson($data_book, 200);
-        } catch (\Throwable $th) {
+
+            // Proses author
+            $author = $this->request->getPost('author');
+            $data_book['author'] = json_encode(is_array($author) ? $author : [$author]);
+
+            // Debug: log final data
+            log_message('debug', 'Final data untuk update: ' . print_r($data_book, true));
+
+            // Update buku
+            $updated = $this->book->update($id_book, $data_book);
+
+            if ($updated === false) {
+                throw new \Exception('Gagal mengupdate data buku');
+            }
+
+            $this->db->transCommit();
+            return ResponHelper::handlerSuccessResponRedirect("book/dashboard", "Data berhasil diedit");
+        } catch (\Exception $e) {
             $this->db->transRollback();
+            log_message('error', 'Error saat update buku: ' . $e->getMessage());
+            return ResponHelper::handlerErrorResponJson($e->getMessage(), 500);
+        } catch (\Throwable $th) {
+            if ($this->db->transStatus() === false) {
+                $this->db->transRollback();
+            }
+            log_message('error', 'Error di editBook: ' . $th->getMessage());
             return ResponHelper::handlerErrorResponJson($th->getMessage(), 500);
         }
     }
+
     public function deleteBook()
     {
         $id_book = $_GET['books'] ?? null;
@@ -349,6 +369,12 @@ class BookController extends BaseController
                     'is_natural' => 'Jumlah total salinan harus berupa angka positif.',
                 ],
             ],
+            'cover_img' => [
+                'rules' => 'permit_empty',
+                'errors' => [
+                    'permit_empty' => 'Sampul buku wajib diisi.',
+                ],
+            ],
         ];
     }
 
@@ -358,19 +384,69 @@ class BookController extends BaseController
      * @param string $book_name Nama buku
      * @return array Array yang berisi nama file yang diupload
      */
-    private function uploadFiles($book_name)
+    private function uploadFiles($photo, $name)
     {
         $field = "cover_img";
         $uploadedFiles = [];
-        if ($file = $this->request->getFile($field)) {
-            if ($file->isValid() && !$file->hasMoved()) {
-                $fileName = $this->generateFileName($file, $book_name, $field);
-                $file->move($field . '/', $fileName);
-                $uploadedFiles[$field] = $field . '/' . $fileName;
-            }
+        $file = $photo;
+
+        if ($file && $file->isValid() && !$file->hasMoved()) {
+            $fileName = $this->generateFileName($file, $name, $field);
+            $file->move($field . '/', $fileName);
+            $uploadedFiles[$field] = $field . '/' . $fileName;
         }
+
         return $uploadedFiles;
     }
+
+
+    // private function uploadFiles($book_name)
+    // {
+    //     $field = "cover_img";
+    //     $uploadedFiles = [];
+
+    //     // Definisikan path upload yang benar
+    //     $uploadPath = FCPATH . 'public/uploads/' . $field;  // FCPATH mengarah ke root direktori public
+
+    //     // Cek dan buat direktori jika belum ada
+    //     if (!is_dir($uploadPath)) {
+    //         if (!mkdir($uploadPath, 0777, true)) {
+    //             throw new \RuntimeException('Gagal membuat direktori upload');
+    //         }
+    //     }
+
+    //     // Ambil file yang diupload
+    //     $file = $this->request->getFile($field);
+
+    //     // Validasi file
+    //     if (!$file || !$file->isValid()) {
+    //         throw new \RuntimeException('File tidak valid atau tidak ditemukan');
+    //     }
+
+    //     if ($file->hasMoved()) {
+    //         throw new \RuntimeException('File sudah dipindahkan');
+    //     }
+
+    //     try {
+    //         // Generate nama file
+    //         $fileName = $this->generateFileName($file, $book_name, $field);
+
+    //         // Pindahkan file
+    //         if ($file->move($uploadPath, $fileName)) {
+    //             // Simpan path relatif ke database
+    //             $uploadedFiles[$field] = 'uploads/' . $field . '/' . $fileName;
+
+    //             return $uploadedFiles;
+    //         } else {
+    //             throw new \RuntimeException('Gagal memindahkan file');
+    //         }
+    //     } catch (\Exception $e) {
+    //         log_message('error', 'Upload error: ' . $e->getMessage());
+    //         throw new \RuntimeException('Error saat upload file: ' . $e->getMessage());
+    //     }
+    // }
+
+
     /**
      * Mengenerate nama file yang unik untuk file yang diupload
      * 
