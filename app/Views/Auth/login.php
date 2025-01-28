@@ -13,6 +13,7 @@
     rel="stylesheet" />
 
   <link rel="stylesheet" href="<?= base_url('css/style.login.css') ?>">
+
 </head>
 
 <body>
@@ -20,19 +21,26 @@
 
   <? $id_user = session('id_user'); ?>
 
-  <nav class="container-navbar">
-    <div>
-      <h1>SMP SWASTA KATOLIK SANTA URSULA ENDE</h1>
+  <main class="container">
+    <div class="container_description">
+      <div class="container_logo">
+        <img src="<?= base_url('img/logo.png') ?>" alt="">
+        <h1>SMP KATOLIK SANTA URSULA ENDE ADMIN PERPUSTAKAAN</h1>
+      </div>
+      <div class="container_info">
+        <img src="<?= base_url('img/bg.jpg') ?>" alt="">
+        <div class="info">
+          <h1>Selamat datang</h1>
+          <p>di Admin Perpustakaan SMP Swasta Katolik Santa Ursula Ende!
+            Tempat di mana pengelolaan koleksi buku, data anggota, dan aktivitas perpustakaan dilakukan dengan rapi dan efisien untuk mendukung kemajuan literasi siswa. </p>
+        </div>
+      </div>
     </div>
-
-
-  </nav>
-  <main class="container-auth">
-    <h1 class="welcome">Welcome</h1>
-    <div class="container">
+    <div class="container_auth">
       <div class="auth">
         <div class="title">
-          <h1>Login</h1>
+          <h1>Admin Perpustakan</h1>
+          <h1>Silakan Masuk</h1>
         </div>
         <div class="input">
           <form action="<?= base_url('login/proses') ?>" autocomplete="off" method="POST">
@@ -47,7 +55,10 @@
                 <i id="toggle-password" class="bx bx-show"></i>
               </div>
             </div>
-
+            <div class="information">
+              <p>Pastikan user name dan password
+                terisi dengan benar</p>
+            </div>
             <div class="masuk">
               <button class="button-masuk">masuk</button>
             </div>
@@ -57,46 +68,8 @@
     </div>
   </main>
 
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
-  <script>
-    // Cek apakah ada pesan sukses atau error
-    <?php if (session()->getFlashdata('success')): ?>
-      Toastify({
-        className: "notif bx bxs-check-circle",
-        text: "<?= session()->getFlashdata('success') ?>",
-        duration: 3000,
-        gravity: "top", // top or bottom
-        position: "right", // left, center, or right
-        backgroundColor: "#D9FFF0",
-        style: {
-          marginTop: "60px",
-          color: "green",
-          borderRadius: "8px"
 
-        },
-      }).showToast();
-    <?php endif; ?>
-
-    <?php if (session()->getFlashdata('error')): ?>
-      Toastify({
-        className: "notif bx bxs-x-circle",
-        text: "<?= session()->getFlashdata('error') ?>",
-        duration: 3000,
-        offset: {
-          x: 10, // horizontal axis - can be a number or a string indicating unity. eg: '2em'
-          y: 0 // vertical axis - can be a number or a string indicating unity. eg: '2em'
-        },
-        backgroundColor: "#ffebeb",
-        style: {
-          marginTop: "60px",
-          color: "red",
-          borderRadius: "8px"
-
-        },
-      }).showToast();
-    <?php endif; ?>
-  </script>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {

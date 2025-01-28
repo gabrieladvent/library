@@ -11,7 +11,6 @@ function viewDetail(button) {
   popup.style.visibility = "visible";
   popup.querySelector(".popup").style.opacity = "1";
   popup.querySelector(".popup").style.transition = "all .5s .1s;";
-
   popup.querySelector(".popup").style.transform =
     "translate(-50%, -50%) scale(1)";
 
