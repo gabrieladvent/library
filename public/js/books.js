@@ -101,12 +101,6 @@ function toggleEdit(checkbox) {
   
 
 
-// Close popup event listener
-document.getElementById("popup__close").addEventListener("click", (event) => {
-    event.preventDefault(); // Prevent page reload if the button is an <a href="#">
-    closePopup(); // Call closePopup function
-  });
-  
   
 // Function to close the popup
 function closePopup() {
@@ -148,4 +142,11 @@ authorInput.addEventListener("input", function () {
   });
   // You can display the output somewhere if needed
   console.log(output); // For debugging purposes
+});
+
+
+// Close popup event listener
+document.getElementById("popup__close").addEventListener("click", (event) => {
+  event.preventDefault(); // Prevent page reload if the button is an <a href="#">
+  closePopup(); // Call closePopup function
 });
