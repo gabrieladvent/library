@@ -60,7 +60,8 @@
     transform: translate(-50%, -50%) scale(.25);
     transition: all .5s .1s;
 }
-.popup_delete{
+.popup_lihat{
+    
     /* background-color: antiquewhite; */
     background-color:whitesmoke;
     width: 60rem;
@@ -72,6 +73,44 @@
     transform: translate(-50%, -50%) scale(.25);
     transition: all .5s .1s;
 }
+
+
+
+#popup:target{
+    opacity: 1;
+    visibility: visible;
+}
+
+#popup:target .popup{
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+
+}
+    #popup__lihat:active{
+        opacity: 1;
+        visibility: visible;
+    }
+
+    #popup__lihat:active .popup_delete{
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+
+    }
+
+
+
+#popup__delete:target{
+    opacity: 1;
+    visibility: visible;
+}
+
+#popup__delete:target .popup{
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+
+}
+
+
 p
 .form{
     display: flex;
@@ -263,38 +302,5 @@ p
     color: rgb(137, 133, 133);
 }
 
-#popup:target{
-    opacity: 1;
-    visibility: visible;
-}
-
-#popup:target .popup{
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-
-}
-#popup__lihat:target{
-    opacity: 1;
-    visibility: visible;
-}
-
-#popup__lihat:target .popup_delete{
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-
-}
-
-
-
-#popup__delete:target{
-    opacity: 1;
-    visibility: visible;
-}
-
-#popup__delete:target .popup{
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-
-}
 
 

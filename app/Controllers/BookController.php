@@ -203,46 +203,53 @@ class BookController extends BaseController
             log_message('error', 'Request data is empty.');
             return ResponHelper::handlerErrorResponJson('Data tidak valid.', 400);
         }
-        $validationRules = $this->getValidationRules(true);
-        if (empty($validationRules)) {
-            log_message('error', 'Validation rules are empty.');
-            return ResponHelper::handlerErrorResponJson('Kesalahan server internal.', 500);
-        }
 
         try {
             $this->db->transStart();
-            
-            $image = $this->request->getFile('cover_img');
-            $cover_img_old = $data_book_from_db['cover_img'];
-            $cover_img_new = $this->uploadFiles($image, $this->request->getPost('fullname'));
 
-            if ($cover_img_old != $cover_img_new['cover_img']) {
-                if (file_exists($cover_img_old)){
+            // Cek apakah ada file yang diupload
+            $image = $this->request->getFile('cover_img');
+
+            // Jika ada file baru yang diupload
+            if ($image && $image->isValid() && !$image->hasMoved()) {
+                // Upload file baru
+                $cover_img_new = $this->uploadFiles($image, $this->request->getPost('fullname'));
+
+                // Hapus file lama jika ada
+                $cover_img_old = $data_book_from_db['cover_img'];
+                if (file_exists($cover_img_old)) {
                     unlink($cover_img_old);
                 }
+
+                // Gabungkan data cover baru ke data_book
+                $data_book = array_merge($data_book, $cover_img_new);
+            } else {
+                // Jika tidak ada file baru, gunakan cover lama
+                $data_book['cover_img'] = $data_book_from_db['cover_img'];
             }
-            
+
+            // Proses author
             $author = $this->request->getPost('author');
             $convert_array = array($author);
             $author_json = json_encode($convert_array);
-
             $data_book['author'] = $author_json;
-            $data_book = array_merge($data_book, $cover_img_new);
 
+            // Update data buku
             $updated = $this->book->update($id_book, $data_book);
 
             $this->db->transComplete();
+
             if (!$updated) {
                 $this->db->transRollback();
                 return ResponHelper::handlerErrorResponJson(['error' => 'Tidak ada data yang di edit'], 400);
             }
+
             return ResponHelper::handlerSuccessResponJson($data_book, 200);
         } catch (\Throwable $th) {
             $this->db->transRollback();
             return ResponHelper::handlerErrorResponJson($th->getMessage(), 500);
         }
     }
-
 
     public function deleteBook()
     {

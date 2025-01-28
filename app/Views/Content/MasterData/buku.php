@@ -157,6 +157,7 @@ $encrypter = \Config\Services::encrypter();
                     <div class="popup">
                         <div class="title">
                             <div class="form-group">
+                                <h1>Lihat Data</h1>
                                 <input type="checkbox" id="enableEdit" onchange="toggleEdit(this)">
                                 <label for="enableEdit">Aktifkan Mode Edit</label>
                             </div>
@@ -221,14 +222,14 @@ $encrypter = \Config\Services::encrypter();
                                         <label class="label" for="">Deskripsi Buku </label>
                                         <textarea class="input alamat" id="description" name="description" rows="4" cols="50" placeholder="Masukkan alamat lengkap Anda" disabled></textarea>
 
-                                        <div>
-                                        </div>
-                                    </div>
 
-                                    <div class="button">
-                                        <button class="batal" type="button">Batal</button>
-                                        <button class="simpan" type="submit">Simpan</button>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="button">
+                                <button class="batal" type="button">Batal</button>
+                                <button class="simpan" type="submit">Simpan</button>
+                            </div>
                         </form>
                     </div>
                 </div>
