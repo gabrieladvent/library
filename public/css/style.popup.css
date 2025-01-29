@@ -60,6 +60,21 @@
     transform: translate(-50%, -50%) scale(.25);
     transition: all .5s .1s;
 }
+
+.popup_delete{
+    /* background-color: antiquewhite; */
+    background-color:whitesmoke;
+    width: 35rem;
+    height: 14rem;
+    padding: 20px;
+    position: absolute;
+    top:50%;
+    left: 50%;
+    border-radius: 8px 8px ;
+    transform: translate(-50%, -50%) scale(.25);
+    transition: all .5s .1s;
+
+}
 .popup_lihat{
     
     /* background-color: antiquewhite; */
@@ -257,6 +272,13 @@ p
     gap: 20px;
 }
 
+.button-delete{
+    display: flex;
+    padding-top: 50px;
+    justify-content: center;
+    gap: 20px;
+}
+
 .batal, .simpan {
     width: 100px;
     height: 28px;
@@ -294,6 +316,19 @@ p
     justify-content: space-between;
     padding:0px 10px;
 }
+.title_delete{
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    padding:0px 10px;
+    flex-direction: column;
+    p{
+        font-size: 30px;
+        font-weight: bold;
+    }
+}
+
 
 .popup-close:link,
 .popup-close:visited {
@@ -307,6 +342,21 @@ p
 .popup-close:active {
     color: rgb(137, 133, 133);
 }
+
+/* delete */
+.popup-close_delete:link,
+.popup-close_delete:visited {
+    text-decoration: none;
+   color: black;
+    font-size: 30px;
+    transition: .3s;
+}
+
+.popup-close_delete:hover,
+.popup-close_delete:active {
+    color: rgb(137, 133, 133);
+}
+
 
 
 
