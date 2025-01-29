@@ -179,9 +179,9 @@ class BookController extends BaseController
             $data_book['cover_img'] = $cover_book['cover_img'];
 
             if ($this->book->save($data_book)) {
-                return ResponHelper::handlerSuccessResponJson($data_book, 201);  // Response sukses
+                return ResponHelper::handlerSuccessResponRedirect("book/dashboard", "Data berhasil ditambahkan");
             } else {
-                return ResponHelper::handlerErrorResponJson('Gagal menyimpan data', 500);
+                return ResponHelper::handlerSuccessResponRedirect("book/dashboard", "Data gagal ditambahkan");
             }
         } catch (\Exception $e) {
             return ResponHelper::handlerErrorResponJson($e->getMessage(), 500);
@@ -277,9 +277,9 @@ class BookController extends BaseController
             $this->db->transComplete();
             if (!$deleted) {
                 $this->db->transRollback();
-                return ResponHelper::handlerErrorResponJson(['error' => 'Tidak ada data yang dihapus'], 400);
+                return ResponHelper::handlerSuccessResponRedirect("book/dashboard", "gagal di hapus");
             }
-            return ResponHelper::handlerSuccessResponJson(['message' => 'Data berhasil dihapus'], 200);
+            return ResponHelper::handlerSuccessResponRedirect("book/dashboard", "Data berhasil dihapus");
         } catch (\Throwable $th) {
             $this->db->transRollback();
             return ResponHelper::handlerErrorResponJson($th->getMessage(), 500);

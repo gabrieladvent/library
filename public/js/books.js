@@ -96,7 +96,7 @@ function toggleEdit(checkbox) {
 function Delete(button) {
   const id = button.getAttribute("data-id");
   const bookName = button.getAttribute("data-name");
-  // Show delete popup
+  
   const popup = document.getElementById("popup__delete");
   const popupContent = popup.querySelector(".popup_delete");
   
@@ -108,39 +108,28 @@ function Delete(button) {
   popupContent.style.opacity = "1";
   popupContent.style.transform = "translate(-50%, -50%) scale(1)";
 
-  // Set up confirm delete button
   document.getElementById("confirmDelete").onclick = function() {
       $.ajax({
           url: `${window.location.origin}/book/delete?books=${encodeURIComponent(id)}`,
           type: "GET",
           dataType: "json",
           success: function(response) {
-              if (response.success) {
-                  alert("Buku berhasil dihapus");
-                  window.location.reload();
-              } else {
-                  alert(response.message || "Gagal menghapus buku");
-              }
               closeDeletePopup();
+              if (response.success) {
+                  window.location.replace(response.redirect);
+              }
           },
           error: function(xhr, status, error) {
-              let errorMessage = "Terjadi kesalahan saat menghapus buku";
-              if (xhr.responseJSON && xhr.responseJSON.message) {
-                  errorMessage = xhr.responseJSON.message;
-              }
-              alert(errorMessage);
               closeDeletePopup();
           }
       });
   };
 
-  // Add event listener for close button
   document.getElementById("popup__close_delete").onclick = function(e) {
       e.preventDefault();
       closeDeletePopup();
   };
 }
-
 function closeDeletePopup() {
   const popup = document.getElementById("popup__delete");
   const popupContent = popup.querySelector(".popup");

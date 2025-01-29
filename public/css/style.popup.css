@@ -89,8 +89,17 @@
     transition: all .5s .1s;
 }
 
+.img{
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+}
 
-
+#cover_img_view{
+    width: 100px;
+    height: 100px;
+    
+}
 #popup:target{
     opacity: 1;
     visibility: visible;
@@ -131,6 +140,7 @@ p
     display: flex;
     flex-direction: column;
 }
+
 
 
 
@@ -267,7 +277,7 @@ p
 
 .button{
     display: flex;
-    padding-top: 50px;
+    padding-top: 5px;
     justify-content: end;
     gap: 20px;
 }
