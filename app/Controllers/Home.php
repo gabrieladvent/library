@@ -27,7 +27,7 @@ class Home extends BaseController
 
     public function index()
     {
-        return view('auth/login');
+        return view('Auth/login');
     }
 
     private function getToken($id, $username)
