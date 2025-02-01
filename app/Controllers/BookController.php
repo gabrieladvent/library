@@ -256,17 +256,22 @@ class BookController extends BaseController
     {
         $id_book = $_GET['books'] ?? null;
         if (empty($id_book)) {
-            return ResponHelper::handlerErrorResponJson('ID buku wajib diisi.', 400);
+            session()->setFlashdata('error', 'ID buku wajib diisi.');
+            return redirect()->to('/book/dashboard');
         }
-        // $id_book = $this->decryptId($id_book);
+
         $book = $this->book->getDataById($id_book);
         if (empty($book)) {
-            return ResponHelper::handlerErrorResponJson('ID buku tidak valid.', 400);
+            session()->setFlashdata('error', 'ID buku tidak valid.');
+            return redirect()->to('/book/dashboard');
         }
+
         $loans = $this->loan->getCountLoanByIdBook($id_book);
         if ($loans > 0) {
-            return ResponHelper::handlerErrorResponJson('Buku sedang dipinjam.', 400);
+            session()->setFlashdata('error', 'Buku sedang dipinjam.');
+            return redirect()->to('/book/dashboard');
         }
+
         try {
             $this->db->transStart();
             $cover_path = $book['cover_img'];
@@ -275,14 +280,19 @@ class BookController extends BaseController
             }
             $deleted = $this->book->delete($id_book);
             $this->db->transComplete();
+
             if (!$deleted) {
                 $this->db->transRollback();
-                return ResponHelper::handlerSuccessResponRedirect("book/dashboard", "gagal di hapus");
+                session()->setFlashdata('error', 'Tidak berhasil Dihapus');
+                return redirect()->to('/book/dashboard');
             }
-            return ResponHelper::handlerSuccessResponRedirect("book/dashboard", "Data berhasil dihapus");
+
+            session()->setFlashdata('success', 'Berhasil Menghapus');
+            return redirect()->to('/book/dashboard');
         } catch (\Throwable $th) {
             $this->db->transRollback();
-            return ResponHelper::handlerErrorResponJson($th->getMessage(), 500);
+            session()->setFlashdata('error', $th->getMessage());
+            return redirect()->to('/book/dashboard');
         }
     }
 
