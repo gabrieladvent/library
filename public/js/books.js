@@ -119,7 +119,7 @@ function Delete(button) {
                 // Redirect ke halaman dashboard
                 Toastify({
                   className: "notif bx bxs-check-circle",
-                  text: " <?= session()->getFlashdata('success') ?>",
+                  text: " Data Berhasil di Hapus",
                   duration: 3000,
                   gravity: "top", // top or bottom
                   position: "right", // left, center, or right

@@ -369,4 +369,32 @@ p
 
 
 
-
+/* admin */
+.input.status{
+    width: 100px;
+    border: none;
+}
+.input-user{
+    width:15rem;
+    height: 33px;
+    flex-shrink: 0;
+    border-radius: 4px;
+    background: #ffffff;
+    padding-left: 10px;
+}
+.input-gender{
+    width:24rem;
+    height: 42px;
+    flex-shrink: 0;
+    border-radius: 4px;
+    background: #ffffff;
+    padding-left: 10px;
+}
+.status_input{
+    display: flex;
+    gap: 40px;   
+   
+}
+.input-content.status{
+    width: 6rem;
+}
