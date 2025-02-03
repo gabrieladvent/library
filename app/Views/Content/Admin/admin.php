@@ -84,11 +84,11 @@ $encrypter = \Config\Services::encrypter(); ?>
                                         <div class="status_input">
                                             <div class="input-content status">
                                                 <label class="label" for="">Status</label>
-                                                <input class="input status" type="text" name="role" value="admin" disabled />
+                                                <input class="input status" type="text" name="role" value="Admin" readonly />
 
                                             </div>
                                             <div class="input-content status">
-                                                <label class="label" for="">User Name</label>
+                                                <label class="label" for="">Username/Email</label>
                                                 <input class="input-user" type="text" name="username_email">
                                             </div>
                                         </div>
@@ -97,10 +97,10 @@ $encrypter = \Config\Services::encrypter(); ?>
                                             <input class="input" type="text" name="fullname" />
                                         </div>
 
-                                        <div class="input-content">
+                                        <!-- <div class="input-content">
                                             <label class="label" for="">email</label>
                                             <input class="input" type="text" name="email" />
-                                        </div>
+                                        </div> -->
 
 
 

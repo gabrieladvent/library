@@ -132,8 +132,6 @@ class UserController extends BaseController
             // $valid = \Config\Services::validation();
             // $validate = $this->getValidationRules();
 
-            // dd(!$valid->setRules($validate)->run($this->request->getPost()));
-
             // if (!$valid->setRules($validate)->run($this->request->getPost())) {
             //     $message = $valid->getErrors();
             //     return ResponHelper::handlerErrorResponRedirect('registrasi/employee', $message);
@@ -510,6 +508,7 @@ class UserController extends BaseController
      */
     private function insertUser($data)
     {
+
         $username_email = $this->getEmailOrUsername($data['username_email']);
         $email = $username_email[0];
         $username = $username_email[1];
@@ -534,7 +533,7 @@ class UserController extends BaseController
                 'date_birth' => $data['date_birth'],
                 'gender' => $data['gender'],
                 'religion' => $data['religion'],
-                'class_id' => $data['class_name'],
+                'class_id' => $data['role'] == 'Admin' ? null : $data['class_id'],
             ]);
 
             if ($data_biodata == false) {
