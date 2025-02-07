@@ -115,7 +115,7 @@ $encrypter = \Config\Services::encrypter(); ?>
                                                 </select>
                                             </div>
                                             <div class="input-jumlah">
-                                                <label class="label" for="">Jenis Kelamin</label>
+                                                <label class="label" for="">Agama</label>
                                                 <select class="input-count" name="religion" required>
                                                     <option value="">Pilih</option>
                                                     <option value="Islam">1. Islam</option>

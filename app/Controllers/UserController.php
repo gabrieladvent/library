@@ -229,9 +229,9 @@ class UserController extends BaseController
     public function deleteUser()
     {
         $id_user = $_GET['users'] ?? null;
+        $id_decrypt = $this->decryptId($id_user);
 
-
-        $check_loans = $this->loan->getAvailableLoans($id_user);
+        $check_loans = $this->loan->getAvailableLoans($id_decrypt);
         if (!empty($check_loans)) {
             return ResponHelper::handlerErrorResponJson(['error' => 'User masih memiliki pinjaman'], 400);
         }
@@ -239,9 +239,9 @@ class UserController extends BaseController
         try {
             $this->db->transStart();
 
-            $this->loan->deleteLoan($id_user);
-            $this->biodata->deleteBiodata($id_user);
-            $this->user->deleteUser($id_user);
+            $this->loan->deleteLoan($id_decrypt);
+            $this->biodata->deleteBiodata($id_decrypt);
+            $this->user->deleteUser($id_decrypt);
 
             $this->db->transComplete();
 

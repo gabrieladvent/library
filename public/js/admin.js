@@ -145,7 +145,7 @@ function DeleteAdmin(button) {
 
   document.getElementById("confirmDelete").onclick = function () {
     $.ajax({
-        url: `${window.location.origin}/book/delete?books=${encodeURIComponent(id)}`,
+        url: `${window.location.origin}/user/delete?books=${encodeURIComponent(id)}`,
         type: "GET",
         dataType: "json",
         success: function (response) {

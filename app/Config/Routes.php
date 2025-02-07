@@ -24,7 +24,7 @@ $routes->group("user", function ($routes) {
     $routes->get('detail/(:segment)', 'userController::viewDetailUser/$1');
 
     $routes->post('add', 'UserController::addUser');
-    $routes->get('list/(:any)', 'UserController::listUser/$1');
+
     $routes->post('edit', 'UserController::editUser');
     $routes->get('delete', 'UserController::deleteUser');
 });
