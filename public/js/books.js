@@ -46,7 +46,7 @@ function viewDetail(button) {
       }
 
       $('#formDetailUser').attr('data-book-id', id);
-      const actionUrl = `${window.location.origin}/book/edit?books=${encodeURIComponent(id)}`;
+      const actionUrl = `${window.location.origin}/user/edit?id_user=${encodeURIComponent(id)}`;
       console.log('Action URL:', actionUrl);
       $('#formDetailUser').attr('action', actionUrl);
       $('#formDetailUser').attr('method', 'POST');

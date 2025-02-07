@@ -103,18 +103,27 @@ class UserController extends BaseController
      * @param string $id_user id user yang akan ditampilkan
      * @return \CodeIgniter\HTTP\ResponseInterface
      */
-    public function viewDetailUser()
+    public function viewDetailUser($id)
     {
-        $id_user = $_GET['users'] ?? null;
+        try {
 
-        $id_decrypt = $this->decryptId($id_user);
 
-        $data['detail_user'] = $this->user->getDetailUserById($id_decrypt);
-        $data['users_loans'] = $this->loan->getLoanByIdUser($id_decrypt);
+            $data = [
+                'success' => true,
+                'data' => [
+                    'user_detail' => $this->user->getDetailUserById($id),
+                    'user_loans' => $this->loan->getLoanByIdUser($id)
+                ]
+            ];
 
-        return view('detail_user', $data);
+            return $this->response->setJSON($data);
+        } catch (\Exception $e) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
     }
-
 
     /**
      * Fungsi untuk menambahkan user baru
@@ -131,6 +140,8 @@ class UserController extends BaseController
         try {
             // $valid = \Config\Services::validation();
             // $validate = $this->getValidationRules();
+
+            // dd(!$valid->setRules($validate)->run($this->request->getPost()));
 
             // if (!$valid->setRules($validate)->run($this->request->getPost())) {
             //     $message = $valid->getErrors();
@@ -218,9 +229,9 @@ class UserController extends BaseController
     public function deleteUser()
     {
         $id_user = $_GET['users'] ?? null;
-        $id_decrypt = $this->decryptId($id_user);
 
-        $check_loans = $this->loan->getAvailableLoans($id_decrypt);
+
+        $check_loans = $this->loan->getAvailableLoans($id_user);
         if (!empty($check_loans)) {
             return ResponHelper::handlerErrorResponJson(['error' => 'User masih memiliki pinjaman'], 400);
         }
@@ -228,9 +239,9 @@ class UserController extends BaseController
         try {
             $this->db->transStart();
 
-            $this->loan->deleteLoan($id_decrypt);
-            $this->biodata->deleteBiodata($id_decrypt);
-            $this->user->deleteUser($id_decrypt);
+            $this->loan->deleteLoan($id_user);
+            $this->biodata->deleteBiodata($id_user);
+            $this->user->deleteUser($id_user);
 
             $this->db->transComplete();
 
@@ -508,7 +519,6 @@ class UserController extends BaseController
      */
     private function insertUser($data)
     {
-
         $username_email = $this->getEmailOrUsername($data['username_email']);
         $email = $username_email[0];
         $username = $username_email[1];
@@ -533,7 +543,7 @@ class UserController extends BaseController
                 'date_birth' => $data['date_birth'],
                 'gender' => $data['gender'],
                 'religion' => $data['religion'],
-                'class_id' => $data['role'] == 'Admin' ? null : $data['class_id'],
+                'class_id' => $data['class_name'],
             ]);
 
             if ($data_biodata == false) {

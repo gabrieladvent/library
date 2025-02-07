@@ -79,7 +79,8 @@
         })
     </script>
 </body>
-<script type="text/javascript" src="<?= base_url('js/books.js') ?>"></script>
 <script type="text/javascript" src="<?= base_url('js/admin.js') ?>"></script>
+<script type="text/javascript" src="<?= base_url('js/user.js') ?>"></script>
+<script type="text/javascript" src="<?= base_url('js/books.js') ?>"></script>
 
 </html>

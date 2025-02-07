@@ -21,7 +21,7 @@ $routes->group("home", ['filter' => 'auth'], function ($routes) {
 $routes->group("user", function ($routes) {
     $routes->get('profile', 'UserController::index');
     $routes->get('list/(:any)', 'userController::listUser/$1');
-    $routes->get('detail', 'userController::viewDetailUser');
+    $routes->get('detail/(:segment)', 'userController::viewDetailUser/$1');
 
     $routes->post('add', 'UserController::addUser');
     $routes->get('list/(:any)', 'UserController::listUser/$1');
