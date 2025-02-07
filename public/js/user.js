@@ -45,7 +45,7 @@ function viewDetailAnggota(button) {
     });
   }
     
-    function validationPassword(){
+    function validationPasswordAnggota(){
       password = document.getElementById("password")
       konfrmPassword = document.getElementById("konfiPassword")
       

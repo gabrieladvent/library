@@ -45,7 +45,7 @@ function viewDetailAdmin(button) {
   });
 }
   
-  function validationPassword(){
+  function validationPasswordAdmin(){
     password = document.getElementById("password")
     konfrmPassword = document.getElementById("konfiPassword")
     

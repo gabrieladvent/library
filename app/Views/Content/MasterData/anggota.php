@@ -72,7 +72,7 @@ $encrypter = \Config\Services::encrypter(); ?>
                                 <h1>Tambah Byu</h1>
                                 <a href="#" class="popup-close">&times;</a>
                             </div>
-                            <form action="<?= base_url('user/add') ?>" method="post" autocomplete="off" enctype="multipart/form-data" onsubmit="return validationPassword()">
+                            <form action="<?= base_url('user/add') ?>" method="post" autocomplete="off" enctype="multipart/form-data" onsubmit="return validationPasswordAnggota()">
                                 <?= csrf_field() ?>
                                 <div class="container__input">
                                     <div class="satu">
