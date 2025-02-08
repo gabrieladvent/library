@@ -84,12 +84,15 @@ class UserController extends BaseController
 
         $data['list_user'] = $this->user->getAllRoleByRole($type === 'Admin' ? 'Admin' : 'User');
         $data['user'] = $this->user->getDataUserById($decode_id);
+        $data['class'] = $this->class->getAllClasses();
 
         if (!$data['user']) {
             return redirect()->back()->with('error', 'Pengguna tidak ditemukan');
         }
 
         $view = $type === 'Admin' ? 'content/Admin/admin' : 'content/MasterData/anggota';
+
+        // dd($data);
         return view($view, $data);
     }
 
@@ -533,8 +536,10 @@ class UserController extends BaseController
                 'role' => empty($data['role']) ? 'User' : 'Admin',
             ]);
 
+            // dd($user_id, $data);
+
             $data_biodata = $this->biodata->insertData([
-                'user_id' => $user_id,
+                'user_id' => $user_id['id'],
                 'fullname' => $data['fullname'],
                 'identification' => $data['identification'],
                 'address' => $data['address'],
@@ -543,8 +548,10 @@ class UserController extends BaseController
                 'date_birth' => $data['date_birth'],
                 'gender' => $data['gender'],
                 'religion' => $data['religion'],
-                'class_id' => $data['class_name'],
+                'class_id' => $user_id['role'] === 'Admin' ? null : $data['class_name'],
             ]);
+
+            dd($data_biodata);
 
             if ($data_biodata == false) {
                 $this->db->transRollback();

@@ -55,7 +55,7 @@ $encrypter = \Config\Services::encrypter(); ?>
                                                 </button>
 
 
-                                                <button class="btn btn-edit" onclick="DeleteAdmin(this)" data-id="<?= $key['id'] ?>" data-name="<?= $key['username'] ?>">
+                                                <button class="btn btn-edit" onclick="DeleteAdmin(this)" data-id="<?= urlencode(base64_encode($encrypter->encrypt($key['id']))) ?>" data-name="<?= $key['username'] ?>">
                                                     <i class="bx bx-trash"></i> Hapus
                                                 </button>
 
@@ -307,7 +307,7 @@ $encrypter = \Config\Services::encrypter(); ?>
                             </div>
                             <div class="popup__content">
                                 <div class="title_delete">
-                                    <h3>Apakah anda yakin ingin menghapus buku ini?</h3>
+                                    <h3>Apakah anda yakin ingin menghapus admin?</h3>
                                     <p></p>
                                 </div>
                                 <div class="button-delete">

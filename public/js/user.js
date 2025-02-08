@@ -18,9 +18,11 @@ function viewDetailAnggota(button) {
             if (response.success) {
                 const user = response.data.user_detail;
                 const loans = response.data.user_loans;
+                console.log(user.class_name);             
                 
                 // Populate form fields
                 // Add fields based on your form structure
+                $("#class_id").val(user.class_name);
                 $("#username").val(user.username||user.email);
                 $("#fullname").val(user.fullname);
                 $("#gender").val(user.gender);
