@@ -270,8 +270,17 @@ class UserController extends BaseController
      */
     public function getAllClasses()
     {
-        $all_classes = $this->class->getAllClasses();
-        $data['all_classes'] = $all_classes;
+        $all_classes = $this->class->getAllClasses(); // Ambil semua data kelas
+
+        if (empty($all_classes)) {
+            // Log jika data kosong
+            log_message('error', 'Data all_classes kosong.');
+        } else {
+            // Debug data jika terisi
+            log_message('info', 'Data all_classes: ' . json_encode($all_classes));
+        }
+
+        $data['all_classes'] = $all_classes; // Kirim data ke view
         return view('content/MasterData/kelas', $data);
     }
 

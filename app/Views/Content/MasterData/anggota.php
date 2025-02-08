@@ -3,7 +3,11 @@
 <?php $this->section('content');
 $encrypter = \Config\Services::encrypter(); ?>
 
-
+<?php
+// Salin data kelas ke variabel baru agar bisa digunakan dua kali tanpa konflik
+$classForForm = $class;
+$classForPopup = $class;
+?>
 
 <body>
     <div class="container-book">
@@ -19,6 +23,8 @@ $encrypter = \Config\Services::encrypter(); ?>
                 </a>
             </div>
             <div class="container-table">
+
+
                 <div class="table">
                     <table border="1">
                         <thead>
@@ -81,33 +87,25 @@ $encrypter = \Config\Services::encrypter(); ?>
                                                 <label class="label" for="">Kelas</label>
                                                 <select class="input-count" id="class_id" name="class_name" required>
                                                     <option value="">Pilih Kelas</option>
-                                                    <optgroup label="Kelas 10">
-                                                        <option value="X-A">X-A</option>
-                                                        <option value="X-B">X-B</option>
-                                                        <option value="X-C">X-C</option>
-                                                    </optgroup>
-                                                    <optgroup label="Kelas 11 IPA">
-                                                        <option value="XI IPA-1">XI IPA-1</option>
-                                                        <option value="XI IPA-2">XI IPA-2</option>
-                                                        <option value="XI IPA-3">XI IPA-3</option>
-                                                    </optgroup>
-                                                    <optgroup label="Kelas 11 IPS">
-                                                        <option value="XI IPS-1">XI IPS-1</option>
-                                                        <option value="XI IPS-2">XI IPS-2</option>
-                                                        <option value="XI IPS-3">XI IPS-3</option>
-                                                    </optgroup>
-                                                    <optgroup label="Kelas 12 IPA">
-                                                        <option value="XII IPA-1">XII IPA-1</option>
-                                                        <option value="XII IPA-2">XII IPA-2</option>
-                                                        <option value="XII IPA-3">XII IPA-3</option>
-                                                    </optgroup>
-                                                    <optgroup label="Kelas 12 IPS">
-                                                        <option value="XII IPS-1">XII IPS-1</option>
-                                                        <option value="XII IPS-2">XII IPS-2</option>
-                                                        <option value="XII IPS-3">XII IPS-3</option>
-                                                    </optgroup>
+                                                    <?php if (!empty($classForForm) && is_array($classForForm)): ?>
+                                                        <?php
+                                                        $groupedClassesForm = [];
+                                                        foreach ($classForForm as $classItem) {
+                                                            $prefix = explode('-', $classItem['class_name'])[0];
+                                                            $groupedClassesForm[$prefix][] = $classItem;
+                                                        }
+                                                        ?>
+                                                        <?php foreach ($groupedClassesForm as $groupName => $groupClasses): ?>
+                                                            <optgroup label="Kelas <?= htmlspecialchars($groupName) ?>">
+                                                                <?php foreach ($groupClasses as $singleClass): ?>
+                                                                    <option value="<?= htmlspecialchars($singleClass['id']) ?>">
+                                                                        <?= htmlspecialchars($singleClass['class_name']) ?>
+                                                                    </option>
+                                                                <?php endforeach; ?>
+                                                            </optgroup>
+                                                        <?php endforeach; ?>
+                                                    <?php endif; ?>
                                                 </select>
-
                                             </div>
                                             <div class="input-content status">
                                                 <label class="label" for="">Username/Email</label>
@@ -223,34 +221,31 @@ $encrypter = \Config\Services::encrypter(); ?>
                                         <div class="status_input">
                                             <div class="input-content status">
                                                 <label class="label" for="">kelas</label>
-                                                <select class="input-count" id="class_id" name="class_name" required disabled>
-                                                    <option id="class_id" value="">Pilih Kelas</option>
-                                                    <optgroup label="Kelas 10">
-                                                        <option value="X-A">X-A</option>
-                                                        <option value="X-B">X-B</option>
-                                                        <option value="X-C">X-C</option>
-                                                    </optgroup>
-                                                    <optgroup label="Kelas 11 IPA">
-                                                        <option value="XI IPA-1">XI IPA-1</option>
-                                                        <option value="XI IPA-2">XI IPA-2</option>
-                                                        <option value="XI IPA-3">XI IPA-3</option>
-                                                    </optgroup>
-                                                    <optgroup label="Kelas 11 IPS">
-                                                        <option value="XI IPS-1">XI IPS-1</option>
-                                                        <option value="XI IPS-2">XI IPS-2</option>
-                                                        <option value="XI IPS-3">XI IPS-3</option>
-                                                    </optgroup>
-                                                    <optgroup label="Kelas 12 IPA">
-                                                        <option value="XII IPA-1">XII IPA-1</option>
-                                                        <option value="XII IPA-2">XII IPA-2</option>
-                                                        <option value="XII IPA-3">XII IPA-3</option>
-                                                    </optgroup>
-                                                    <optgroup label="Kelas 12 IPS">
-                                                        <option value="XII IPS-1">XII IPS-1</option>
-                                                        <option value="XII IPS-2">XII IPS-2</option>
-                                                        <option value="XII IPS-3">XII IPS-3</option>
-                                                    </optgroup>
+                                                <select class="input-count" id="class_id_popup" name="class_name_popup" required>
+                                                    <option value="">Pilih Kelas</option>
+                                                    <?php if (!empty($classForPopup) && is_array($classForPopup)): ?>
+                                                        <?php
+                                                        // Mengelompokkan kelas berdasarkan awalan nama (X, XI, XII)
+                                                        $groupedClassesPopup = [];
+                                                        foreach ($classForPopup as $classItemPopup) {
+                                                            $prefixPopup = explode('-', $classItemPopup['class_name'])[0];
+                                                            $groupedClassesPopup[$prefixPopup][] = $classItemPopup;
+                                                        }
+                                                        ?>
+                                                        <?php foreach ($groupedClassesPopup as $groupNamePopup => $groupClassesPopup): ?>
+                                                            <optgroup label="Kelas <?= htmlspecialchars($groupNamePopup) ?>">
+                                                                <?php foreach ($groupClassesPopup as $singleClassPopup): ?>
+                                                                    <option value="<?= htmlspecialchars($singleClassPopup['id']) ?>">
+                                                                        <?= htmlspecialchars($singleClassPopup['class_name']) ?>
+                                                                    </option>
+                                                                <?php endforeach; ?>
+                                                            </optgroup>
+                                                        <?php endforeach; ?>
+                                                    <?php else: ?>
+                                                        <option value="">Data kelas tidak tersedia.</option>
+                                                    <?php endif; ?>
                                                 </select>
+
 
                                             </div>
                                             <div class="input-content status">
