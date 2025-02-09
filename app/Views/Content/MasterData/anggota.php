@@ -57,8 +57,8 @@ $classForPopup = $class;
                                                 </button>
 
 
-                                                <button class="btn btn-edit" onclick="DeleteAnggota(this)" data-id="<?= $key['id'] ?>" data-name="<?= $key['fullname'] ?>">
-                                                    <i class="bx bx-trash"></i> Hapus
+                                                <button class="btn btn-edit" onclick="DeleteAnggota(this)" data-id="<?= $key['id'] ?>" data-name="<?= $key['fullname'] ?>" data-type="<?= $type === 'Admin' ? 'Admin' : 'Anggota' ?>">
+                                                    <i class="bx bx-trash"></i> Hapus>
                                                 </button>
 
                                             </div>
