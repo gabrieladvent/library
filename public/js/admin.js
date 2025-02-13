@@ -35,7 +35,7 @@ function viewDetailAdmin(button) {
               
               // Set form attributes
               $('#formDetailUser').attr('data-user-id', id);
-              const actionUrl = `${window.location.origin}/user/edit?users=${encodeURIComponent(id)}`;
+              const actionUrl = `${window.location.origin}/user/edit?id_users=${encodeURIComponent(id)}`;
               $('#formDetailUser').attr('action', actionUrl);
           } else {
               alert("Failed to fetch user data");
