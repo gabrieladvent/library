@@ -23,7 +23,9 @@ $classForPopup = $class;
                 </a>
             </div>
             <div class="container-table">
-
+                <pre>
+<?= print_r($list_user, true) ?>
+</pre>
 
                 <div class="table">
                     <table border="1">

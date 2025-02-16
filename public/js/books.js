@@ -5,7 +5,7 @@ function viewDetail(button) {
 
   // Show popup
   const popup = document.getElementById("popup__lihat");
-  
+
   popup.classList.add("active");
   popup.style.display = "flex";
   popup.style.opacity = "1";
@@ -15,16 +15,14 @@ function viewDetail(button) {
   popup.querySelector(".popup").style.transform =
     "translate(-50%, -50%) scale(1)";
 
-
   $.ajax({
     url: `${window.location.origin}/book/detail/${id}`,
     type: "GET",
     dataType: "json",
     success: function (response) {
-     
       if (response.success) {
         const book = response.data.book_detail;
-        
+
         // Fill form with book data
         $("#category_name").val(book.category_id || "");
         $("#fullname").val(book.book_name || "");
@@ -38,24 +36,19 @@ function viewDetail(button) {
         $("#total_copies").val(book.total_copies || "");
         $("#total_books").val(book.total_books || "");
         $("#description").val(book.description || "");
-
-
       } else {
         alert(response.message || "Gagal mengambil data buku");
         closePopup();
       }
 
-      $('#formDetailUser').attr('data-book-id', id);
+      $("#formDetailUser").attr("data-book-id", id);
       const actionUrl = `${window.location.origin}/user/edit?books=${id}`;
-      console.log('Action URL:', actionUrl);
-      $('#formDetailUser').attr('action', actionUrl);
-      $('#formDetailUser').attr('method', 'POST');
+      console.log("Action URL:", actionUrl);
+      $("#formDetailUser").attr("action", actionUrl);
+      $("#formDetailUser").attr("method", "POST");
     },
   });
 }
-
-
-
 
 // edit toggle
 function toggleEdit(checkbox) {
@@ -91,8 +84,7 @@ function toggleEdit(checkbox) {
   }
 }
 
-
-// delete button 
+// delete button
 function Delete(button) {
   const id = button.getAttribute("data-id");
   const bookName = button.getAttribute("data-name");
@@ -109,43 +101,39 @@ function Delete(button) {
   popupContent.style.transform = "translate(-50%, -50%) scale(1)";
 
   document.getElementById("confirmDelete").onclick = function () {
-    console.log('Delete book with ID:', id);
-    
+    console.log("Delete book with ID:", id);
+
     $.ajax({
-        url: `${window.location.origin}/book/delete?books=${id}`,
-        type: "GET",
-        dataType: "json",
-        success: function (response) {
-            closeDeletePopup(); // Tutup popup
-            if (response.status === 'success') {
-                // Redirect ke halaman dashboard
-                Toastify({
-                  className: "notif bx bxs-check-circle",
-                  text: " Data Berhasil di Hapus",
-                  duration: 3000,
-                  gravity: "top", // top or bottom
-                  position: "right", // left, center, or right
-                  backgroundColor: "#D9FFF0",
-                  style: {
-                      marginTop: "60px",
-                      color: "green",
-                      borderRadius: "8px"
-                  },
-                  escapeHTML: false // Allow HTML content
-              }).showToast();
-                window.location.href = '/book/dashboard';
-            } else {
-                // Redirect ke halaman dashboard dengan pesan error
-                window.location.href = '/book/dashboard';
-            }
-        },
-        error: function (xhr, status, error) {
-            closeDeletePopup(); // Tutup popup
-            // Redirect ke halaman dashboard dengan pesan error
-            window.location.href = '/book/dashboard';
+      url: `${window.location.origin}/book/delete?books=${id}`,
+      type: "GET",
+      dataType: "json",
+      success: function (response) {
+        closeDeletePopup(); // Tutup popup
+        if (response.status === "success") {
+          Toastify({
+            className: "notif bx bxs-check-circle",
+            text: "Data Berhasil di Hapus",
+            duration: 3000,
+            gravity: "top", // top or bottom
+            position: "right", // left, center, or right
+            backgroundColor: "#D9FFF0",
+            style: {
+              marginTop: "60px",
+              color: "green",
+              borderRadius: "8px",
+            },
+            escapeHTML: false, // Allow HTML content
+          }).showToast();
+          window.location.href = "/book/dashboard";
+        } else {
+          window.location.href = "/book/dashboard";
         }
+      },
+      error: function () {
+        console.error("Error deleting book");
+      },
     });
-};
+  };
 
   document.getElementById("popup__close_delete").onclick = function (e) {
     e.preventDefault();
@@ -153,36 +141,34 @@ function Delete(button) {
   };
 }
 
-
 function closeDeletePopup() {
   const popup = document.getElementById("popup__delete");
   const popupContent = popup.querySelector(".popup");
-  
+
   popup.style.opacity = "0";
   popup.style.visibility = "hidden";
-  
+
   setTimeout(() => {
-      popup.style.display = "none";
-      popupContent.style.transform = "translate(-50%, -50%) scale(0.8)";
+    popup.style.display = "none";
+    popupContent.style.transform = "translate(-50%, -50%) scale(0.8)";
   }, 300);
 }
 
 // Tambahkan event listener terpisah untuk tombol close
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener("DOMContentLoaded", function () {
   const closeDeleteBtn = document.getElementById("popup__close_delete");
   if (closeDeleteBtn) {
-      closeDeleteBtn.addEventListener("click", function(e) {
-          e.preventDefault();
-          closeDeletePopup();
-      });
+    closeDeleteBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      closeDeletePopup();
+    });
   }
 });
-
 
 // Function to close the popup
 function closePopup() {
   const popup = document.getElementById("popup__lihat"); // Target main popup element
-  const checkbox = document.getElementById("enableEdit")
+  const checkbox = document.getElementById("enableEdit");
   const inputs = document.querySelectorAll(
     "#formDetailUser input, #formDetailUser textarea, #formDetailUser select"
   );
@@ -198,7 +184,7 @@ function closePopup() {
   popup.style.opacity = "0";
   popup.style.visibility = "hidden";
   // popupContent.style.transform = "translate(-50%, -50%) scale(1)";
-   // Delay according to CSS transition duration
+  // Delay according to CSS transition duration
 }
 
 // Cover image preview
@@ -214,7 +200,6 @@ document
       reader.readAsDataURL(file);
     }
   });
-
 
 // Author input handling
 const authorInput = document.getElementById("author-input");
@@ -235,10 +220,9 @@ authorInput.addEventListener("input", function () {
   console.log(output); // For debugging purposes
 });
 
-
 // Close popup event listener
 document.getElementById("popup__close").addEventListener("click", (event) => {
-   // Prevent page reload if the button is an <a href="#">
+  // Prevent page reload if the button is an <a href="#">
 
   closePopup(); // Call closePopup function
 });

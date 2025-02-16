@@ -85,6 +85,7 @@ class UserController extends BaseController
         $data['list_user'] = $this->user->getAllRoleByRole($type === 'Admin' ? 'Admin' : 'User');
         $data['user'] = $this->user->getDataUserById($decode_id);
         $data['class'] = $this->class->getAllClasses();
+        $data['type'] = $type;
 
         if (!$data['user']) {
             return redirect()->back()->with('error', 'Pengguna tidak ditemukan');
@@ -160,7 +161,7 @@ class UserController extends BaseController
                 return ResponHelper::handlerErrorResponJson(['error' => 'Data input tidak valid'], 400);
             }
 
-            // Menyimpan data ke database
+            // Menyimpan data ke database$insert_user = $this->insertUser($data_user);
             $insert_user = $this->insertUser($data_user);
 
             // Mengembalikan respons sukses
