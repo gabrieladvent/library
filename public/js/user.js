@@ -11,9 +11,10 @@ function viewDetailAnggota(button) {
     popup.querySelector(".popup").style.transform = "translate(-50%, -50%) scale(1)";
   
     $.ajax({
-        url: `${window.location.origin}/user/detail/${id}`,
+        url: `${window.location.origin}/user/detail?users=${id}`,
         type: "GET",
         dataType: "json",
+        
         success: function(response) {
             if (response.success) {
                 const user = response.data.user_detail;
@@ -41,7 +42,7 @@ function viewDetailAnggota(button) {
                 
                 // Set form attributes
                 $('#formDetailUser').attr('data-user-id', id);
-                const actionUrl = `${window.location.origin}/user/edit?users=${encodeURIComponent(id)}`;
+                const actionUrl = `${window.location.origin}/user/edit?users=${id}`;
                 $('#formDetailUser').attr('action', actionUrl);
             } else {
                 alert("Failed to fetch user data");
@@ -151,7 +152,7 @@ function viewDetailAnggota(button) {
   
     document.getElementById("confirmDelete").onclick = function () {
       $.ajax({
-          url: `${window.location.origin}/user/delete?books=${encodeURIComponent(id)}`,
+          url: `${window.location.origin}/user/delete?users=${id}`,
           type: "GET",
           dataType: "json",
           success: function (response) {

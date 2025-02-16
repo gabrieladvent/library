@@ -164,7 +164,7 @@ $encrypter = \Config\Services::encrypter();
 
                             <a href="#" id="popup__close" class="popup-close">&times;</a>
                         </div>
-                        <form id="formDetailUser" method=" post" autocomplete="off" enctype="multipart/form-data">
+                        <form id="formDetailUser" method="POST" autocomplete="off" enctype="multipart/form-data">
                             <?= csrf_field() ?>
 
                             <div class="container__input">

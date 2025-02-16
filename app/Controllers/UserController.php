@@ -106,16 +106,17 @@ class UserController extends BaseController
      * @param string $id_user id user yang akan ditampilkan
      * @return \CodeIgniter\HTTP\ResponseInterface
      */
-    public function viewDetailUser($id)
+    public function viewDetailUser()
     {
+        $id_user = $_GET['users'] ?? null;
+        $id_decrypt = $this->decryptId($id_user);
+
         try {
-
-
             $data = [
                 'success' => true,
                 'data' => [
-                    'user_detail' => $this->user->getDetailUserById($id),
-                    'user_loans' => $this->loan->getLoanByIdUser($id)
+                    'user_detail' => $this->user->getDetailUserById($id_decrypt),
+                    'user_loans' => $this->loan->getLoanByIdUser($id_decrypt)
                 ]
             ];
 
@@ -187,7 +188,7 @@ class UserController extends BaseController
     public function editUser()
     {
         $data_user = $this->request->getPost();
-        $id_user = $this->request->getPost('id_user');
+        $id_user = $_GET['users'] ?? null;
         if (empty($data_user) || !$data_user) {
             log_message('error', 'Request data is empty.');
             return ResponHelper::handlerErrorResponJson('Data tidak valid.', 400);
@@ -559,8 +560,6 @@ class UserController extends BaseController
                 'religion' => $data['religion'],
                 'class_id' => $user_id['role'] === 'Admin' ? null : $data['class_name'],
             ]);
-
-            dd($data_biodata);
 
             if ($data_biodata == false) {
                 $this->db->transRollback();

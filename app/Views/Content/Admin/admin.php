@@ -50,12 +50,12 @@ $encrypter = \Config\Services::encrypter(); ?>
 
                                         <td>
                                             <div class="action-buttons">
-                                                <button onclick="viewDetailAdmin(this)" class="btn btn-view" data-id="<?= $key['id'] ?>">
+                                                <button onclick="viewDetailAdmin(this)" class="btn btn-view" data-id="<?= urlencode(base64_encode($encrypter->encrypt($key['id']))) ?>">
                                                     <i class="bx bx-edit"></i> Kelolah
                                                 </button>
 
 
-                                                <button class="btn btn-edit" onclick="DeleteAdmin(this)" data-id="<?= urlencode(base64_encode($encrypter->encrypt($key['id']))) ?>" data-name="<?= $key['username'] ?>">
+                                                <button class="btn btn-edit" onclick="DeleteAdmin(this)" data-id="<?= urlencode(base64_encode($encrypter->encrypt($key['id']))) ?>" data-name="<?= $key['username'] ?>" data-type="Admin">
                                                     <i class="bx bx-trash"></i> Hapus
                                                 </button>
 
@@ -156,12 +156,12 @@ $encrypter = \Config\Services::encrypter(); ?>
                                         </div>
                                         <div class="input-content">
                                             <label class="label" for="">Password</label>
-                                            <input class="input" type="Password" name="password" />
+                                            <input class="input" type="Password" name="password" id="password" />
                                         </div>
 
                                         <div class="input-content">
                                             <label class="label" for="">Konfimasi Password</label>
-                                            <input class="input" type="Password" name="password_confirm" />
+                                            <input class="input" type="Password" name="password_confirm" id="konfiPassword" />
                                         </div>
 
                                         <div class=" input-content">
@@ -193,7 +193,7 @@ $encrypter = \Config\Services::encrypter(); ?>
 
                                 <a href="#" id="popup__close" class="popup-close">&times;</a>
                             </div>
-                            <form id="formDetailUser" method=" post" autocomplete="off" enctype="multipart/form-data">
+                            <form id="formDetailUser" method="POST" autocomplete="off" enctype="multipart/form-data">
                                 <?= csrf_field() ?>
                                 <div class="container__input">
                                     <div class="satu">

@@ -65,7 +65,6 @@ class BiodataUsersModel extends Model
      */
     public function insertData(array $data)
     {
-        dd($data);
         return $this->insert($data);
     }
 

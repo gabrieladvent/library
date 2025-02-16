@@ -257,42 +257,44 @@ class BookController extends BaseController
         $id_book = $_GET['books'] ?? null;
         if (empty($id_book)) {
             session()->setFlashdata('error', 'ID buku wajib diisi.');
-            return redirect()->to('/book/dashboard');
+            return ResponHelper::handlerErrorResponJson('Tidak berhasil Dihapus', 400);
         }
 
         $book = $this->book->getDataById($id_book);
+        // return ResponHelper::handlerSuccessResponJson($book, 200);
         if (empty($book)) {
             session()->setFlashdata('error', 'ID buku tidak valid.');
-            return redirect()->to('/book/dashboard');
+            return ResponHelper::handlerErrorResponJson('Tidak berhasil Dihapus', 400);
         }
 
         $loans = $this->loan->getCountLoanByIdBook($id_book);
         if ($loans > 0) {
             session()->setFlashdata('error', 'Buku sedang dipinjam.');
-            return redirect()->to('/book/dashboard');
+            return ResponHelper::handlerErrorResponJson('Tidak berhasil Dihapus', 400);
         }
 
         try {
             $this->db->transStart();
             $cover_path = $book['cover_img'];
-            if (!empty($cover_path)) {
+            if (!empty($cover_path) && file_exists($cover_path)) {
                 unlink($cover_path);
             }
+
             $deleted = $this->book->delete($id_book);
             $this->db->transComplete();
 
             if (!$deleted) {
                 $this->db->transRollback();
                 session()->setFlashdata('error', 'Tidak berhasil Dihapus');
-                return redirect()->to('/book/dashboard');
+                return ResponHelper::handlerErrorResponJson('Tidak berhasil Dihapus', 400);
             }
 
             session()->setFlashdata('success', 'Berhasil Menghapus');
-            return redirect()->to('/book/dashboard');
+            return ResponHelper::handlerSuccessResponJson('Buku Berhasil Dihapus', 200);
         } catch (\Throwable $th) {
             $this->db->transRollback();
             session()->setFlashdata('error', $th->getMessage());
-            return redirect()->to('/book/dashboard');
+            return ResponHelper::handlerErrorResponJson('Tidak berhasil Dihapus', 400);
         }
     }
 

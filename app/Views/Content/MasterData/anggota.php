@@ -52,12 +52,12 @@ $classForPopup = $class;
                                         <td>
                                             <div class="action-buttons">
 
-                                                <button onclick="viewDetailAnggota(this)" class="btn btn-view" data-id="<?= $key['id'] ?>">
+                                                <button onclick="viewDetailAnggota(this)" class="btn btn-view" data-id="<?= urlencode(base64_encode($encrypter->encrypt($key['id']))) ?>">
                                                     <i class="bx bx-edit"></i> Kelolah
                                                 </button>
 
 
-                                                <button class="btn btn-edit" onclick="DeleteAnggota(this)" data-id="<?= $key['id'] ?>" data-name="<?= $key['fullname'] ?>" data-type="<?= $type === 'Admin' ? 'Admin' : 'Anggota' ?>">
+                                                <button class="btn btn-edit" onclick="DeleteAnggota(this)" data-id="<?= urlencode(base64_encode($encrypter->encrypt($key['id']))) ?>" data-name="<?= $key['fullname'] ?>" data-type="Anggota">
                                                     <i class="bx bx-trash"></i> Hapus>
                                                 </button>
 
@@ -214,7 +214,7 @@ $classForPopup = $class;
 
                                 <a href="#" id="popup__close" class="popup-close">&times;</a>
                             </div>
-                            <form id="formDetailUser" method=" post" autocomplete="off" enctype="multipart/form-data">
+                            <form id="formDetailUser" method="POST" autocomplete="off" enctype="multipart/form-data">
                                 <?= csrf_field() ?>
                                 <div class="container__input">
                                     <div class="satu">

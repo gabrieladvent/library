@@ -46,7 +46,7 @@ function viewDetail(button) {
       }
 
       $('#formDetailUser').attr('data-book-id', id);
-      const actionUrl = `${window.location.origin}/user/edit?id_user=${encodeURIComponent(id)}`;
+      const actionUrl = `${window.location.origin}/user/edit?books=${id}`;
       console.log('Action URL:', actionUrl);
       $('#formDetailUser').attr('action', actionUrl);
       $('#formDetailUser').attr('method', 'POST');
@@ -109,8 +109,10 @@ function Delete(button) {
   popupContent.style.transform = "translate(-50%, -50%) scale(1)";
 
   document.getElementById("confirmDelete").onclick = function () {
+    console.log('Delete book with ID:', id);
+    
     $.ajax({
-        url: `${window.location.origin}/book/delete?books=${encodeURIComponent(id)}`,
+        url: `${window.location.origin}/book/delete?books=${id}`,
         type: "GET",
         dataType: "json",
         success: function (response) {
