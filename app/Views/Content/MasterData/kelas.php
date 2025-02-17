@@ -195,5 +195,3 @@
 
 </body>
 <?= $this->endSection() ?>
-
-</html>
