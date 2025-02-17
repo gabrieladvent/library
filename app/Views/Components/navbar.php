@@ -17,7 +17,7 @@
         </div>
         <div>
             <a href="javascript:void(0);" class="user">
-                <h1><?= $user['username'] ?></h1>
+                <h1><?= $user['username'] ?? $user['email'] ?></h1>
                 <i class="bx bx-chevron-down"></i>
             </a>
             <div class="sub-link">

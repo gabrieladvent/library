@@ -179,9 +179,9 @@ class BookController extends BaseController
             $data_book['cover_img'] = $cover_book['cover_img'];
 
             if ($this->book->save($data_book)) {
-                return ResponHelper::handlerSuccessResponJson($data_book, 201);  // Response sukses
+                return ResponHelper::handlerSuccessResponRedirect("book/dashboard", "Data berhasil ditambahkan");
             } else {
-                return ResponHelper::handlerErrorResponJson('Gagal menyimpan data', 500);
+                return ResponHelper::handlerSuccessResponRedirect("book/dashboard", "Data gagal ditambahkan");
             }
         } catch (\Exception $e) {
             return ResponHelper::handlerErrorResponJson($e->getMessage(), 500);
@@ -256,33 +256,45 @@ class BookController extends BaseController
     {
         $id_book = $_GET['books'] ?? null;
         if (empty($id_book)) {
-            return ResponHelper::handlerErrorResponJson('ID buku wajib diisi.', 400);
+            session()->setFlashdata('error', 'ID buku wajib diisi.');
+            return ResponHelper::handlerErrorResponJson('Tidak berhasil Dihapus', 400);
         }
-        // $id_book = $this->decryptId($id_book);
+
         $book = $this->book->getDataById($id_book);
+        // return ResponHelper::handlerSuccessResponJson($book, 200);
         if (empty($book)) {
-            return ResponHelper::handlerErrorResponJson('ID buku tidak valid.', 400);
+            session()->setFlashdata('error', 'ID buku tidak valid.');
+            return ResponHelper::handlerErrorResponJson('Tidak berhasil Dihapus', 400);
         }
+
         $loans = $this->loan->getCountLoanByIdBook($id_book);
         if ($loans > 0) {
-            return ResponHelper::handlerErrorResponJson('Buku sedang dipinjam.', 400);
+            session()->setFlashdata('error', 'Buku sedang dipinjam.');
+            return ResponHelper::handlerErrorResponJson('Tidak berhasil Dihapus', 400);
         }
+
         try {
             $this->db->transStart();
             $cover_path = $book['cover_img'];
-            if (!empty($cover_path)) {
+            if (!empty($cover_path) && file_exists($cover_path)) {
                 unlink($cover_path);
             }
+
             $deleted = $this->book->delete($id_book);
             $this->db->transComplete();
+
             if (!$deleted) {
                 $this->db->transRollback();
-                return ResponHelper::handlerErrorResponJson(['error' => 'Tidak ada data yang dihapus'], 400);
+                session()->setFlashdata('error', 'Tidak berhasil Dihapus');
+                return ResponHelper::handlerErrorResponJson('Tidak berhasil Dihapus', 400);
             }
-            return ResponHelper::handlerSuccessResponJson(['message' => 'Data berhasil dihapus'], 200);
+
+            session()->setFlashdata('success', 'Berhasil Menghapus');
+            return ResponHelper::handlerSuccessResponJson('Buku Berhasil Dihapus', 200);
         } catch (\Throwable $th) {
             $this->db->transRollback();
-            return ResponHelper::handlerErrorResponJson($th->getMessage(), 500);
+            session()->setFlashdata('error', $th->getMessage());
+            return ResponHelper::handlerErrorResponJson('Tidak berhasil Dihapus', 400);
         }
     }
 

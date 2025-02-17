@@ -56,9 +56,9 @@ $encrypter = \Config\Services::encrypter();
                                             <button onclick="viewDetail(this)" class="btn btn-view" data-id="<?= $book['id'] ?>">
                                                 <i class="bx bx-edit"></i> Kelolah
                                             </button>
-                                            <a href="<?= base_url('buku/edit/' . $book['id']) ?>" class="btn btn-edit">
+                                            <button class="btn btn-edit" onclick="Delete(this)" data-id="<?= $book['id'] ?>" data-name="<?= $book['book_name'] ?>">
                                                 <i class="bx bx-trash"></i> Hapus
-                                            </a>
+                                            </button>
 
                                         </div>
                                     </td>
@@ -164,7 +164,7 @@ $encrypter = \Config\Services::encrypter();
 
                             <a href="#" id="popup__close" class="popup-close">&times;</a>
                         </div>
-                        <form id="formDetailUser" method=" post" autocomplete="off" enctype="multipart/form-data">
+                        <form id="formDetailUser" method="POST" autocomplete="off" enctype="multipart/form-data">
                             <?= csrf_field() ?>
 
                             <div class="container__input">
@@ -193,8 +193,10 @@ $encrypter = \Config\Services::encrypter();
                                     </div>
                                     <div class="input-content">
                                         <label class="label" for="">Cover Image</label>
-                                        <input type="file" id="cover_image" name="cover_img" accept="image/*" disabled>
-                                        <img id="cover_img_view" alt="cover image" style="max-width: 200px;">
+                                        <div class="img">
+                                            <img id="cover_img_view" alt="cover image" style="max-width: 200px;">
+                                            <input type="file" id="cover_image" name="cover_img" accept="image/*" disabled>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="dua">
@@ -233,56 +235,24 @@ $encrypter = \Config\Services::encrypter();
                         </form>
                     </div>
                 </div>
-                <div class="container__popup_delete" id="popup__delete">
+                <div id="popup__delete" class="container__popup">
                     <div class="popup_delete">
-                        <div class="title">
-                            <h1>Lihat Detail</h1>
-                            <a href="#" class="popup-close">&times;</a>
+                        <div class="title_delete">
+                            <div class="form-group">
+                                <h1>Konfirmasi Hapus</h1>
+
+                            </div>
                         </div>
-                        <form id="formDetailUser" method="post" autocomplete="off" enctype="multipart/form-data">
-                            <?= csrf_field() ?>
-                            <div class="container__input">
-                                <div class="satu">
-                                    <div class="input-content">
-                                        <label class="label">Nama Anggota</label>
-                                        <input class="input" type="text" id="fullname" name="fullname" readonly />
-                                    </div>
-                                    <div class="input-content">
-                                        <label class="label">Nomor Induk Siswa</label>
-                                        <input class="input" type="text" id="identifiction" name="identifiction" readonly />
-                                    </div>
-                                    <div class="input-content">
-                                        <label class="label">Jenis kelamin</label>
-                                        <input class="input" type="text" id="gender" name="gender" readonly />
-                                    </div>
-                                    <div class="input-content">
-                                        <label class="label">Agama</label>
-                                        <input class="input" type="text" id="religion" name="religion" readonly />
-                                    </div>
-                                </div>
-                                <div class="dua">
-                                    <div class="input-content">
-                                        <label class="label">Tempat Lahir</label>
-                                        <input class="input" type="text" id="place_birth" name="place_birth" readonly />
-                                    </div>
-                                    <div class="input-content">
-                                        <label class="label">Tanggal Lahir</label>
-                                        <input class="input" type="date" id="date_birth" name="date_birth" readonly />
-                                    </div>
-                                    <div class="input-content">
-                                        <label class="label">Nomor Telepon</label>
-                                        <input class="input" type="text" id="phone" name="phone" readonly />
-                                    </div>
-                                    <div class="input-content">
-                                        <label class="label">Alamat Domisili</label>
-                                        <textarea class="input alamat" id="address" name="address" rows="4" cols="50" readonly></textarea>
-                                    </div>
-                                </div>
+                        <div class="popup__content">
+                            <div class="title_delete">
+                                <h3>Apakah anda yakin ingin menghapus buku ini?</h3>
+                                <p></p>
                             </div>
-                            <div class="button">
-                                <button class="batal" type="button">Batal</button>
+                            <div class="button-delete">
+                                <button type="button" class="batal" onclick="closeDeletePopup()">Batal</button>
+                                <button type="button" class="simpan" id="confirmDelete">Hapus</button>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>

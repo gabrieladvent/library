@@ -84,12 +84,16 @@ class UserController extends BaseController
 
         $data['list_user'] = $this->user->getAllRoleByRole($type === 'Admin' ? 'Admin' : 'User');
         $data['user'] = $this->user->getDataUserById($decode_id);
+        $data['class'] = $this->class->getAllClasses();
+        $data['type'] = $type;
 
         if (!$data['user']) {
             return redirect()->back()->with('error', 'Pengguna tidak ditemukan');
         }
 
         $view = $type === 'Admin' ? 'content/Admin/admin' : 'content/MasterData/anggota';
+
+        // dd($data);
         return view($view, $data);
     }
 
@@ -106,15 +110,25 @@ class UserController extends BaseController
     public function viewDetailUser()
     {
         $id_user = $_GET['users'] ?? null;
-
         $id_decrypt = $this->decryptId($id_user);
 
-        $data['detail_user'] = $this->user->getDetailUserById($id_decrypt);
-        $data['users_loans'] = $this->loan->getLoanByIdUser($id_decrypt);
+        try {
+            $data = [
+                'success' => true,
+                'data' => [
+                    'user_detail' => $this->user->getDetailUserById($id_decrypt),
+                    'user_loans' => $this->loan->getLoanByIdUser($id_decrypt)
+                ]
+            ];
 
-        return view('detail_user', $data);
+            return $this->response->setJSON($data);
+        } catch (\Exception $e) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
     }
-
 
     /**
      * Fungsi untuk menambahkan user baru
@@ -144,17 +158,14 @@ class UserController extends BaseController
 
             // Pastikan data input berupa array
             if (!$data_user || !is_array($data_user)) {
-                return ResponHelper::handlerErrorResponJson(['error' => 'Data input tidak valid'], 400);
+                return ResponHelper::handlerSuccessResponRedirect("user/list/Admin", "Data gagal  ditambahkan");
             }
 
-            // Menyimpan data ke database
+            // Menyimpan data ke database$insert_user = $this->insertUser($data_user);
             $insert_user = $this->insertUser($data_user);
 
             // Mengembalikan respons sukses
-            return ResponHelper::handlerSuccessResponJson(
-                ['user' => $insert_user[0], 'biodata' => $insert_user[1]],
-                201
-            );
+            return ResponHelper::handlerSuccessResponRedirect("user/list/Admin", "Data berhasil ditambahkan");
         } catch (\Exception $e) {
             // Menangani error dan mengembalikan pesan error
             return ResponHelper::handlerErrorResponJson($e->getMessage(), 500);
@@ -175,7 +186,7 @@ class UserController extends BaseController
     public function editUser()
     {
         $data_user = $this->request->getPost();
-        $id_user = $this->request->getPost('id_user');
+        $id_user = $_GET['users'] ?? null;
         if (empty($data_user) || !$data_user) {
             log_message('error', 'Request data is empty.');
             return ResponHelper::handlerErrorResponJson('Data tidak valid.', 400);
@@ -193,11 +204,7 @@ class UserController extends BaseController
             if (!$updatedData) {
                 return ResponHelper::handlerErrorResponJson(['error' => 'Tidak ada data yang di edit'], 400);
             }
-
-            return ResponHelper::handlerSuccessResponJson([
-                'user' => $updatedData[0],
-                'biodata' => $updatedData[1],
-            ], 200);
+            return ResponHelper::handlerSuccessResponRedirect("user/list/Admin", "Data berhasil diedit");
         } catch (\Exception $e) {
             return ResponHelper::handlerErrorResponJson($e->getMessage(), 500);
         }
@@ -258,8 +265,23 @@ class UserController extends BaseController
      */
     public function getAllClasses()
     {
-        $all_classes = $this->class->getAllClasses();
-        $data['all_classes'] = $all_classes;
+        $id_user = session('id_user');
+        $decode_id = $this->encrypter->decrypt(base64_decode($id_user['id']));
+        // $all_classes = $this->class->getAllClasses(); // Ambil semua data kelas
+
+        if (empty($all_classes)) {
+            // Log jika data kosong
+            log_message('error', 'Data all_classes kosong.');
+        } else {
+            // Debug data jika terisi
+            log_message('info', 'Data all_classes: ' . json_encode($all_classes));
+        }
+        $data = [
+            'user' => $this->user->getDataUserById($decode_id),
+            'all_classes' => $this->class->getAllClasses(),
+        ];
+        // $data['all_classes'] = $all_classes; // Kirim data ke view
+
         return view('content/MasterData/kelas', $data);
     }
 
@@ -524,8 +546,10 @@ class UserController extends BaseController
                 'role' => empty($data['role']) ? 'User' : 'Admin',
             ]);
 
+            // dd($user_id, $data);
+
             $data_biodata = $this->biodata->insertData([
-                'user_id' => $user_id,
+                'user_id' => $user_id['id'],
                 'fullname' => $data['fullname'],
                 'identification' => $data['identification'],
                 'address' => $data['address'],
@@ -534,7 +558,7 @@ class UserController extends BaseController
                 'date_birth' => $data['date_birth'],
                 'gender' => $data['gender'],
                 'religion' => $data['religion'],
-                'class_id' => $data['class_name'],
+                'class_id' => $user_id['role'] === 'Admin' ? null : $data['class_name'],
             ]);
 
             if ($data_biodata == false) {

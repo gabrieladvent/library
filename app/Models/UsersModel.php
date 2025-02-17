@@ -130,9 +130,13 @@ class UsersModel extends Model
      * @return bool hasil insert data
      */
     public function insertData($data)
-    {
-        return $this->insert($data);
+    {   
+        $insert_id = $this->insert($data);
+        $data_new = $this->find($insert_id);
+
+        return $data_new;
     }
+
 
     /**
      * Memperbarui data user berdasarkan id yang dikirimkan

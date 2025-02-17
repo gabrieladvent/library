@@ -63,7 +63,7 @@ class BiodataUsersModel extends Model
      *
      * @return bool hasil penambahan data
      */
-    public function insertData(array $data): bool
+    public function insertData(array $data)
     {
         return $this->insert($data);
     }

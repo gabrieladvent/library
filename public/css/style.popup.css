@@ -60,6 +60,21 @@
     transform: translate(-50%, -50%) scale(.25);
     transition: all .5s .1s;
 }
+
+.popup_delete{
+    /* background-color: antiquewhite; */
+    background-color:whitesmoke;
+    width: 35rem;
+    height: 14rem;
+    padding: 20px;
+    position: absolute;
+    top:50%;
+    left: 50%;
+    border-radius: 8px 8px ;
+    transform: translate(-50%, -50%) scale(.25);
+    transition: all .5s .1s;
+
+}
 .popup_lihat{
     
     /* background-color: antiquewhite; */
@@ -74,8 +89,17 @@
     transition: all .5s .1s;
 }
 
+.img{
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+}
 
-
+#cover_img_view{
+    width: 100px;
+    height: 100px;
+    
+}
 #popup:target{
     opacity: 1;
     visibility: visible;
@@ -116,6 +140,7 @@ p
     display: flex;
     flex-direction: column;
 }
+
 
 
 
@@ -252,8 +277,15 @@ p
 
 .button{
     display: flex;
-    padding-top: 50px;
+    padding-top: 5px;
     justify-content: end;
+    gap: 20px;
+}
+
+.button-delete{
+    display: flex;
+    padding-top: 50px;
+    justify-content: center;
     gap: 20px;
 }
 
@@ -294,6 +326,19 @@ p
     justify-content: space-between;
     padding:0px 10px;
 }
+.title_delete{
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    padding:0px 10px;
+    flex-direction: column;
+    p{
+        font-size: 30px;
+        font-weight: bold;
+    }
+}
+
 
 .popup-close:link,
 .popup-close:visited {
@@ -308,5 +353,48 @@ p
     color: rgb(137, 133, 133);
 }
 
+/* delete */
+.popup-close_delete:link,
+.popup-close_delete:visited {
+    text-decoration: none;
+   color: black;
+    font-size: 30px;
+    transition: .3s;
+}
+
+.popup-close_delete:hover,
+.popup-close_delete:active {
+    color: rgb(137, 133, 133);
+}
 
 
+
+/* admin */
+.input.status{
+    width: 100px;
+    border: none;
+}
+.input-user{
+    width:15rem;
+    height: 33px;
+    flex-shrink: 0;
+    border-radius: 4px;
+    background: #ffffff;
+    padding-left: 10px;
+}
+.input-gender{
+    width:24rem;
+    height: 42px;
+    flex-shrink: 0;
+    border-radius: 4px;
+    background: #ffffff;
+    padding-left: 10px;
+}
+.status_input{
+    display: flex;
+    gap: 40px;   
+   
+}
+.input-content.status{
+    width: 6rem;
+}
