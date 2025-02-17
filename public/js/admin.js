@@ -151,6 +151,8 @@ function DeleteAdmin(button) {
       dataType: "json",
       success: function (response) {
         closeDeletePopup(); // Tutup popup
+        // Redirect ke halaman yang sesuai dengan tipe
+        window.location.href = `/user/list/${userType}`;
         if (response.status === "success") {
           Toastify({
             className: "notif bx bxs-check-circle",
@@ -166,8 +168,6 @@ function DeleteAdmin(button) {
             },
             escapeHTML: false,
           }).showToast();
-          // Redirect ke halaman yang sesuai dengan tipe
-          window.location.href = `/user/list/${userType}`;
         } else {
           // Redirect dengan pesan error
           window.location.href = `/user/list/${userType}`;

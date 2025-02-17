@@ -1,32 +1,22 @@
-
-
-.container-book{
- 
+.container-book {
   /* background-color: #0cce6b; */
   /* margin-left: 20px; */
-  width:80%;
-
+  width: 80%;
 }
-
-
 
 .container-table {
   /* background-color: #f24040;   */
   width: auto;
-  max-height: calc(100vh - 11rem);  
+  max-height: calc(100vh - 11rem);
   overflow-y: auto;
   margin: 0px 20px;
   scrollbar-width: none;
-
 }
-
-
 
 .head {
   display: flex;
   justify-content: space-between;
   padding: 20px;
-
 }
 
 .head .title {
@@ -36,27 +26,23 @@
   font-style: normal;
   font-weight: 600;
   line-height: normal;
- 
-  
- 
 }
 
-.head .tambah-buku  {
+.head .tambah-buku {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 1rem;
-  gap:8px;
+  gap: 8px;
   font-size: 12;
   font-weight: bold;
   border-radius: 4px;
-  background: var(--secondary-color, #E4EAE4);
-  color: var(--dashbord, #0A7349);
-
+  background: var(--secondary-color, #e4eae4);
+  color: var(--dashbord, #0a7349);
 }
 
 .tambah-buku i {
-  color: #0A7349;
+  color: #0a7349;
 }
 
 /* Table styling */
@@ -82,17 +68,25 @@
   position: sticky;
   top: 0;
   /* Agar posisi header tetap di atas */
-  z-index: 1  ;
+  z-index: 1;
   /* Pastikan berada di atas konten */
 }
 
 .table td {
-  background-color: #F5F5F5;
+  background-color: #f5f5f5;
   font-size: 12px;
   overflow: auto;
   margin-top: 50px;
+}
 
+.kelas table {
+  width: 40%;
+}
 
+.table th.th-no,
+.table th.th-nama,
+.table th.th-aksi {
+  width: 10px;
 }
 
 .table th.th-kategory,
@@ -100,10 +94,9 @@
   width: 20px;
 }
 
-.table th.th-deskripsi{
+.table th.th-deskripsi {
   width: 50rem;
 }
-
 
 .table th.th-aksi {
   width: 20px;
@@ -111,18 +104,15 @@
 .table th.th-nama {
   width: 12rem;
 }
-.table th.th-alamat{
+.table th.th-alamat {
   width: 30rem;
 }
 
-
-
-.table th.th-tgl{
+.table th.th-tgl {
   width: 8rem;
 }
 
-
-.table td.td-alamat{
+.table td.td-alamat {
   background-color: #00b4d8;
   text-align: left;
 }
@@ -150,16 +140,16 @@
   cursor: pointer;
   display: flex;
   align-items: center;
-  
+
   gap: 5px;
 }
 
 .btn-view {
-  background-color: #4A90E2;
+  background-color: #4a90e2;
 }
 
 .btn-edit {
-  background-color: #D32F2F ;
+  background-color: #d32f2f;
 }
 
 .btn-delete {
@@ -173,7 +163,6 @@
 
 /* Responsive */
 @media screen and (max-width: 768px) {
-
   .table th,
   .table td {
     font-size: 12px;

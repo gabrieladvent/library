@@ -158,17 +158,14 @@ class UserController extends BaseController
 
             // Pastikan data input berupa array
             if (!$data_user || !is_array($data_user)) {
-                return ResponHelper::handlerErrorResponJson(['error' => 'Data input tidak valid'], 400);
+                return ResponHelper::handlerSuccessResponRedirect("user/list/Admin", "Data gagal  ditambahkan");
             }
 
             // Menyimpan data ke database$insert_user = $this->insertUser($data_user);
             $insert_user = $this->insertUser($data_user);
 
             // Mengembalikan respons sukses
-            return ResponHelper::handlerSuccessResponJson(
-                ['user' => $insert_user[0], 'biodata' => $insert_user[1]],
-                201
-            );
+            return ResponHelper::handlerSuccessResponRedirect("user/list/Admin", "Data berhasil ditambahkan");
         } catch (\Exception $e) {
             // Menangani error dan mengembalikan pesan error
             return ResponHelper::handlerErrorResponJson($e->getMessage(), 500);
@@ -207,11 +204,7 @@ class UserController extends BaseController
             if (!$updatedData) {
                 return ResponHelper::handlerErrorResponJson(['error' => 'Tidak ada data yang di edit'], 400);
             }
-
-            return ResponHelper::handlerSuccessResponJson([
-                'user' => $updatedData[0],
-                'biodata' => $updatedData[1],
-            ], 200);
+            return ResponHelper::handlerSuccessResponRedirect("user/list/Admin", "Data berhasil diedit");
         } catch (\Exception $e) {
             return ResponHelper::handlerErrorResponJson($e->getMessage(), 500);
         }
