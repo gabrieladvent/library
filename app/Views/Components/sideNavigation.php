@@ -26,6 +26,10 @@
                         </button>
                         <div class="sub-menu" id="">
                             <div>
+                                <a href="<?= base_url('class/all') ?>" class="sub-menu-item" id="kategori-link">
+                                    <i class='bx bxs-home-smile'></i>
+                                    <p>Class</p>
+                                </a>
                                 <a href="<?= base_url('home/kategori') ?>" class="sub-menu-item" id="kategori-link">
                                     <i class="bx bx-category-alt"></i>
                                     <p>Kategori</p>

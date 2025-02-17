@@ -272,7 +272,9 @@ class UserController extends BaseController
      */
     public function getAllClasses()
     {
-        $all_classes = $this->class->getAllClasses(); // Ambil semua data kelas
+        $id_user = session('id_user');
+        $decode_id = $this->encrypter->decrypt(base64_decode($id_user['id']));
+        // $all_classes = $this->class->getAllClasses(); // Ambil semua data kelas
 
         if (empty($all_classes)) {
             // Log jika data kosong
@@ -281,8 +283,12 @@ class UserController extends BaseController
             // Debug data jika terisi
             log_message('info', 'Data all_classes: ' . json_encode($all_classes));
         }
+        $data = [
+            'user' => $this->user->getDataUserById($decode_id),
+            'all_classes' => $this->class->getAllClasses(),
+        ];
+        // $data['all_classes'] = $all_classes; // Kirim data ke view
 
-        $data['all_classes'] = $all_classes; // Kirim data ke view
         return view('content/MasterData/kelas', $data);
     }
 
