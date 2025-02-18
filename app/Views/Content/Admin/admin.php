@@ -131,195 +131,195 @@ $encrypter = \Config\Services::encrypter(); ?>
                                         <div class="count_book">
                                             <div class="input-jumlah">
                                                 <label class="label" for="">Tempat Lahir</label>
-                                                <input class="input-count" type="text" name="place_birth">
-
-                                            </div>
-                                            <div class="input-jumlah">
-                                                <label class="label" for="">Tanggal Lahir</label>
-                                                <input class="input-count" type="date" name="date_birth">
+                                                <input class="input-count" type="text" name="place_birth" autocomplete="off">
                                             </div>
                                         </div>
-
-                                    </div>
-                                    <div class="dua admin">
-
-                                        <div class="count_book">
-                                            <div class="input-jumlah">
-                                                <label class="label" for="">Nomor Telephone</label>
-                                                <input class="input-count" type="number" name="phone">
-
-                                            </div>
-                                            <div class="input-jumlah">
-                                                <label class="label" for="">NIP</label>
-                                                <input class="input-count" type="number" name="identification">
-                                            </div>
-                                        </div>
-                                        <div class="input-content">
-                                            <label class="label" for="">Password</label>
-                                            <input class="input" type="Password" name="password" id="password" />
-                                        </div>
-
-                                        <div class="input-content">
-                                            <label class="label" for="">Konfimasi Password</label>
-                                            <input class="input" type="Password" name="password_confirm" id="konfiPassword" />
-                                        </div>
-
-                                        <div class=" input-content">
-                                            <label class="label" for="">alamat </label>
-                                            <textarea class="input alamat" id="alamat" name="address" rows="4" cols="50" placeholder="Masukkan alamat lengkap Anda" required></textarea>
-
-                                            <div>
-                                            </div>
+                                        <div class="input-jumlah">
+                                            <label class="label" for="">Tanggal Lahir</label>
+                                            <input class="input-count" type="date" name="date_birth">
                                         </div>
                                     </div>
 
+                                </div>
+                                <div class="dua admin">
 
+                                    <div class="count_book">
+                                        <div class="input-jumlah">
+                                            <label class="label" for="">Nomor Telephone</label>
+                                            <input class="input-count" type="number" name="phone">
+
+                                        </div>
+                                        <div class="input-jumlah">
+                                            <label class="label" for="">NIP</label>
+                                            <input class="input-count" type="number" name="identification">
+                                        </div>
+                                    </div>
+                                    <div class="input-content">
+                                        <label class="label" for="">Password</label>
+                                        <input class="input" type="Password" name="password" id="password" />
+                                    </div>
+
+                                    <div class="input-content">
+                                        <label class="label" for="">Konfimasi Password</label>
+                                        <input class="input" type="Password" name="password_confirm" id="konfiPassword" />
+                                    </div>
+
+                                    <div class=" input-content">
+                                        <label class="label" for="">alamat </label>
+                                        <textarea class="input alamat" id="alamat" name="address" rows="4" cols="50" placeholder="Masukkan alamat lengkap Anda" required></textarea>
+
+                                        <div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="button">
-                                    <button class="batal" type="button">Batal</button>
-                                    <button class="simpan" type="submit">Simpan</button>
-                                </div>
-                            </form>
+
+
                         </div>
+                        <div class="button">
+                            <button class="batal" type="button">Batal</button>
+                            <button class="simpan" type="submit">Simpan</button>
+                        </div>
+                        </form>
                     </div>
-                    <div class="container__popup" id="popup__lihat">
-                        <div class="popup">
-                            <div class="title">
-                                <div class="form-group">
-                                    <h1>Lihat Data</h1>
-                                    <input type="checkbox" id="enableEdit" onchange="toggleEditAdmin(this)">
-                                    <label for="enableEdit">Aktifkan Mode Edit</label>
-                                </div>
-
-                                <a href="#" id="popup__close" class="popup-close">&times;</a>
+                </div>
+                <div class="container__popup" id="popup__lihat">
+                    <div class="popup">
+                        <div class="title">
+                            <div class="form-group">
+                                <h1>Lihat Data</h1>
+                                <input type="checkbox" id="enableEdit" onchange="toggleEditAdmin(this)">
+                                <label for="enableEdit">Aktifkan Mode Edit</label>
                             </div>
-                            <form id="formDetailUser" method="POST" autocomplete="off" enctype="multipart/form-data">
-                                <?= csrf_field() ?>
-                                <div class="container__input">
-                                    <div class="satu">
-                                        <div class="status_input">
-                                            <div class="input-content status">
-                                                <label class="label" for="">Status</label>
-                                                <input class="input status" type="text" name="role" value="Admin" readonly />
+
+                            <a href="#" id="popup__close" class="popup-close">&times;</a>
+                        </div>
+                        <form id="formDetailUser" method="POST" autocomplete="off" enctype="multipart/form-data">
+                            <?= csrf_field() ?>
+                            <div class="container__input">
+                                <div class="satu">
+                                    <div class="status_input">
+                                        <div class="input-content status">
+                                            <label class="label" for="">Status</label>
+                                            <input class="input status" type="text" name="role" value="Admin" readonly />
 
 
-                                            </div>
-                                            <div class="input-content status">
-                                                <label class="label" for="">User Name</label>
-                                                <input class="input-user" id="username" type="text" name="username_email" disabled>
-                                            </div>
+                                        </div>
+                                        <div class="input-content status">
+                                            <label class="label" for="">User Name</label>
+                                            <input class="input-user" id="username" type="text" name="username_email" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="input-content">
+                                        <label class="label" for="">Nama Lengkap</label>
+                                        <input class="input" id="fullname" type="text" name="fullname" disabled />
+                                    </div>
+
+
+
+
+                                    <div class="count_book">
+                                        <div class="input-jumlah">
+                                            <label class="label" for="">Jenis Kelamin</label>
+                                            <select class="input-count" id="gender" name="gender" required disabled>
+                                                <option id="gender" value="">Pilih</option>
+                                                <option value="Laki-Laki">1. Laki-Laki</option>
+                                                <option value="Perempuan">2. Perempuan</option>
+
+                                            </select>
+                                        </div>
+                                        <div class="input-jumlah">
+                                            <label class="label" for="">Agama</label>
+                                            <select class="input-count" id="religion" name="religion" required disabled>
+                                                <option id="religion" value="">Pilih</option>
+                                                <option value="Islam">1. Islam</option>
+                                                <option value="Kristen">2. Kristen</option>
+                                                <option value="Katolik">3. Katolik</option>
+                                                <option value="Hindu">4. Hindu</option>
+                                                <option value="Buddha">5. Buddha</option>
+                                                <option value="Konghucu">6. Konghucu</option>
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                    <div class="count_book">
+                                        <div class="input-jumlah">
+                                            <label class="label" for="">Tempat Lahir</label>
+                                            <input class="input-count" id="place_birth_user" type="text" name="place_birth" disabled autocomplete="off">
+
+                                        </div>
+                                        <div class="input-jumlah">
+                                            <label class="label" for="">Tanggal Lahir</label>
+                                            <input class="input-count" id="date_birth" type="date" name="date_birth" disabled>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="dua admin">
+
+                                    <div class="count_book">
+                                        <div class="input-jumlah">
+                                            <label class="label" for="">Nomor Telephone</label>
+                                            <input class="input-count" type="number" id="phone" name="phone" disabled>
+
+                                        </div>
+                                        <div class="input-jumlah">
+                                            <label class="label" for="">NIP</label>
+                                            <input class="input-count" type="number" id="identification" name="identification" disabled>
+                                        </div>
+                                    </div>
+                                    <div id="input_password" style="display: none;">
+                                        <div class="input-content">
+                                            <label class="label" for="password_new">Password</label>
+                                            <input class="input" type="password" id="password_new" name="password" autocomplete="new-password" />
                                         </div>
                                         <div class="input-content">
-                                            <label class="label" for="">Nama Lengkap</label>
-                                            <input class="input" id="fullname" type="text" name="fullname" disabled />
-                                        </div>
-
-
-
-
-                                        <div class="count_book">
-                                            <div class="input-jumlah">
-                                                <label class="label" for="">Jenis Kelamin</label>
-                                                <select class="input-count" id="gender" name="gender" required disabled>
-                                                    <option id="gender" value="">Pilih</option>
-                                                    <option value="Laki-Laki">1. Laki-Laki</option>
-                                                    <option value="Perempuan">2. Perempuan</option>
-
-                                                </select>
-                                            </div>
-                                            <div class="input-jumlah">
-                                                <label class="label" for="">Agama</label>
-                                                <select class="input-count" id="religion" name="religion" required disabled>
-                                                    <option id="religion" value="">Pilih</option>
-                                                    <option value="Islam">1. Islam</option>
-                                                    <option value="Kristen">2. Kristen</option>
-                                                    <option value="Katolik">3. Katolik</option>
-                                                    <option value="Hindu">4. Hindu</option>
-                                                    <option value="Buddha">5. Buddha</option>
-                                                    <option value="Konghucu">6. Konghucu</option>
-                                                </select>
-
-                                            </div>
-                                        </div>
-                                        <div class="count_book">
-                                            <div class="input-jumlah">
-                                                <label class="label" for="">Tempat Lahir</label>
-                                                <input class="input-count" id="place_birth" type="text" name="place_birth" disabled>
-
-                                            </div>
-                                            <div class="input-jumlah">
-                                                <label class="label" for="">Tanggal Lahir</label>
-                                                <input class="input-count" id="date_birth" type="date" name="date_birth" disabled>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div class="dua admin">
-
-                                        <div class="count_book">
-                                            <div class="input-jumlah">
-                                                <label class="label" for="">Nomor Telephone</label>
-                                                <input class="input-count" type="number" id="phone" name="phone" disabled>
-
-                                            </div>
-                                            <div class="input-jumlah">
-                                                <label class="label" for="">NIP</label>
-                                                <input class="input-count" type="number" id="identification" name="identification" disabled>
-                                            </div>
-                                        </div>
-                                        <div id="input_password" style="display: none;">
-                                            <div class="input-content">
-                                                <label class="label" for="password">Password</label>
-                                                <input class="input" type="password" id="password" name="password" />
-                                            </div>
-                                            <div class="input-content">
-                                                <label class="label" for="konfiPassword">Konfirmasi Password</label>
-                                                <input class="input" type="password" id="konfiPassword" name="password_confirm" />
-                                            </div>
-                                        </div>
-
-
-                                        <div class=" input-content">
-                                            <label class="label" for="">alamat </label>
-                                            <textarea class="input alamat" id="address" name="address" rows="4" cols="50" placeholder="Masukkan alamat lengkap Anda" required disabled></textarea>
-
-                                            <div>
-                                            </div>
+                                            <label class="label" for="konfiPassword_new">Konfirmasi Password</label>
+                                            <input class="input" type="password" id="konfiPassword_new" name="password_confirm" autocomplete="new-password" />
                                         </div>
                                     </div>
 
 
+                                    <div class=" input-content">
+                                        <label class="label" for="">alamat </label>
+                                        <textarea class="input alamat" id="address" name="address" rows="4" cols="50" placeholder="Masukkan alamat lengkap Anda" required disabled></textarea>
+
+                                        <div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="button">
-                                    <button class="batal" type="button">Batal</button>
-                                    <button class="simpan" type="submit">Simpan</button>
-                                </div>
-                            </form>
-                        </div>
+
+
+                            </div>
+                            <div class="button">
+                                <button class="batal" type="button">Batal</button>
+                                <button class="simpan" type="submit">Simpan</button>
+                            </div>
+                        </form>
                     </div>
-                    <div id="popup__delete" class="container__popup">
-                        <div class="popup_delete">
+                </div>
+                <div id="popup__delete" class="container__popup">
+                    <div class="popup_delete">
+                        <div class="title_delete">
+                            <div class="form-group">
+                                <h1>Konfirmasi Hapus</h1>
+
+                            </div>
+                        </div>
+                        <div class="popup__content">
                             <div class="title_delete">
-                                <div class="form-group">
-                                    <h1>Konfirmasi Hapus</h1>
-
-                                </div>
+                                <h3>Apakah anda yakin ingin menghapus admin?</h3>
+                                <p></p>
                             </div>
-                            <div class="popup__content">
-                                <div class="title_delete">
-                                    <h3>Apakah anda yakin ingin menghapus admin?</h3>
-                                    <p></p>
-                                </div>
-                                <div class="button-delete">
-                                    <button type="button" class="batal" onclick="closeDeletePopup()">Batal</button>
-                                    <button type="button" class="simpan" id="confirmDelete">Hapus</button>
-                                </div>
+                            <div class="button-delete">
+                                <button type="button" class="batal" onclick="closeDeletePopup()">Batal</button>
+                                <button type="button" class="simpan" id="confirmDelete">Hapus</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </body>
 

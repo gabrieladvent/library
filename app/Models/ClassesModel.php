@@ -55,6 +55,10 @@ class ClassesModel extends Model
         return $this->findAll();
     }
 
+    public function getDetailClassById($id)
+    {
+        return $this->where('id', $id)->first();
+    }
 
     /**
      * Memeriksa apakah nama kelas yang dikirimkan sudah ada di database

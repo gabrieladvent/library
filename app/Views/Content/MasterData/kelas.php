@@ -13,7 +13,7 @@
                 <div class="title">
                     <h1>Data Kelas</h1>
                 </div>
-                <a href="#popup" class="tambah-buku">
+                <a href="#popup_addclass" class="tambah-buku">
                     <p>Tambah Data</p>
                     <i class='bx bxs-plus-square'></i>
                 </a>
@@ -39,8 +39,8 @@
 
                                         <td>
                                             <div class="action-buttons">
-                                                <button class="btn btn-view">
-                                                    <i class="bx bx-edit"></i> Edit
+                                                <button onclick="viewDetailClass(this)" class="btn btn-view" data-id="<?= $class['id'] ?>">
+                                                    <i class="bx bx-edit"></i> Kelolah
                                                 </button>
                                                 <button class="btn btn-edit">
                                                     <i class="bx bx-trash"></i> Hapus
@@ -58,19 +58,19 @@
                         </tbody>
 
                     </table>
-                    <div class="container__popup" id="popup">
-                        <div class="popup">
+                    <div class="container__popup" id="popup_addclass">
+                        <div class="popup_AddClas">
                             <div class="title">
-                                <h1>Tambah Byu</h1>
+                                <h1>Tambah Kelas</h1>
                                 <a href="#" class="popup-close">&times;</a>
                             </div>
-                            <form action="<?= base_url('class/add') ?>" method="post" autocomplete="off" enctype="multipart/form-data" onsubmit="return validationPasswordAdmin()">
+                            <form action="<?= base_url('class/add') ?>" method="post" autocomplete="off" enctype="multipart/form-data">
                                 <?= csrf_field() ?>
                                 <div class="container__input">
                                     <div class="status_input">
                                         <div class="input-content status">
                                             <label class="label" for="">Masukan Nama Kelas</label>
-                                            <input class="input-user" type="text" name="class_name">
+                                            <input class="input-user" type="text" name="class_name" placeholder="contoh x-A">
                                         </div>
 
                                     </div>
@@ -80,8 +80,39 @@
                                     <button class="simpan" type="submit">Simpan</button>
                                 </div>
                             </form>
+
                         </div>
                     </div>
+                    <div class="container__popup" id="popup_viewClass">
+                        <div class="popup_viewclass">
+                            <div class="title">
+                                <div class="form-group">
+                                    <h1>Lihat Data</h1>
+                                    <input type="checkbox" id="enableEdit" onchange="toggleEditClass(this)">
+                                    <label for="enableEdit">Aktifkan Mode Edit</label>
+                                </div>
+                                <a href="#" id="popup__close" class="popup-close">&times;</a>
+                            </div>
+                            <form id="formDetailUser" method="POST" autocomplete="off" enctype="multipart/form-data">
+                                <?= csrf_field() ?>
+                                <div class="container__input">
+                                    <div class="status_input">
+                                        <div class="input-content status">
+                                            <label class="label" for="">Masukan Nama Kelas</label>
+                                            <input class="input-user" type="text" id="class_name" name="class_name" disabled>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="button">
+                                    <button type="button" class="batal" onclick="closePopupClass()">Batal</button>
+                                    <button class="simpan" type="submit">Simpan</button>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>

@@ -26,7 +26,7 @@ function viewDetailAdmin(button) {
         $("#fullname").val(user.fullname);
         $("#gender").val(user.gender);
         $("#religion").val(user.religion);
-        $("#place_birth").val(user.place_birth);
+        $("#place_birth_user").val(user.place_birth);
         $("#date_birth").val(user.date_birth);
         $("#phone").val(user.phone);
         $("#identification").val(user.identification);
@@ -42,6 +42,7 @@ function viewDetailAdmin(button) {
       } else {
         alert("Failed to fetch user data");
         closePopup();
+        closeDeletePopup();
       }
     },
   });
@@ -93,11 +94,6 @@ function toggleEditAdmin(checkbox) {
   }
 }
 
-// Pastikan field password tersembunyi saat pertama kali dimuat
-document.addEventListener("DOMContentLoaded", function () {
-  document.querySelector("#input_password").style.display = "none";
-});
-
 // Function to close the popup lihat detail
 function closePopup() {
   const popup = document.getElementById("popup__lihat"); // Target main popup element
@@ -122,7 +118,7 @@ function closePopup() {
 
 document.getElementById("popup__close").addEventListener("click", (event) => {
   // Prevent page reload if the button is an <a href="#">
-
+  event.preventDefault();
   closePopup(); // Call closePopup function
 });
 

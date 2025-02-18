@@ -158,7 +158,7 @@ class UserController extends BaseController
 
             // Pastikan data input berupa array
             if (!$data_user || !is_array($data_user)) {
-                return ResponHelper::handlerSuccessResponRedirect("user/list/Admin", "Data gagal  ditambahkan");
+                return ResponHelper::handlerSuccessResponRedirect("user/list/dmin", "Data gagal  ditambahkan");
             }
 
             // Menyimpan data ke database$insert_user = $this->insertUser($data_user);
@@ -285,6 +285,25 @@ class UserController extends BaseController
         return view('content/MasterData/kelas', $data);
     }
 
+    public function viewDetailClass()
+    {
+        $id_class = $_GET['classes'] ?? null;
+
+
+        try {
+            $data = [
+                'success' => true,
+                'data' => $this->class->getDetailClassById($id_class)
+            ];
+            return $this->response->setJSON($data);
+        } catch (\Exception $e) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
 
     /**
      * Menambahkan kelas baru ke database
@@ -301,12 +320,12 @@ class UserController extends BaseController
         $isExists = $this->class->checkName($data_classs['class_name']);
 
         if ($isExists) {
-            return ResponHelper::handlerErrorResponJson('Kelas sudah ada', 400);
+            return ResponHelper::handlerSuccessResponRedirect("class/all", "Data yang di input sudah ada");
         }
 
         try {
             $this->class->insert($data_classs);
-            return ResponHelper::handlerSuccessResponJson($data_classs, 201);
+            return ResponHelper::handlerSuccessResponRedirect("class/all", "Data berhasil  ditambahkan");
         } catch (\Throwable $th) {
             return ResponHelper::handlerErrorResponJson([$th->getMessage(), $th->getTraceAsString()], 400);
         }
@@ -364,9 +383,9 @@ class UserController extends BaseController
      */
     public function editClass()
     {
-        $id_class = $_GET['class'] ?? null;
-        $id_decrypt = $this->decryptId($id_class);
-        $class = $this->class->find($id_decrypt);
+        $id_class = $_GET['classes'] ?? null;
+
+        $class = $this->class->find($id_class);
 
         if (empty($class)) {
             return ResponHelper::handlerErrorResponJson(['error' => 'Class not found'], 404);
@@ -376,11 +395,12 @@ class UserController extends BaseController
         $isExist = $this->class->checkName($data_classs['class_name']);
 
         if ($isExist) {
-            return ResponHelper::handlerErrorResponJson(['error' => 'Nama kelas sudah ada'], 400);
+            return ResponHelper::handlerErrorResponRedirect("class/all", "Nama kelas sudah ada");
         }
 
-        $this->class->update($id_decrypt, $data_classs);
-        return ResponHelper::handlerSuccessResponJson($data_classs, 200);
+
+        $this->class->update($id_class, $data_classs);
+        return ResponHelper::handlerSuccessResponRedirect("class/all", "berhasil di edit");
     }
 
 

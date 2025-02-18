@@ -43,6 +43,7 @@ $routes->group("class", ['filter' => 'auth'], function ($routes) {
     $routes->post('add', 'UserController::addClass');
     $routes->post('edit', 'UserController::editClass');
     $routes->get('delete', 'UserController::deleteClass');
+    $routes->get('list', 'UserController::viewDetailClass');
 });
 
 $routes->group("category", ['filter' => 'auth'], function ($routes) {
