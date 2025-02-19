@@ -23,8 +23,7 @@ $classForPopup = $class;
                 </a>
             </div>
             <div class="container-table">
-                <pre>
-</pre>
+                <pre></pre>
 
                 <div class="table">
                     <table border="1">

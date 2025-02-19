@@ -147,7 +147,7 @@ function DeleteClass(button) {
 
   document.getElementById("confirmDelete").onclick = function () {
     $.ajax({
-      url: `${window.location.origin}/user/delete?class=${id_class}`,
+      url: `${window.location.origin}/class/delete?classes=${id_class}`,
       type: "GET",
       dataType: "json",
       success: function (response) {
@@ -170,13 +170,11 @@ function DeleteClass(button) {
             escapeHTML: false,
           }).showToast();
         } else {
-          // Redirect dengan pesan error
           window.location.href = `/class/all`;
         }
       },
       error: function (xhr, status, error) {
-        closeDeletePopup(); // Tutup popup
-        // Redirect dengan pesan error
+        closeDeletePopup();
         window.location.href = `/class/all`;
       },
     });

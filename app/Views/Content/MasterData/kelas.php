@@ -1,9 +1,6 @@
 <?= $this->extend('Layouts/default') ?>
-
-
-<?= $this->section('content') ?>
-
-
+<?= $this->section('content');
+$encrypter = \Config\Services::encrypter(); ?>
 
 <body>
     <div class="container-book  ">
@@ -36,14 +33,13 @@
                                         <td><?= $index + 1 ?></td>
                                         <td class="email"><?= $class["class_name"] ?></td>
 
-
                                         <td>
                                             <div class="action-buttons">
-                                                <button onclick="viewDetailClass(this)" class="btn btn-view" data-id="<?= $class['id'] ?>">
+                                                <button onclick="viewDetailClass(this)" class="btn btn-view" data-id="<?= urlencode(base64_encode($encrypter->encrypt($class['id']))) ?>">
                                                     <i class="bx bx-edit"></i> Kelolah
                                                 </button>
 
-                                                <button class="btn btn-edit" onclick="DeleteClass(this)" data-id="<?= $class['id'] ?>" data-name="<?= $class['class_name'] ?>">
+                                                <button class="btn btn-edit" onclick="DeleteClass(this)" data-id="<?= urlencode(base64_encode($encrypter->encrypt($class['id']))) ?>" data-name="<?= $class['class_name'] ?>">
                                                     <i class="bx bx-trash"></i> Hapus
                                                 </button>
                                             </div>

@@ -55,7 +55,6 @@ class UserController extends BaseController
     {
         $id_user = 1;
         $data['profile_user'] = $this->user->getDetailUserById($id_user);
-        dd($data);
 
         return view('profile', $data);
     }
@@ -267,7 +266,7 @@ class UserController extends BaseController
     {
         $id_user = session('id_user');
         $decode_id = $this->encrypter->decrypt(base64_decode($id_user['id']));
-        // $all_classes = $this->class->getAllClasses(); // Ambil semua data kelas
+        $all_classes = $this->class->getAllClasses(); // Ambil semua data kelas
 
         if (empty($all_classes)) {
             // Log jika data kosong
@@ -288,12 +287,12 @@ class UserController extends BaseController
     public function viewDetailClass()
     {
         $id_class = $_GET['classes'] ?? null;
-
+        $id_decrypt = $this->decryptId($id_class);
 
         try {
             $data = [
                 'success' => true,
-                'data' => $this->class->getDetailClassById($id_class)
+                'data' => $this->class->getDetailClassById($id_decrypt)
             ];
             return $this->response->setJSON($data);
         } catch (\Exception $e) {
@@ -344,7 +343,7 @@ class UserController extends BaseController
      */
     public function deleteClass()
     {
-        $id_class = $_GET['class'] ?? null;
+        $id_class = $_GET['classes'] ?? null;
         $id_decrypt = $this->decryptId($id_class);
 
         $check_user = $this->biodata->getDataByClassId($id_decrypt);
@@ -354,9 +353,7 @@ class UserController extends BaseController
 
         try {
             $this->db->transStart();
-            $this->biodata->deleteBiodata($id_decrypt);
             $this->class->delete($id_decrypt);
-
             $this->db->transComplete();
 
             if ($this->db->transStatus() === false) {
