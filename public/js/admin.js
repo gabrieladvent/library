@@ -71,7 +71,6 @@ function toggleEditAdmin(checkbox) {
     inputs.forEach((input) => {
       if (input.id !== "enableEdit") {
         input.removeAttribute("disabled");
-        input.classList.add("editable");
       }
     });
 
@@ -83,7 +82,6 @@ function toggleEditAdmin(checkbox) {
     inputs.forEach((input) => {
       if (input.id !== "enableEdit") {
         input.setAttribute("disabled", true);
-        input.classList.remove("editable");
       }
     });
 
@@ -106,7 +104,6 @@ function closePopup() {
     inputs.forEach((input) => {
       if (input.id !== "enableEdit") {
         input.setAttribute("disabled", true);
-        input.classList.remove("editable");
       }
     });
   }

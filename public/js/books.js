@@ -42,8 +42,7 @@ function viewDetail(button) {
       }
 
       $("#formDetailUser").attr("data-book-id", id);
-      const actionUrl = `${window.location.origin}/user/edit?books=${id}`;
-      console.log("Action URL:", actionUrl);
+      const actionUrl = `${window.location.origin}/book /edit?books=${id}`;
       $("#formDetailUser").attr("action", actionUrl);
       $("#formDetailUser").attr("method", "POST");
     },
@@ -66,7 +65,6 @@ function toggleEdit(checkbox) {
       if (input.id !== "enableEdit") {
         // Jangan ubah checkbox
         input.removeAttribute("disabled");
-        input.classList.add("editable");
       }
     });
     submitBtn.style.display = "block";
@@ -77,7 +75,6 @@ function toggleEdit(checkbox) {
     inputs.forEach((input) => {
       if (input.id !== "enableEdit") {
         input.setAttribute("disabled", true);
-        input.classList.remove("editable");
       }
     });
     submitBtn.style.display = "none";
@@ -101,8 +98,6 @@ function Delete(button) {
   popupContent.style.transform = "translate(-50%, -50%) scale(1)";
 
   document.getElementById("confirmDelete").onclick = function () {
-    console.log("Delete book with ID:", id);
-
     $.ajax({
       url: `${window.location.origin}/book/delete?books=${id}`,
       type: "GET",
@@ -177,7 +172,6 @@ function closePopup() {
     inputs.forEach((input) => {
       if (input.id !== "enableEdit") {
         input.setAttribute("disabled", true);
-        input.classList.remove("editable");
       }
     });
   }

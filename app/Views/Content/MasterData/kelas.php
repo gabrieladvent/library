@@ -87,7 +87,6 @@ $encrypter = \Config\Services::encrypter(); ?>
                                     <input type="checkbox" id="enableEdit" onchange="toggleEditClass(this)">
                                     <label for="enableEdit">Aktifkan Mode Edit</label>
                                 </div>
-                                <a href="#" id="popup__close" class="popup-close">&times;</a>
                             </div>
                             <form id="formDetailUser" method="POST" autocomplete="off" enctype="multipart/form-data">
                                 <?= csrf_field() ?>
