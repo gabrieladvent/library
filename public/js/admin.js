@@ -176,11 +176,6 @@ function DeleteAdmin(button) {
       },
     });
   };
-
-  document.getElementById("popup__close_delete").onclick = function (e) {
-    e.preventDefault();
-    closeDeletePopup();
-  };
 }
 
 function closeDeletePopup() {

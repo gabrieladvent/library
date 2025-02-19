@@ -42,10 +42,10 @@
                                                 <button onclick="viewDetailClass(this)" class="btn btn-view" data-id="<?= $class['id'] ?>">
                                                     <i class="bx bx-edit"></i> Kelolah
                                                 </button>
-                                                <button class="btn btn-edit">
+
+                                                <button class="btn btn-edit" onclick="DeleteClass(this)" data-id="<?= $class['id'] ?>" data-name="<?= $class['class_name'] ?>">
                                                     <i class="bx bx-trash"></i> Hapus
                                                 </button>
-
                                             </div>
                                         </td>
                                     </tr>
@@ -113,12 +113,33 @@
                         </div>
                     </div>
 
+                    <div id="popup__delete" class="container__popup">
+                        <div class="popup_delete">
+                            <div class="title_delete">
+                                <div class="form-group">
+                                    <h1>Konfirmasi Hapus</h1>
+
+                                </div>
+                            </div>
+                            <div class="popup__content">
+                                <div class="title_delete">
+                                    <h3>Apakah anda yakin ingin menghapus admin?</h3>
+                                    <p></p>
+                                </div>
+                                <div class="button-delete">
+                                    <button type="button" class="batal" onclick="closeDeletePopup()">Batal</button>
+                                    <button type="button" class="simpan" id="confirmDelete">Hapus</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     </div>
+    <script type="text/javascript" src="<?= base_url('js/class.js') ?>"></script>
 
 
     <?= $this->endSection() ?>

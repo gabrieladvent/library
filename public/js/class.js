@@ -128,3 +128,81 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+
+function DeleteClass(button) {
+  const id_class = button.getAttribute("data-id");
+  const userType = button.getAttribute("data-type"); // Ambil tipe pengguna (Admin atau Anggota)
+  const userName = button.getAttribute("data-name");
+
+  const popup = document.getElementById("popup__delete");
+  const popupContent = popup.querySelector(".popup_delete");
+
+  popup.querySelector(".title_delete p").textContent = userName;
+  popup.style.display = "flex";
+  popup.style.opacity = "1";
+  popup.style.visibility = "visible";
+
+  popupContent.style.opacity = "1";
+  popupContent.style.transform = "translate(-50%, -50%) scale(1)";
+
+  document.getElementById("confirmDelete").onclick = function () {
+    $.ajax({
+      url: `${window.location.origin}/user/delete?class=${id_class}`,
+      type: "GET",
+      dataType: "json",
+      success: function (response) {
+        closeDeletePopup(); // Tutup popup
+        // Redirect ke halaman yang sesuai dengan tipe
+        window.location.href = `/user/list/${userType}`;
+        if (response.status === "success") {
+          Toastify({
+            className: "notif bx bxs-check-circle",
+            text: " Data Berhasil di Hapus",
+            duration: 3000,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "#D9FFF0",
+            style: {
+              marginTop: "60px",
+              color: "green",
+              borderRadius: "8px",
+            },
+            escapeHTML: false,
+          }).showToast();
+        } else {
+          // Redirect dengan pesan error
+          window.location.href = `/class/all`;
+        }
+      },
+      error: function (xhr, status, error) {
+        closeDeletePopup(); // Tutup popup
+        // Redirect dengan pesan error
+        window.location.href = `/class/all`;
+      },
+    });
+  };
+}
+
+function closeDeletePopup() {
+  const popup = document.getElementById("popup__delete");
+  const popupContent = popup.querySelector(".popup");
+
+  popup.style.opacity = "0";
+  popup.style.visibility = "hidden";
+
+  setTimeout(() => {
+    popup.style.display = "none";
+    popupContent.style.transform = "translate(-50%, -50%) scale(0.8)";
+  }, 300);
+}
+
+// Tambahkan event listener terpisah untuk tombol close
+document.addEventListener("DOMContentLoaded", function () {
+  const closeDeleteBtn = document.getElementById("popup__close_delete");
+  if (closeDeleteBtn) {
+    closeDeleteBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      closeDeletePopup();
+    });
+  }
+});

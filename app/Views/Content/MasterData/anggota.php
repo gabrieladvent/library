@@ -357,4 +357,6 @@ $classForPopup = $class;
     </div>
 </body>
 
+
+<script type="text/javascript" src="<?= base_url('js/user.js') ?>"></script>
 <?= $this->endSection() ?>

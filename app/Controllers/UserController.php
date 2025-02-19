@@ -158,7 +158,7 @@ class UserController extends BaseController
 
             // Pastikan data input berupa array
             if (!$data_user || !is_array($data_user)) {
-                return ResponHelper::handlerSuccessResponRedirect("user/list/dmin", "Data gagal  ditambahkan");
+                return ResponHelper::handlerSuccessResponRedirect("user/list/Admin", "Data gagal  ditambahkan");
             }
 
             // Menyimpan data ke database$insert_user = $this->insertUser($data_user);
@@ -383,7 +383,7 @@ class UserController extends BaseController
      */
     public function editClass()
     {
-        $id_class = $_GET['classes'] ?? null;
+        $id_class = $_GET['class'] ?? null;
 
         $class = $this->class->find($id_class);
 
