@@ -195,7 +195,7 @@ $encrypter = \Config\Services::encrypter();
                                         <label class="label" for="">Cover Image</label>
                                         <div class="img">
                                             <img id="cover_img_view" alt="cover image" style="max-width: 200px;">
-                                            <input type="file" id="cover_image" name="cover_img" accept="image/*" disabled>
+                                            <input type="file" id="cover_image" name="cover_img" accept="image/*" readonly>
                                         </div>
                                     </div>
                                 </div>

@@ -23,7 +23,8 @@ $classForPopup = $class;
                 </a>
             </div>
             <div class="container-table">
-                <pre></pre>
+                <pre>
+</pre>
 
                 <div class="table">
                     <table border="1">
@@ -34,7 +35,7 @@ $classForPopup = $class;
                                 <th>NIS</th>
                                 <th>Alamat</th>
                                 <th>Nomor Hp</th>
-                                <th>Tanggal Bergabung</th>
+                                <th>Kelas</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -356,6 +357,6 @@ $classForPopup = $class;
     </div>
 </body>
 
-
 <script type="text/javascript" src="<?= base_url('js/user.js') ?>"></script>
+
 <?= $this->endSection() ?>

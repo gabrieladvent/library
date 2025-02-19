@@ -16,7 +16,6 @@ function viewDetailClass(button) {
     type: "GET",
     dataType: "json",
     success: function (response) {
-      console.log(response);
       if (response.success) {
         const classdetial = response.data;
 
@@ -29,7 +28,7 @@ function viewDetailClass(button) {
         // Set form attributes
         $("#formDetailUser").attr("data-user-id", id);
 
-        const actionUrl = `${window.location.origin}/class/edit?classes=${id}`;
+        const actionUrl = `${window.location.origin}/class/edit?class=${id}`;
         $("#formDetailUser").attr("action", actionUrl);
       } else {
         alert("Failed to fetch user data");
@@ -54,7 +53,6 @@ function toggleEditClass(checkbox) {
       if (input.id !== "enableEdit") {
         // Jangan ubah checkbox
         input.removeAttribute("disabled");
-        input.classList.add("editable");
       }
     });
     submitBtn.style.display = "block";
@@ -65,7 +63,6 @@ function toggleEditClass(checkbox) {
     inputs.forEach((input) => {
       if (input.id !== "enableEdit") {
         input.setAttribute("disabled", true);
-        input.classList.remove("editable");
       }
     });
     submitBtn.style.display = "none";
@@ -153,7 +150,7 @@ function DeleteClass(button) {
       success: function (response) {
         closeDeletePopup(); // Tutup popup
         // Redirect ke halaman yang sesuai dengan tipe
-        window.location.href = `/user/list/${userType}`;
+        window.location.href = `/class/all`;
         if (response.status === "success") {
           Toastify({
             className: "notif bx bxs-check-circle",

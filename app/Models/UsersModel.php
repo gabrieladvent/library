@@ -130,7 +130,7 @@ class UsersModel extends Model
      * @return bool hasil insert data
      */
     public function insertData($data)
-    {   
+    {
         $insert_id = $this->insert($data);
         $data_new = $this->find($insert_id);
 

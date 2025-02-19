@@ -381,8 +381,10 @@ class UserController extends BaseController
     public function editClass()
     {
         $id_class = $_GET['class'] ?? null;
+        $id_decrypt = $this->decryptId($id_class);
 
-        $class = $this->class->find($id_class);
+        $class = $this->class->find($id_decrypt);
+        log_message('debug', 'kelas nya ada id: ' . json_encode($class, JSON_PRETTY_PRINT));
 
         if (empty($class)) {
             return ResponHelper::handlerErrorResponJson(['error' => 'Class not found'], 404);
@@ -396,7 +398,8 @@ class UserController extends BaseController
         }
 
 
-        $this->class->update($id_class, $data_classs);
+        $this->class->update($id_decrypt, $data_classs);
+
         return ResponHelper::handlerSuccessResponRedirect("class/all", "berhasil di edit");
     }
 
