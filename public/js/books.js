@@ -42,7 +42,7 @@ function viewDetail(button) {
       }
 
       $("#formDetailUser").attr("data-book-id", id);
-      const actionUrl = `${window.location.origin}/book /edit?books=${id}`;
+      const actionUrl = `${window.location.origin}/book/edit?books=${id}`;
       $("#formDetailUser").attr("action", actionUrl);
       $("#formDetailUser").attr("method", "POST");
     },
@@ -220,3 +220,39 @@ document.getElementById("popup__close").addEventListener("click", (event) => {
 
   closePopup(); // Call closePopup function
 });
+
+// tombol batal
+// tombol batal add
+document.addEventListener("DOMContentLoaded", function () {
+  // Ambil elemen tombol Batal dan popup
+  const batalAdd = document.querySelector(".batal_add");
+  const popups = document.getElementById("popup");
+  const popup = popups.querySelector(".popup");
+
+  if (batalAdd) {
+    batalAdd.addEventListener("click", function (e) {
+      e.preventDefault();
+      popups.style.opacity = "0";
+      popups.style.visibility = "hidden";
+
+      window.location.href = "";
+      setTimeout(() => {
+        popup.style.display = "none";
+        popup.style.transform = "translate(-50%, -50%) scale(0.8)";
+      }, 300);
+    });
+  }
+});
+
+function closeViewPopup() {
+  const popup = document.getElementById("popup__lihat");
+  const popupContent = popup.querySelector(".popup");
+
+  popup.style.opacity = "0";
+  popup.style.visibility = "hidden";
+
+  setTimeout(() => {
+    popup.style.display = "none";
+    popupContent.style.transform = "translate(-50%, -50%) scale(0.8)";
+  }, 300);
+}

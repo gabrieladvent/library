@@ -75,7 +75,7 @@ $encrypter = \Config\Services::encrypter();
                     <div class="popup">
                         <div class="title">
                             <h1>Tambah Byu</h1>
-                            <a href="#" class="popup-close">&times;</a>
+                            <a href="" class="popup-close">&times;</a>
                         </div>
                         <form action="<?= base_url('book/add') ?>" method="post" autocomplete="off" enctype="multipart/form-data">
                             <?= csrf_field() ?>
@@ -147,7 +147,7 @@ $encrypter = \Config\Services::encrypter();
 
                             </div>
                             <div class="button">
-                                <button class="batal" type="button">Batal</button>
+                                <button class="batal batal_add" type="button">Batal</button>
                                 <button class="simpan" type="submit">Simpan</button>
                             </div>
                         </form>
@@ -229,7 +229,7 @@ $encrypter = \Config\Services::encrypter();
                                 </div>
                             </div>
                             <div class="button">
-                                <button class="batal" type="button">Batal</button>
+                                <button class="batal batal_add" onclick="closeViewPopup()" type="button">Batal</button>
                                 <button class="simpan" type="submit">Simpan</button>
                             </div>
                         </form>

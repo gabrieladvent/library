@@ -180,7 +180,7 @@ function DeleteClass(button) {
 
 function closeDeletePopup() {
   const popup = document.getElementById("popup__delete");
-  const popupContent = popup.querySelector(".popup");
+  const popupContent = popup.querySelector(".popup_delete");
 
   popup.style.opacity = "0";
   popup.style.visibility = "hidden";
@@ -198,6 +198,28 @@ document.addEventListener("DOMContentLoaded", function () {
     closeDeleteBtn.addEventListener("click", function (e) {
       e.preventDefault();
       closeDeletePopup();
+    });
+  }
+});
+
+// tombol batal add
+document.addEventListener("DOMContentLoaded", function () {
+  // Ambil elemen tombol Batal dan popup
+  const batalAdd = document.querySelector(".batal_add");
+  const popups = document.getElementById("popup_addclass");
+  const popup = popups.querySelector(".popup_AddClas");
+
+  if (batalAdd) {
+    batalAdd.addEventListener("click", function (e) {
+      e.preventDefault();
+      popups.style.opacity = "0";
+      popups.style.visibility = "hidden";
+
+      window.location.href = "";
+      setTimeout(() => {
+        popups.style.display = "none";
+        popup.style.transform = "translate(-50%, -50%) scale(0.8)";
+      }, 300);
     });
   }
 });

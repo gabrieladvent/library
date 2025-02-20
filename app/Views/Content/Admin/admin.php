@@ -73,8 +73,8 @@ $encrypter = \Config\Services::encrypter(); ?>
                     <div class="container__popup" id="popup">
                         <div class="popup">
                             <div class="title">
-                                <h1>Tambah Byu</h1>
-                                <a href="#" class="popup-close">&times;</a>
+                                <h1>Tambah Admin</h1>
+                                <a href="" class="popup-close">&times;</a>
                             </div>
                             <form action="<?= base_url('user/add') ?>" method="post" autocomplete="off" enctype="multipart/form-data" onsubmit="return validationPasswordAdmin()">
                                 <?= csrf_field() ?>
@@ -140,46 +140,46 @@ $encrypter = \Config\Services::encrypter(); ?>
                                         </div>
                                     </div>
 
+                                    <div class="dua admin">
+
+                                        <div class="count_book">
+                                            <div class="input-jumlah">
+                                                <label class="label" for="">Nomor Telephone</label>
+                                                <input class="input-count" type="number" name="phone">
+
+                                            </div>
+                                            <div class="input-jumlah">
+                                                <label class="label" for="">NIP</label>
+                                                <input class="input-count" type="number" name="identification">
+                                            </div>
+                                        </div>
+                                        <div class="input-content">
+                                            <label class="label" for="">Password</label>
+                                            <input class="input" type="Password" name="password" id="password" />
+                                        </div>
+
+                                        <div class="input-content">
+                                            <label class="label" for="">Konfimasi Password</label>
+                                            <input class="input" type="Password" name="password_confirm" id="konfiPassword" />
+                                        </div>
+
+                                        <div class=" input-content">
+                                            <label class="label" for="">alamat </label>
+                                            <textarea class="input alamat" id="alamat" name="address" rows="4" cols="50" placeholder="Masukkan alamat lengkap Anda" required></textarea>
+
+                                            <div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="dua admin">
-
-                                    <div class="count_book">
-                                        <div class="input-jumlah">
-                                            <label class="label" for="">Nomor Telephone</label>
-                                            <input class="input-count" type="number" name="phone">
-
-                                        </div>
-                                        <div class="input-jumlah">
-                                            <label class="label" for="">NIP</label>
-                                            <input class="input-count" type="number" name="identification">
-                                        </div>
-                                    </div>
-                                    <div class="input-content">
-                                        <label class="label" for="">Password</label>
-                                        <input class="input" type="Password" name="password" id="password" />
-                                    </div>
-
-                                    <div class="input-content">
-                                        <label class="label" for="">Konfimasi Password</label>
-                                        <input class="input" type="Password" name="password_confirm" id="konfiPassword" />
-                                    </div>
-
-                                    <div class=" input-content">
-                                        <label class="label" for="">alamat </label>
-                                        <textarea class="input alamat" id="alamat" name="address" rows="4" cols="50" placeholder="Masukkan alamat lengkap Anda" required></textarea>
-
-                                        <div>
-                                        </div>
-                                    </div>
+                                <div class="button">
+                                    <button class="batal batal_add" type="button">Batal</button>
+                                    <button class="simpan" type="submit">Simpan</button>
                                 </div>
-
-
                         </div>
-                        <div class="button">
-                            <button class="batal" type="button">Batal</button>
-                            <button class="simpan" type="submit">Simpan</button>
-                        </div>
+
                         </form>
+
                     </div>
                 </div>
                 <div class="container__popup" id="popup__lihat">
@@ -291,7 +291,7 @@ $encrypter = \Config\Services::encrypter(); ?>
 
                             </div>
                             <div class="button">
-                                <button class="batal" type="button">Batal</button>
+                                <button class="batal" onclick="closeViewPopup()" type="button">Batal</button>
                                 <button class="simpan" type="submit">Simpan</button>
                             </div>
                         </form>
