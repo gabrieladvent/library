@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="<?= base_url("css/style.table.css") ?>" />
     <link rel="stylesheet" href="<?= base_url("css/style.popup.css") ?>" />
-    <link rel="stylesheet" href="<?= base_url("css/style.daful  .css") ?>" />
+    <link rel="stylesheet" href="<?= base_url("css/style.default.css") ?>" />
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="<?= base_url('css/style.dashboard.css') ?>" />
 
@@ -62,7 +62,6 @@
                 gravity: "top",
                 position: "right",
                 style: {
-
                     color: "red",
                 }
             }).showToast();
@@ -79,8 +78,5 @@
         })
     </script>
 </body>
-<script type="text/javascript" src="<?= base_url('js/admin.js') ?>"></script>
-<script type="text/javascript" src="<?= base_url('js/user.js') ?>"></script>
-<script type="text/javascript" src="<?= base_url('js/books.js') ?>"></script>
 
 </html>

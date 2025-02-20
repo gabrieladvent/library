@@ -55,7 +55,6 @@ class UserController extends BaseController
     {
         $id_user = 1;
         $data['profile_user'] = $this->user->getDetailUserById($id_user);
-        dd($data);
 
         return view('profile', $data);
     }
@@ -267,7 +266,7 @@ class UserController extends BaseController
     {
         $id_user = session('id_user');
         $decode_id = $this->encrypter->decrypt(base64_decode($id_user['id']));
-        // $all_classes = $this->class->getAllClasses(); // Ambil semua data kelas
+        $all_classes = $this->class->getAllClasses(); // Ambil semua data kelas
 
         if (empty($all_classes)) {
             // Log jika data kosong
@@ -283,6 +282,25 @@ class UserController extends BaseController
         // $data['all_classes'] = $all_classes; // Kirim data ke view
 
         return view('content/MasterData/kelas', $data);
+    }
+
+    public function viewDetailClass()
+    {
+        $id_class = $_GET['classes'] ?? null;
+        $id_decrypt = $this->decryptId($id_class);
+
+        try {
+            $data = [
+                'success' => true,
+                'data' => $this->class->getDetailClassById($id_decrypt)
+            ];
+            return $this->response->setJSON($data);
+        } catch (\Exception $e) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
     }
 
 
@@ -301,12 +319,12 @@ class UserController extends BaseController
         $isExists = $this->class->checkName($data_classs['class_name']);
 
         if ($isExists) {
-            return ResponHelper::handlerErrorResponJson('Kelas sudah ada', 400);
+            return ResponHelper::handlerSuccessResponRedirect("class/all", "Data yang di input sudah ada");
         }
 
         try {
             $this->class->insert($data_classs);
-            return ResponHelper::handlerSuccessResponJson($data_classs, 201);
+            return ResponHelper::handlerSuccessResponRedirect("class/all", "Data berhasil  ditambahkan");
         } catch (\Throwable $th) {
             return ResponHelper::handlerErrorResponJson([$th->getMessage(), $th->getTraceAsString()], 400);
         }
@@ -325,7 +343,7 @@ class UserController extends BaseController
      */
     public function deleteClass()
     {
-        $id_class = $_GET['class'] ?? null;
+        $id_class = $_GET['classes'] ?? null;
         $id_decrypt = $this->decryptId($id_class);
 
         $check_user = $this->biodata->getDataByClassId($id_decrypt);
@@ -335,9 +353,7 @@ class UserController extends BaseController
 
         try {
             $this->db->transStart();
-            $this->biodata->deleteBiodata($id_decrypt);
             $this->class->delete($id_decrypt);
-
             $this->db->transComplete();
 
             if ($this->db->transStatus() === false) {
@@ -366,7 +382,9 @@ class UserController extends BaseController
     {
         $id_class = $_GET['class'] ?? null;
         $id_decrypt = $this->decryptId($id_class);
+
         $class = $this->class->find($id_decrypt);
+        log_message('debug', 'kelas nya ada id: ' . json_encode($class, JSON_PRETTY_PRINT));
 
         if (empty($class)) {
             return ResponHelper::handlerErrorResponJson(['error' => 'Class not found'], 404);
@@ -376,11 +394,13 @@ class UserController extends BaseController
         $isExist = $this->class->checkName($data_classs['class_name']);
 
         if ($isExist) {
-            return ResponHelper::handlerErrorResponJson(['error' => 'Nama kelas sudah ada'], 400);
+            return ResponHelper::handlerErrorResponRedirect("class/all", "Nama kelas sudah ada");
         }
 
+
         $this->class->update($id_decrypt, $data_classs);
-        return ResponHelper::handlerSuccessResponJson($data_classs, 200);
+
+        return ResponHelper::handlerSuccessResponRedirect("class/all", "berhasil di edit");
     }
 
 

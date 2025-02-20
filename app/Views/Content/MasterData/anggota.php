@@ -35,7 +35,7 @@ $classForPopup = $class;
                                 <th>NIS</th>
                                 <th>Alamat</th>
                                 <th>Nomor Hp</th>
-                                <th>Tanggal Bergabung</th>
+                                <th>Kelas</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -77,7 +77,7 @@ $classForPopup = $class;
                         <div class="popup">
                             <div class="title">
                                 <h1>Tambah Byu</h1>
-                                <a href="#" class="popup-close">&times;</a>
+                                <a href="" class="popup-close">&times;</a>
                             </div>
                             <form action="<?= base_url('user/add') ?>" method="post" autocomplete="off" enctype="multipart/form-data" onsubmit="return validationPasswordAnggota()">
                                 <?= csrf_field() ?>
@@ -198,7 +198,7 @@ $classForPopup = $class;
 
                                 </div>
                                 <div class="button">
-                                    <button class="batal" type="button">Batal</button>
+                                    <button class="batal batal_add" type="button">Batal</button>
                                     <button class="simpan" type="submit">Simpan</button>
                                 </div>
                             </form>
@@ -213,7 +213,7 @@ $classForPopup = $class;
                                     <label for="enableEdit">Aktifkan Mode Edit</label>
                                 </div>
 
-                                <a href="#" id="popup__close" class="popup-close">&times;</a>
+                                <a href="" id="popup__close" class="popup-close">&times;</a>
                             </div>
                             <form id="formDetailUser" method="POST" autocomplete="off" enctype="multipart/form-data">
                                 <?= csrf_field() ?>
@@ -325,7 +325,7 @@ $classForPopup = $class;
 
                                 </div>
                                 <div class="button">
-                                    <button class="batal" type="button">Batal</button>
+                                    <button class="batal" onclick="closeViewPopup()" type="button">Batal</button>
                                     <button class="simpan" type="submit">Simpan</button>
                                 </div>
                             </form>
@@ -356,5 +356,7 @@ $classForPopup = $class;
         </div>
     </div>
 </body>
+
+<script type="text/javascript" src="<?= base_url('js/user.js') ?>"></script>
 
 <?= $this->endSection() ?>
