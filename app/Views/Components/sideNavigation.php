@@ -30,7 +30,7 @@
                                     <i class='bx bxs-home-smile'></i>
                                     <p>Class</p>
                                 </a>
-                                <a href="<?= base_url('home/kategori') ?>" class="sub-menu-item" id="kategori-link">
+                                <a href="<?= base_url('categori/view') ?>" class="sub-menu-item" id="kategori-link">
                                     <i class="bx bx-category-alt"></i>
                                     <p>Kategori</p>
                                 </a>

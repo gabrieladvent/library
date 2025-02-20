@@ -28,7 +28,7 @@
   line-height: normal;
 }
 
-.head .tambah-buku {
+.head .tambah {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -41,7 +41,7 @@
   color: var(--dashbord, #0a7349);
 }
 
-.tambah-buku i {
+.tambah i {
   color: #0a7349;
 }
 
@@ -91,7 +91,7 @@
 
 .table th.th-kategory,
 .table th.th-jumlah {
-  width: 20px;
+  width: 9rem;
 }
 
 .table th.th-deskripsi {

@@ -17,7 +17,7 @@ $classForPopup = $class;
                 <div class="title">
                     <h1>Data Anggota </h1>
                 </div>
-                <a href="#popup" class="tambah-buku">
+                <a href="#popup" class="tambah">
                     <p>Tambah Data</p>
                     <i class='bx bxs-plus-square'></i>
                 </a>

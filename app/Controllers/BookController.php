@@ -85,6 +85,23 @@ class BookController extends BaseController
     }
 
 
+    public function ViewCategory()
+    {
+        $id_user = session('id_user');
+        if (!$id_user || !isset($id_user['id'])) {
+            return redirect()->back()->with('error', 'Session tidak valid');
+        }
+
+        try {
+            $decode_id = $this->encrypter->decrypt(base64_decode($id_user['id']));
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Dekripsi ID gagal');
+        }
+
+        $data['user'] = $this->user->getDataUserById($decode_id);
+        return view("Content/MasterData/kategori", $data);
+    }
+
     // public function index()
     // {
     //     $id_user = session('id_user');

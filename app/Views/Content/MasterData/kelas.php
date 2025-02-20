@@ -10,7 +10,7 @@ $encrypter = \Config\Services::encrypter(); ?>
                 <div class="title">
                     <h1>Data Kelas</h1>
                 </div>
-                <a href="#popup_addclass" class="tambah-buku">
+                <a href="#popup_addclass" class="tambah">
                     <p>Tambah Data</p>
                     <i class='bx bxs-plus-square'></i>
                 </a>

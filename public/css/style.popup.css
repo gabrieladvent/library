@@ -92,6 +92,31 @@
   transition: all 0.5s 0.1s;
 }
 
+.popup_AddCategory {
+  background-color: whitesmoke;
+  width: 35rem;
+  height: 14rem;
+  padding: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 8px 8px;
+  transform: translate(-50%, -50%) scale(0.25);
+  transition: all 0.5s 0.1s;
+}
+.popup_viewcategory {
+  background-color: whitesmoke;
+  width: 35rem;
+  height: 14rem;
+  padding: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 8px 8px;
+  transform: translate(-50%, -50%) scale(0.25);
+  transition: all 0.5s 0.1s;
+}
+
 .popup_lihat {
   /* background-color: antiquewhite; */
   background-color: whitesmoke;
@@ -143,6 +168,8 @@
   opacity: 1;
   transform: translate(-50%, -50%) scale(1);
 }
+
+/* addclass popup */
 #popup_addclass:target {
   opacity: 1;
   visibility: visible;
@@ -152,12 +179,35 @@
   opacity: 1;
   transform: translate(-50%, -50%) scale(1);
 }
+
+/* popup viewclass */
 #popup_viewClass:target {
   opacity: 1;
   visibility: visible;
 }
 
 #popup_viewClass:target .popup_viewclass {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* add popup category */
+#popup_addcategory:target {
+  opacity: 1;
+  visibility: visible;
+}
+
+#popup_addcategory:target .popup_AddCategory {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+/* view category */
+#popup_viewCategory:target {
+  opacity: 1;
+  visibility: visible;
+}
+
+#popup_viewCategory:target .popup_viewcategory {
   opacity: 1;
   transform: translate(-50%, -50%) scale(1);
 }
