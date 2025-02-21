@@ -61,6 +61,11 @@ class Books extends Migration
                 'constraint' => 5,
                 'null' => true,
             ],
+            'available_books' => [
+                'type' => 'INT',
+                'constraint' => 5,
+                'null' => true,
+            ],
             'cover_img' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,

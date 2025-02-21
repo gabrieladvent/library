@@ -40,8 +40,8 @@ class Loans extends Migration
             ],
             'status' => [
                 'type' => 'ENUM',
-                'constraint' => ['Pending', 'Borrowed', 'Returned', 'Overdue'],
-                'default' => 'pending',
+                'constraint' => ['Dipinjam', 'Diperpanjang', 'Dikembalikan', 'Terlambat'],
+                'default' => 'Dipinjam',
             ],
             'quantity' => [
                 'type' => 'INT',

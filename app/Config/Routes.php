@@ -27,6 +27,9 @@ $routes->group("user", function ($routes) {
 
     $routes->post('edit', 'UserController::editUser');
     $routes->get('delete', 'UserController::deleteUser');
+
+    $routes->get('all-user', 'UserController::getAllUsers');
+    $routes->get('class', 'UserController::getDataClassUser');
 });
 
 $routes->group("book", function ($routes) {
@@ -36,6 +39,9 @@ $routes->group("book", function ($routes) {
     $routes->post('add', 'BookController::addBook');
     $routes->post('edit', 'BookController::editBook');
     $routes->get('delete', 'BookController::deleteBook');
+
+    $routes->get('all-books', 'BookController::getAllBooks');
+    $routes->get('available', 'BookController::getDataBooks');
 });
 
 $routes->group("class", ['filter' => 'auth'], function ($routes) {
@@ -55,6 +61,9 @@ $routes->group("category", ['filter' => 'auth'], function ($routes) {
 
 $routes->group("loans", ['filter' => 'auth'], function ($routes) {
     $routes->get('list', 'LoansController::viewLoans');
+    $routes->get('add', 'LoansController::addLoans');
+    $routes->get('edit', 'LoansController::editLoans');
+    $routes->get('delete', 'LoansController::deleteLoans');
 });
 
 

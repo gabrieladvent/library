@@ -119,4 +119,12 @@ class BiodataUsersModel extends Model
     {
         return $this->where('class_id', $class_id)->countAllResults();
     }
+
+    public function getClassUser($id_user)
+    {
+        return $this->select('biodatausers.class_id, classes.class_name')
+            ->join('classes', 'classes.id = biodatausers.class_id', 'left')
+            ->where('biodatausers.id', $id_user) 
+            ->first();
+    }
 }

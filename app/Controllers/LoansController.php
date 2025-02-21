@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\LoansModel;
 use CodeIgniter\HTTP\ResponseInterface;
 use App\Models\UsersModel;
 
@@ -12,10 +13,12 @@ class LoansController extends BaseController
 
     protected $user;
     protected $encrypter;
+    protected $loans;
     public function __construct()
     {
         // Buat instance dari model yang digunakan
         $this->user = new UsersModel();
+        $this->loans = new LoansModel();
         $this->encrypter = \Config\Services::encrypter();
     }
 
@@ -31,8 +34,9 @@ class LoansController extends BaseController
     /* 
         dari parameter dan varaibel di atas 
         saya ingin kau buat fitur
-         menampilkan data, tambah data ,edit data dan delete data
+        menampilkan data, tambah data ,edit data dan delete data
         */
+
     public function viewLoans()
     {
         $id_user = session('id_user');
@@ -46,20 +50,24 @@ class LoansController extends BaseController
             return redirect()->back()->with('error', 'Dekripsi ID gagal');
         }
 
+        $loans = $this->loans->getAllLoans();
+
         $data['user'] = $this->user->getDataUserById($decode_id);
+        $data['loans'] = $loans;
         return view("Content/PeminjamanBuku/PinjamBuku", $data);
     }
-    public function AddLoans()
+    public function addLoans()
     {
         // tambah data
     }
 
-    public function EditLoans()
+    public function editLoans()
     {
         // edit data
     }
-    public function DeleteLoans()
+    public function deleteLoans()
     {
         // delete data 
     }
+
 }

@@ -133,7 +133,6 @@ class BookController extends BaseController
         try {
             // Simpan data ke database
             $cover_book = $this->uploadFiles($this->request->getFile('cover_img'), $this->request->getPost('book_name'));
-
             $data_book['cover_img'] = $cover_book['cover_img'];
 
             if ($this->book->save($data_book)) {
@@ -145,7 +144,6 @@ class BookController extends BaseController
             return ResponHelper::handlerErrorResponJson($e->getMessage(), 500);
         }
     }
-
 
     public function editBook()
     {
@@ -261,7 +259,6 @@ class BookController extends BaseController
         $decode_id = $this->encrypter->decrypt(base64_decode($id_book));
         return $decode_id;
     }
-
 
     private function getValidationRules($is_update = false)
     {
@@ -444,5 +441,23 @@ class BookController extends BaseController
 
         $this->category->update($id_decrypt, $data_category);
         return ResponHelper::handlerSuccessResponJson($data_category, 200);
+    }
+
+    public function getAllBooks()
+    {
+        $all_books = $this->book->getAllBooksShort();
+        return ResponHelper::handlerSuccessResponJson('success', 200, $all_books);
+    }
+
+    public function getDataBooks()
+    {
+        $id_book = $_GET['books'] ?? null;
+        $id_decrypt = $this->decryptId($id_book);
+
+        $available_books = $this->book->getAvailableBooks($id_decrypt);
+        if (empty($available_books)) {
+            return ResponHelper::handlerErrorResponJson(['error' => 'Book not found'], 404);
+        }
+        return ResponHelper::handlerSuccessResponJson('success', 200, $available_books);
     }
 }

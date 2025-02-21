@@ -23,47 +23,61 @@ $encrypter = \Config\Services::encrypter();
                     <thead>
                         <tr>
                             <th>No</th>
+                            <th class="th-kategory">Peminjam</th>
                             <th class="th-name">Judul Buku</th>
                             <th class="th-name">Penulis</th>
-                            <th class="th-tanggal">Tahun Peminjaman</th>
+                            <th class="th-tanggal">Tanggal Peminjaman</th>
                             <th class="th-tanggal">Tanggal Pengembalian</th>
                             <th class="th-jumlah">Jumlah Buku</th>
                             <th>Status</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
-                    <tbody>
 
-
+                    <?php foreach ($loans as $loan => $index): ?>
                         <tr>
-                            <td>1</td>
-                            <td>Andrea Hirata</td>
-                            <td>Laskar Pelangi</td>
-                            <td>2025-01-10</td>
-                            <td>2025-01-20</td>
-                            <td>2012</td>
+                            <td><?= $loan + 1 ?></td>
+                            <td><?= $index['fullname'] ?></td>
+                            <td><?= $index['book_name'] ?></td>
+                            <td><?= implode(", ", json_decode($index['author'], true)) ?></td>
+                            <td><?= date('d-m-Y', strtotime($index['loan_date'])) ?></td>
+                            <td><?= date('d-m-Y', strtotime($index['return_date_expected'])) ?></td>
+                            <td><?= $index['quantity'] ?></td>
                             <td>
                                 <div class="container_status">
-                                    <p class="status">dikembalikan</p>
+                                    <?php
+                                    $statusColors = [
+                                        'Menunggu' => 'background-color: #e6c9a7; color: #3e3d3c',
+                                        'Dipinjam' => 'background-color: rgb(236, 245, 164); color: #3e3d3c',
+                                        'Diperpanjang' => 'background-color: rgb(163, 212, 244); color: #3e3d3c',
+                                        'Dikembalikan' => 'background-color: rgb(136, 238, 155); color: #3e3d3c',
+                                        'Terlambat' => 'background-color: rgb(241, 121, 121); color: #3e3d3c'
+                                    ];
+
+                                    $status = $index['status'];
+                                    $style = isset($statusColors[$status]) ? $statusColors[$status] : 'background-color: #ccc; color: #3e3d3c';
+                                    ?>
+                                    <p class="status" style="<?= $style ?>"><?= htmlspecialchars($status) ?></p>
                                 </div>
                             </td>
 
                             <td>
                                 <div class="action-buttons">
-                                    <!-- Ubah button view menjadi: -->
-                                    <button onclick="viewDetailLoans(this)" class="btn btn-view" data-id="">
+                                    <button onclick="viewDetailLoans(this)" class="btn btn-view" data-id="<?= urlencode(base64_encode($encrypter->encrypt($index['id']))) ?>">
                                         <i class="bx bx-edit"></i> Kelolah
                                     </button>
-                                    <button class="btn btn-edit" onclick="Delete(this)" data-id="" data-name="">
+                                    <button class="btn btn-edit" onclick="Delete(this)" data-id="<?= urlencode(base64_encode($encrypter->encrypt($index['id']))) ?>">
                                         <i class="bx bx-trash"></i> Hapus
                                     </button>
 
                                 </div>
                             </td>
                         </tr>
-
+                    <?php endforeach ?>
                     </tbody>
                 </table>
+
+
                 <!-- pop add peminjaman -->
                 <div class="container__popup" id="popuploans">
                     <div class="popup_loans">
@@ -138,6 +152,8 @@ $encrypter = \Config\Services::encrypter();
                         </form>
                     </div>
                 </div>
+
+
                 <!-- kololah peminjaman popup -->
                 <div class="container__popup" id="popup__lihat">
                     <div class="popup">
@@ -213,6 +229,8 @@ $encrypter = \Config\Services::encrypter();
                         </form>
                     </div>
                 </div>
+
+
                 <!-- popup delete peminjaman -->
                 <div id="popup__delete" class="container__popup">
                     <div class="popup_delete">
@@ -240,7 +258,4 @@ $encrypter = \Config\Services::encrypter();
 </div>
 
 <script type="text/javascript" src="<?= base_url('js/loans.js') ?>"></script>
-
-
-z
 <?= $this->endSection() ?>

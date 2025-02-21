@@ -23,6 +23,7 @@ class BooksModel extends Model
         'description',
         'total_books',
         'total_copies',
+        'available_books',
         'cover_img'
     ];
 
@@ -84,7 +85,7 @@ class BooksModel extends Model
                 books.author, 
                 books.publisher,
                 books.year_published,
-                books.total_books, 
+                books.available_books, 
                 books.category_id, 
                 books.cover_img, 
                 books.publisher,
@@ -129,5 +130,15 @@ class BooksModel extends Model
     public function getDataByCategoryId($category_id)
     {
         return $this->where('category_id', $category_id)->countAllResults();
+    }
+
+    public function getAvailableBooks($id_book)
+    {
+        return $this->select('available_books')->where('id', $id_book)->first();
+    }
+
+    public function getAllBooksShort()
+    {
+        return $this->select('id, book_name')->findAll();
     }
 }

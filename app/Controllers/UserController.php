@@ -676,4 +676,22 @@ class UserController extends BaseController
             throw new \Exception('Dekripsi ID gagal: ' . $e->getMessage());
         }
     }
+
+    public function getAllUsers()
+    {
+        $all_user = $this->user->getAllUsers();
+        return ResponHelper::handlerSuccessResponJson('success', 200, $all_user);
+    }
+
+    public function getDataClassUser()
+    {
+        $id_user = $_GET['users'] ?? null;
+        // $id_decrypt = $this->decryptId($id_user);
+
+        $class_user = $this->biodata->getClassUser($id_user);
+        if (empty($class_user)) {
+            return ResponHelper::handlerErrorResponJson(['error' => 'User not found'], 404);
+        }
+        return ResponHelper::handlerSuccessResponJson('success', 200, $class_user);
+    }
 }

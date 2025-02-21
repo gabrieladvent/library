@@ -27,7 +27,7 @@ $encrypter = \Config\Services::encrypter();
                             <th>Penulis</th>
                             <th>Penerbit</th>
                             <th>Tahun Terbit</th>
-                            <th>Tanggal Ditambahkan</th>
+                            <th>Persediaan Buku</th>
                             <th>Sampull</th>
                             <th>Aksi</th>
                         </tr>
@@ -42,7 +42,7 @@ $encrypter = \Config\Services::encrypter();
                                     <td><?= esc($book['author']) ?></td>
                                     <td><?= esc($book['publisher'] ?? '') ?></td>
                                     <td><?= esc($book['year_published'] ?? '') ?></td>
-                                    <td><?= $book['created_at']  ?></td>
+                                    <td><?= esc($book['available_books'] ?? 0) ?> Buku</td>
                                     <td>
                                         <img
                                             src="<?= base_url($book['cover_img'] ?? '') ?>"
@@ -71,6 +71,8 @@ $encrypter = \Config\Services::encrypter();
                         <?php endif; ?>
                     </tbody>
                 </table>
+
+
                 <div class="container__popup" id="popup">
                     <div class="popup">
                         <div class="title">
@@ -126,14 +128,19 @@ $encrypter = \Config\Services::encrypter();
                                     </div>
                                     <div class="count_book">
                                         <div class="input-jumlah">
-                                            <label class="label" for="">Total copy</label>
-                                            <input class="input-count" type="number" name="total_copies" min="1" step="1" required>
+                                            <label class="label" for="total_copies">Total Copy</label>
+                                            <input class="input-count" type="number" id="total_copies_add" name="total_copies" min="1" step="1" required>
+                                        </div>
 
-                                        </div>
                                         <div class="input-jumlah">
-                                            <label class="label" for="">jumlah Buku</label>
-                                            <input class="input-count" type="number" name="total_books" min="1" step="1" required>
+                                            <label class="label" for="total_books">Jumlah Buku</label>
+                                            <input class="input-count" type="number" id="total_books_add" name="total_books" min="1" step="1" required>
                                         </div>
+
+                                        <div class="input-jumlah">
+                                            <input class="input-count" type="hidden" id="available_books_add" name="available_books" min="1" step="1" readonly>
+                                        </div>
+
                                     </div>
                                     <div class="input-content">
                                         <label class="label" for="">Deskripsi Buku </label>
@@ -153,6 +160,8 @@ $encrypter = \Config\Services::encrypter();
                         </form>
                     </div>
                 </div>
+
+
                 <div class="container__popup" id="popup__lihat">
                     <div class="popup">
                         <div class="title">
@@ -218,6 +227,9 @@ $encrypter = \Config\Services::encrypter();
                                             <label class="label" for="">jumlah Buku</label>
                                             <input class="input-count" type="number" id="total_books" name="total_books" min="1" max="1000" step="1" disabled>
                                         </div>
+                                        <div class="input-jumlah">
+                                            <input class="input-count" type="hidden" id="available_books" name="available_books" min="1" step="1" disabled>
+                                        </div>
                                     </div>
 
                                     <div class="input-content">
@@ -235,6 +247,8 @@ $encrypter = \Config\Services::encrypter();
                         </form>
                     </div>
                 </div>
+
+
                 <div id="popup__delete" class="container__popup">
                     <div class="popup_delete">
                         <div class="title_delete">
@@ -261,6 +275,37 @@ $encrypter = \Config\Services::encrypter();
 </div>
 
 <script type="text/javascript" src="<?= base_url('js/books.js') ?>"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const totalCopiesInput = document.getElementById("total_copies_add");
+        const totalBooksInput = document.getElementById("total_books_add");
+        const availableBooksInput = document.getElementById("available_books_add");
+
+        function updateAvailableBooks() {
+            const totalCopies = parseInt(totalCopiesInput.value) || 0;
+            const totalBooks = parseInt(totalBooksInput.value) || 0;
+            availableBooksInput.value = totalCopies + totalBooks;
+        }
+
+        totalCopiesInput.addEventListener("input", updateAvailableBooks);
+        totalBooksInput.addEventListener("input", updateAvailableBooks);
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const totalCopiesInput = document.getElementById("total_copies");
+        const totalBooksInput = document.getElementById("total_books");
+        const availableBooksInput = document.getElementById("available_books");
+
+        function updateAvailableBooks() {
+            const totalCopies = parseInt(totalCopiesInput.value) || 0;
+            const totalBooks = parseInt(totalBooksInput.value) || 0;
+            availableBooksInput.value = totalCopies + totalBooks;
+        }
+
+        totalCopiesInput.addEventListener("input", updateAvailableBooks);
+        totalBooksInput.addEventListener("input", updateAvailableBooks);
+    });
+</script>
 
 
 

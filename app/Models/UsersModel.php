@@ -168,4 +168,12 @@ class UsersModel extends Model
     {
         return $this->delete($id_user);
     }
+
+    public function getAllUsers()
+    {
+        return $this->select('users.id, users.role, biodatausers.fullname')
+            ->join('biodatausers', 'biodatausers.user_id = users.id', 'left')
+            ->where('users.role', 'User')
+            ->findAll();
+    }
 }

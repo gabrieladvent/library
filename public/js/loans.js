@@ -1,27 +1,3 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const today = new Date(); // Ambil tanggal hari ini
-  const rows = document.querySelectorAll("#peminjamanTable tbody tr");
-
-  rows.forEach((row) => {
-    const returnDateCell = row.cells[4]; // Ambil tanggal pengembalian
-
-    const statusCell = row.querySelector(".status"); // Kolom status
-
-    const returnDate = new Date(returnDateCell.textContent.trim());
-
-    // Logika status berdasarkan tanggal
-    if (returnDate < today) {
-      statusCell.textContent = "Terlambat";
-      statusCell.style.color = "red";
-      statusCell.style.backgroundColor = "#FADBD8";
-    } else {
-      statusCell.textContent = "Dipinjam";
-      statusCell.style.color = "#FFA500";
-      statusCell.style.backgroundColor = "#FFF4CC";
-    }
-  });
-});
-
 function viewDetailLoans(button) {
   const id = button.getAttribute("data-id");
   const popup = document.getElementById("popup__lihat");

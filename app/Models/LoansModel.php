@@ -54,6 +54,16 @@ class LoansModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    public function getAllLoans()
+    {
+        // Ambil semua data peminjaman
+        return $this
+            ->select('loans.*, books.book_name, books.author, users.id, biodatausers.fullname')
+            ->join('books', 'books.id = loans.book_id')
+            ->join('users', 'users.id = loans.user_id')
+            ->join('biodatausers', 'biodatausers.id = users.id')
+            ->findAll();
+    }
     /**
      * Menghitung jumlah peminjaman yang dilakukan dalam 7 hari terakhir
      * 
