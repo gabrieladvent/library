@@ -57,7 +57,7 @@ $routes->group("category", ['filter' => 'auth'], function ($routes) {
 $routes->get("categori/view", "BookController::ViewCategory");
 
 $routes->group("loans", ['filter' => 'auth'], function ($routes) {
-    $routes->get('dashboard', 'Admin::LoansController');
+    $routes->get('list', 'LoansController::viewLoans');
 });
 
 

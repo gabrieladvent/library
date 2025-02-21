@@ -38,6 +38,8 @@ function viewDetailClass(button) {
     },
   });
 }
+
+// combo box edit
 function toggleEditClass(checkbox) {
   // Ambil semua input di dalam form
   const inputs = document.querySelectorAll(
