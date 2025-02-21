@@ -4,9 +4,10 @@ namespace App\Controllers;
 
 use App\Models\BooksModel;
 use App\Models\LoansModel;
-use App\Helpers\ResponHelper;
-use App\Controllers\BaseController;
 use App\Models\UsersModel;
+use App\Helpers\ResponHelper;
+use App\Models\CategoriesModel;
+use App\Controllers\BaseController;
 
 class BookController extends BaseController
 {
@@ -29,6 +30,7 @@ class BookController extends BaseController
     protected $encrypter;
     protected $db;
     protected $user;
+    protected $category;
 
 
     /**
@@ -45,19 +47,11 @@ class BookController extends BaseController
         $this->user = new UsersModel();
         $this->book = new BooksModel();
         $this->loan = new LoansModel();
+        $this->category = new CategoriesModel();
         $this->encrypter = \Config\Services::encrypter();
         $this->db = \Config\Database::connect();
     }
 
-
-    /**
-     * Tampilkan halaman dashboard buku
-     * 
-     * Fungsi ini akan menampilkan halaman dashboard buku yang berisi list buku
-     * Fungsi ini akan mengirimkan data buku yang tersedia ke view
-     * 
-     * @return \CodeIgniter\HTTP\ResponseInterface
-     */
     public function index()
     {
         $id_user = session('id_user');
@@ -83,59 +77,6 @@ class BookController extends BaseController
 
         return view('Content/MasterData/buku', $data);
     }
-
-
-    public function ViewCategory()
-    {
-        $id_user = session('id_user');
-        if (!$id_user || !isset($id_user['id'])) {
-            return redirect()->back()->with('error', 'Session tidak valid');
-        }
-
-        try {
-            $decode_id = $this->encrypter->decrypt(base64_decode($id_user['id']));
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Dekripsi ID gagal');
-        }
-
-        $data['user'] = $this->user->getDataUserById($decode_id);
-        return view("Content/MasterData/kategori", $data);
-    }
-
-    // public function index()
-    // {
-    //     $id_user = session('id_user');
-    //     if (!$id_user || !isset($id_user['id'])) {
-    //         return redirect()->back()->with('error', 'Session tidak valid');
-    //     }
-
-    //     try {
-    //         $decode_id = $this->encrypter->decrypt(base64_decode($id_user['id']));
-    //     } catch (\Exception $e) {
-    //         return redirect()->back()->with('error', 'Dekripsi ID gagal');
-    //     }
-
-    //     // Mengambil data buku
-    //     $books = $this->book->getAllBook();
-
-    //     // Mengembalikan data sebagai JSON
-    //     return $this->response->setJSON($books);
-    // }
-
-
-    /**
-     * Tampilkan halaman detail buku
-     * 
-     * Fungsi ini akan menampilkan halaman detail buku yang berisi data buku
-     * Fungsi ini akan mengirimkan data buku dan jumlah peminjaman yang tersedia ke view
-     * 
-     * @param string $book_id id buku yang akan ditampilkan
-     * 
-     * @return \CodeIgniter\HTTP\ResponseInterface
-     * 
-     */
-
-
 
     public function viewDetailBook($book_id)
     {
@@ -322,17 +263,6 @@ class BookController extends BaseController
     }
 
 
-    /**
-     * Fungsi untuk mendapatkan aturan validasi inputan
-     * 
-     * Fungsi ini akan mengembalikan aturan validasi inputan
-     * yang akan digunakan untuk validasi inputan
-     * 
-     * @param boolean $is_update apakah data yang akan divalidasi
-     * adalah data yang akan diupdate atau tidak
-     * 
-     * @return array Aturan validasi inputan
-     */
     private function getValidationRules($is_update = false)
     {
         return [
@@ -407,12 +337,6 @@ class BookController extends BaseController
         ];
     }
 
-    /**
-     * Mengupload file sampul buku ke server
-     * 
-     * @param string $book_name Nama buku
-     * @return array Array yang berisi nama file yang diupload
-     */
     private function uploadFiles($photo, $name)
     {
         $field = "cover_img";
@@ -428,62 +352,6 @@ class BookController extends BaseController
         return $uploadedFiles;
     }
 
-
-    // private function uploadFiles($book_name)
-    // {
-    //     $field = "cover_img";
-    //     $uploadedFiles = [];
-
-    //     // Definisikan path upload yang benar
-    //     $uploadPath = FCPATH . 'public/uploads/' . $field;  // FCPATH mengarah ke root direktori public
-
-    //     // Cek dan buat direktori jika belum ada
-    //     if (!is_dir($uploadPath)) {
-    //         if (!mkdir($uploadPath, 0777, true)) {
-    //             throw new \RuntimeException('Gagal membuat direktori upload');
-    //         }
-    //     }
-
-    //     // Ambil file yang diupload
-    //     $file = $this->request->getFile($field);
-
-    //     // Validasi file
-    //     if (!$file || !$file->isValid()) {
-    //         throw new \RuntimeException('File tidak valid atau tidak ditemukan');
-    //     }
-
-    //     if ($file->hasMoved()) {
-    //         throw new \RuntimeException('File sudah dipindahkan');
-    //     }
-
-    //     try {
-    //         // Generate nama file
-    //         $fileName = $this->generateFileName($file, $book_name, $field);
-
-    //         // Pindahkan file
-    //         if ($file->move($uploadPath, $fileName)) {
-    //             // Simpan path relatif ke database
-    //             $uploadedFiles[$field] = 'uploads/' . $field . '/' . $fileName;
-
-    //             return $uploadedFiles;
-    //         } else {
-    //             throw new \RuntimeException('Gagal memindahkan file');
-    //         }
-    //     } catch (\Exception $e) {
-    //         log_message('error', 'Upload error: ' . $e->getMessage());
-    //         throw new \RuntimeException('Error saat upload file: ' . $e->getMessage());
-    //     }
-    // }
-
-
-    /**
-     * Mengenerate nama file yang unik untuk file yang diupload
-     * 
-     * @param \CodeIgniter\HTTP\Files\UploadedFile $file File yang diupload
-     * @param string $book_name Nama buku
-     * @param string $field Nama field yang diupload
-     * @return string Nama file yang diupload
-     */
     private function generateFileName($file, $book_name, $field)
     {
         $ext = $file->getClientExtension();
@@ -492,5 +360,89 @@ class BookController extends BaseController
         // Contoh: buku_satu_cover_img_1627209312.png
         $filename = strtolower($book_name . '_' . $field . '_' . time() . '.' . $ext);
         return $filename;
+    }
+
+    public function getAllCategories()
+    {
+        $id_user = session('id_user');
+        if (!$id_user || !isset($id_user['id'])) {
+            return redirect()->back()->with('error', 'Session tidak valid');
+        }
+
+        try {
+            $decode_id = $this->encrypter->decrypt(base64_decode($id_user['id']));
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Dekripsi ID gagal');
+        }
+
+        $all_category = $this->category->getAllCategory();
+        $data['user'] = $this->user->getDataUserById($decode_id);
+        $data['all_category'] = $all_category;
+
+        return view("Content/MasterData/kategori", $data);
+    }
+
+    public function addCategory()
+    {
+        $data_category = $this->request->getPost();
+        $isExists = $this->category->checkName($data_category['category_name']);
+
+        if ($isExists) {
+            return ResponHelper::handlerErrorResponRedirect('category/all', 'Kategori sudah ada');
+        }
+
+        try {
+            $this->category->insert($data_category);
+            return ResponHelper::handlerSuccessResponRedirect('category/all', 'Kategori berhasil ditambahkan');
+        } catch (\Throwable $th) {
+            return ResponHelper::handlerErrorResponRedirect('category/all', 'Kategori gagal ditambahkan');
+        }
+    }
+
+    public function deleteCategory()
+    {
+        $category_id = $_GET['category'] ?? null;
+        $id_decrypt = $this->decryptId($category_id);
+
+        $check_books = $this->book->getDataByCategoryId($id_decrypt);
+        if (!empty($check_books)) {
+            return ResponHelper::handlerErrorResponJson(['error' => 'Class still has users'], 400);
+        }
+
+        try {
+            $this->db->transStart();
+            $this->category->delete($id_decrypt);
+            $this->db->transComplete();
+
+            if ($this->db->transStatus() === false) {
+                return ResponHelper::handlerErrorResponJson('Database transaction failed', 500);
+            }
+
+            return ResponHelper::handlerSuccessResponJson(['message' => 'category deleted successfully'], 200);
+        } catch (\Exception $e) {
+            $this->db->transRollback();
+            return ResponHelper::handlerErrorResponJson($e->getMessage(), 500);
+        }
+    }
+
+    public function editCategory()
+    {
+        $id_category = $_GET['category'] ?? null;
+        $id_decrypt = $this->decryptId($id_category);
+        $category = $this->category->find($id_decrypt);
+
+        if (empty($category)) {
+            return ResponHelper::handlerErrorResponJson(['error' => 'Class not found'], 404);
+        }
+
+        $data_category = $this->request->getPost();
+        $isExist = $this->category->checkName($data_category['category_name']);
+
+        if ($isExist) {
+            return ResponHelper::handlerErrorResponJson(['error' => 'Nama kelas sudah ada'], 400);
+        }
+
+        $this->category->update($id_decrypt, $data_category);
+        return ResponHelper::handlerSuccessResponJson($data_category, 200);
     }
 }

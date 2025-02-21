@@ -1,10 +1,8 @@
 <?= $this->extend('Layouts/default') ?>
-
-
-<?= $this->section('content') ?>
+<?= $this->section('content');
+$encrypter = \Config\Services::encrypter(); ?>
 
 <head>
-
     <link rel="stylesheet" href="<?= base_url("css/style.table.css") ?>" />
     <link
         href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
@@ -31,36 +29,38 @@
                         <thead>
                             <tr>
                                 <th class="th-no">No</th>
-                                <th class="th-kategory">Category</th>
+                                <th class="th-kategory">Nama Kategori</th>
                                 <th class="th-deskripsi">Deskripsi</th>
                                 <th class="th-aksi">Aksi</th>
                             </tr>
                         </thead>
 
                         <tbody>
+                            <?php foreach ($all_category as $index => $key): ?>
+                                <tr>
+                                    <td><?= $index + 1 ?></td>
+                                    <td class="email"><?= $key['category_name'] ?></td>
+                                    <td class="email"><?= $key['description'] ?></td>
 
-                            <tr>
-                                <td>1</td>
-                                <td class="email">nama</td>
-                                <td class="email">hahahah</td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button onclick="viewDetailCategory(this)" class="btn btn-view" data-id="<?= urlencode(base64_encode($encrypter->encrypt($key['id']))) ?>">
+                                                <i class="bx bx-edit"></i> Edit 
+                                            </button>
 
-                                <td>
-                                    <div class="action-buttons">
-                                        <button onclick="viewDetailCategory(this)" class="btn btn-view" data-id="1">
-                                            <i class="bx bx-edit"></i> Kelolah
-                                        </button>
-
-                                        <button class="btn btn-edit" onclick="DeleteClass(this)" data-id="1" data-name="fisika">
-                                            <i class="bx bx-trash"></i> Hapus
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
+                                            <button class="btn btn-edit" onclick="DeleteClass(this)" data-id="<?= urlencode(base64_encode($encrypter->encrypt($key['id']))) ?>" data-name="<?= $key['category_name'] ?>">
+                                                <i class="bx bx-trash"></i> Hapus
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach ?>
 
                         </tbody>
 
 
                     </table>
+
                     <!-- add kategory -->
                     <div class="container__popup" id="popup_addcategory">
                         <div class="popup_AddCategory">
@@ -68,15 +68,21 @@
                                 <h1>Tambah Kategori</h1>
                                 <a href="" class="popup-close">&times;</a>
                             </div>
-                            <form action="<?= base_url('class/add') ?>" method="post" autocomplete="off" enctype="multipart/form-data">
+                            <form action="<?= base_url('category/add') ?>" method="post" autocomplete="off" enctype="multipart/form-data">
                                 <?= csrf_field() ?>
                                 <div class="container__input">
                                     <div class="status_input">
                                         <div class="input-content status">
                                             <label class="label" for="">Masukan Nama Kategory</label>
-                                            <input class="input-user" type="text" name="Category" placeholder="contoh Fisika">
+                                            <input class="input-user" type="text" name="category_name" placeholder="contoh Fisika">
                                         </div>
+                                    </div>
+                                </div>
 
+                                <div class="container__input">
+                                    <div class="input-content status">
+                                        <label class="label" for="">Masukan Deskripsi Kategori</label>
+                                        <textarea name="description" id="" cols="50" rows="2"></textarea>
                                     </div>
                                 </div>
                                 <div class="button">
@@ -104,7 +110,7 @@
                                     <div class="status_input">
                                         <div class="input-content status">
                                             <label class="label" for="">Masukan Nama Kelas</label>
-                                            <input class="input-user" type="text" id="class_name" name="class_name" disabled>
+                                            <input class="input-user" type="text" id="category_name" name="category_name" disabled>
                                         </div>
 
                                     </div>

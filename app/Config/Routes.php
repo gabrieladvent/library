@@ -53,9 +53,6 @@ $routes->group("category", ['filter' => 'auth'], function ($routes) {
     $routes->get('delete', 'BookController::deleteCategory');
 });
 
-// router coba view cateogry
-$routes->get("categori/view", "BookController::ViewCategory");
-
 $routes->group("loans", ['filter' => 'auth'], function ($routes) {
     $routes->get('dashboard', 'Admin::LoansController');
 });
