@@ -17,9 +17,9 @@ function viewDetailLoans(button) {
     dataType: "json",
     success: function (response) {
       if (response.success) {
-        const classdetial = response.data;
+        const loansdetial = response.data;
 
-        $("#fullname").val(classdetial.fullname);
+        $("#fullname").val(loansdetial.fullname);
 
         $("#formDetailUser").attr("data-user-id", id);
 

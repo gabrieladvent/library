@@ -52,8 +52,10 @@ class LoansController extends BaseController
 
         $loans = $this->loans->getAllLoans();
 
+
         $data['user'] = $this->user->getDataUserById($decode_id);
         $data['loans'] = $loans;
+        log_message("info", "data loans" . json_encode($data));
         return view("Content/PeminjamanBuku/PinjamBuku", $data);
     }
     public function addLoans()
@@ -69,5 +71,4 @@ class LoansController extends BaseController
     {
         // delete data 
     }
-
 }
