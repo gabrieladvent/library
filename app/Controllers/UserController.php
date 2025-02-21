@@ -686,7 +686,6 @@ class UserController extends BaseController
     public function getDataClassUser()
     {
         $id_user = $_GET['users'] ?? null;
-        // $id_decrypt = $this->decryptId($id_user);
 
         $class_user = $this->biodata->getClassUser($id_user);
         if (empty($class_user)) {

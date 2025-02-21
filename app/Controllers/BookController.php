@@ -452,9 +452,8 @@ class BookController extends BaseController
     public function getDataBooks()
     {
         $id_book = $_GET['books'] ?? null;
-        $id_decrypt = $this->decryptId($id_book);
 
-        $available_books = $this->book->getAvailableBooks($id_decrypt);
+        $available_books = $this->book->getAvailableBooks($id_book);
         if (empty($available_books)) {
             return ResponHelper::handlerErrorResponJson(['error' => 'Book not found'], 404);
         }
