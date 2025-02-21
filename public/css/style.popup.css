@@ -130,6 +130,18 @@
   transition: all 0.5s 0.1s;
 }
 
+.popup_loans {
+  background-color: whitesmoke;
+  width: 60rem;
+  height: 600px;
+  padding: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.25);
+  transition: all 0.5s 0.1s;
+}
+
 .img {
   display: flex;
   gap: 10px;
@@ -208,6 +220,16 @@
 }
 
 #popup_viewCategory:target .popup_viewcategory {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+/* view loans */
+#popuploans:target {
+  opacity: 1;
+  visibility: visible;
+}
+
+#popuploans:target .popup_loans {
   opacity: 1;
   transform: translate(-50%, -50%) scale(1);
 }

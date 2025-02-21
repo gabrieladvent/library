@@ -48,7 +48,7 @@
 
                     <!-- Peminjaman Buku -->
                     <div class="nav">
-                        <a class="nav-pinjam" href="/home/list" id="pinjam-buku-link">
+                        <a class="nav-pinjam" href="/loans/list" id="pinjam-buku-link">
                             <img src="<?= base_url("img/Group 17.png") ?>" alt="" />
                             <h3 class="text-nav">Peminjaman Buku</h3>
                         </a>

@@ -4,9 +4,20 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
+use App\Models\UsersModel;
 
 class LoansController extends BaseController
 {
+
+
+    protected $user;
+    protected $encrypter;
+    public function __construct()
+    {
+        // Buat instance dari model yang digunakan
+        $this->user = new UsersModel();
+        $this->encrypter = \Config\Services::encrypter();
+    }
 
     /*
     1. nama anggota (string) : nama_anggota
@@ -24,7 +35,19 @@ class LoansController extends BaseController
         */
     public function viewLoans()
     {
-        // tampil data
+        $id_user = session('id_user');
+        if (!$id_user || !isset($id_user['id'])) {
+            return redirect()->back()->with('error', 'Session tidak valid');
+        }
+
+        try {
+            $decode_id = $this->encrypter->decrypt(base64_decode($id_user['id']));
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Dekripsi ID gagal');
+        }
+
+        $data['user'] = $this->user->getDataUserById($decode_id);
+        return view("Content/PeminjamanBuku/PinjamBuku", $data);
     }
     public function AddLoans()
     {
