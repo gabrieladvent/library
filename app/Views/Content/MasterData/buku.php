@@ -146,8 +146,7 @@ $encrypter = \Config\Services::encrypter();
                                         <label class="label" for="">Deskripsi Buku </label>
                                         <textarea class="input alamat" id="alamat" name="description" rows="4" cols="50" placeholder="Masukkan alamat lengkap Anda" required></textarea>
 
-                                        <div>
-                                        </div>
+
                                     </div>
                                 </div>
 

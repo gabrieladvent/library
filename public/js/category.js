@@ -16,12 +16,15 @@ function viewDetailCategory(button) {
     type: "GET",
     dataType: "json",
     success: function (response) {
+      console.log(response);
+
       if (response.success) {
-        const classdetial = response.data;
+        const categoridetail = response.data;
 
         // Populate form fields
         // Add fields based on your form structure
-        $("#category").val(classdetial.category);
+        $("#category").val(categoridetail.category_name);
+        $("#description").val(categoridetail.description);
 
         // ... add other fields
 
@@ -85,7 +88,7 @@ function closePopupCategory() {
 }
 
 // delete cateogory function
-function DeleteClass(button) {
+function DeleteCategory(button) {
   const id_class = button.getAttribute("data-id");
   const userType = button.getAttribute("data-type"); // Ambil tipe pengguna (Admin atau Anggota)
   const userName = button.getAttribute("data-name");
@@ -103,18 +106,18 @@ function DeleteClass(button) {
 
   document.getElementById("confirmDelete").onclick = function () {
     $.ajax({
-      url: `${window.location.origin}/categori/delete?categori=${id_class}`,
+      url: `${window.location.origin}/category/delete?category=${id_class}`,
       type: "GET",
       dataType: "json",
       success: function (response) {
         closeDeletePopup(); // Tutup popup
         // Redirect ke halaman yang sesuai dengan tipe
-        window.location.href = `/categori/view`;
+
         if (response.status === "success") {
           Toastify({
             className: "notif bx bxs-check-circle",
             text: " Data Berhasil di Hapus",
-            duration: 3000,
+            duration: 5000,
             gravity: "top",
             position: "right",
             backgroundColor: "#D9FFF0",
@@ -125,13 +128,12 @@ function DeleteClass(button) {
             },
             escapeHTML: false,
           }).showToast();
-        } else {
-          window.location.href = `/categori/view`;
+          window.location.href = ``;
         }
       },
       error: function (xhr, status, error) {
         closeDeletePopup();
-        window.location.href = `/categori/view`;
+        window.location.href = `/`;
       },
     });
   };

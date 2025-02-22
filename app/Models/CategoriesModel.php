@@ -58,4 +58,9 @@ class CategoriesModel extends Model
     {
         return $this->findAll();
     }
+
+    public function getDetailCategoryById($id)
+    {
+        return $this->where('id', $id)->first();
+    }
 }
