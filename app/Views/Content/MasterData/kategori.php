@@ -45,10 +45,10 @@ $encrypter = \Config\Services::encrypter(); ?>
                                     <td>
                                         <div class="action-buttons">
                                             <button onclick="viewDetailCategory(this)" class="btn btn-view" data-id="<?= urlencode(base64_encode($encrypter->encrypt($key['id']))) ?>">
-                                                <i class="bx bx-edit"></i> Edit 
+                                                <i class="bx bx-edit"></i> Edit
                                             </button>
 
-                                            <button class="btn btn-edit" onclick="DeleteClass(this)" data-id="<?= urlencode(base64_encode($encrypter->encrypt($key['id']))) ?>" data-name="<?= $key['category_name'] ?>">
+                                            <button class="btn btn-edit" onclick="DeleteCategory(this)" data-id="<?= urlencode(base64_encode($encrypter->encrypt($key['id']))) ?>" data-name="<?= $key['category_name'] ?>">
                                                 <i class="bx bx-trash"></i> Hapus
                                             </button>
                                         </div>
@@ -78,13 +78,15 @@ $encrypter = \Config\Services::encrypter(); ?>
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="container__input">
-                                    <div class="input-content status">
-                                        <label class="label" for="">Masukan Deskripsi Kategori</label>
-                                        <textarea name="description" id="" cols="50" rows="2"></textarea>
+                                    <div class="input-content">
+                                        <label class="label" for="">Deskripsi </label>
+                                        <textarea class="input alamat" id="alamat" name="description" rows="4" cols="50" placeholder="Masukkan alamat lengkap Anda" required></textarea>
+
+
                                     </div>
                                 </div>
+
                                 <div class="button">
                                     <button class="batal batal_add" type="button">Batal</button>
                                     <button class="simpan" type="submit">Simpan</button>
@@ -100,8 +102,7 @@ $encrypter = \Config\Services::encrypter(); ?>
                             <div class="title">
                                 <div class="form-group">
                                     <h1>Lihat Data</h1>
-                                    <input type="checkbox" id="enableEdit" onchange="toggleEditCategory(this)">
-                                    <label for="enableEdit">Aktifkan Mode Edit</label>
+
                                 </div>
                             </div>
                             <form id="formDetailUser" method="POST" autocomplete="off" enctype="multipart/form-data">
@@ -109,9 +110,18 @@ $encrypter = \Config\Services::encrypter(); ?>
                                 <div class="container__input">
                                     <div class="status_input">
                                         <div class="input-content status">
-                                            <label class="label" for="">Masukan Nama Kelas</label>
-                                            <input class="input-user" type="text" id="category_name" name="category_name" disabled>
+                                            <label class="label" for="">Kategori</label>
+                                            <input class="input-user" type="text" id="category" name="category_name">
                                         </div>
+
+
+                                    </div>
+                                </div>
+                                <div class="container__input">
+                                    <div class="input-content">
+                                        <label class="label" for="">Deskripsi </label>
+                                        <textarea class="input alamat" id="description" name="description" rows="4" cols="50" required></textarea>
+
 
                                     </div>
                                 </div>
@@ -135,7 +145,7 @@ $encrypter = \Config\Services::encrypter(); ?>
                             </div>
                             <div class="popup__content">
                                 <div class="title_delete">
-                                    <h3>Apakah anda yakin ingin menghapus admin?</h3>
+                                    <h3>Apakah anda yakin ingin menghapus Kategori?</h3>
                                     <p></p>
                                 </div>
                                 <div class="button-delete">

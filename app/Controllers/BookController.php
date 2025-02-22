@@ -379,6 +379,42 @@ class BookController extends BaseController
         return view("Content/MasterData/kategori", $data);
     }
 
+    public function viewDetailCategory()
+    {
+        $id_category = $this->request->getGet('category');
+        if (!$id_category) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'ID kategori tidak ditemukan'
+            ])->setStatusCode(400);
+        }
+
+        try {
+            $id_decrypt = $this->decryptId($id_category);
+            $categoryData = $this->category->getDetailCategoryById($id_decrypt);
+
+            if (!$categoryData) {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => 'Data kategori tidak ditemukan'
+                ])->setStatusCode(404);
+            }
+
+            return $this->response->setJSON([
+                'success' => true,
+                'data' => $categoryData
+            ]);
+        } catch (\Exception $e) {
+            log_message('error', 'Error in viewDetailCategory: ' . $e->getMessage());
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat mengambil data kategori'
+            ])->setStatusCode(500);
+        }
+    }
+
+
+
     public function addCategory()
     {
         $data_category = $this->request->getPost();
@@ -429,14 +465,14 @@ class BookController extends BaseController
         $category = $this->category->find($id_decrypt);
 
         if (empty($category)) {
-            return ResponHelper::handlerErrorResponJson(['error' => 'Class not found'], 404);
+            return ResponHelper::handlerErrorResponRedirect("category/all", "terjadi kesalahan");
         }
 
         $data_category = $this->request->getPost();
         $isExist = $this->category->checkName($data_category['category_name']);
 
         if ($isExist) {
-            return ResponHelper::handlerErrorResponJson(['error' => 'Nama kelas sudah ada'], 400);
+            return ResponHelper::handlerSuccessResponRedirect("category/all", "Data berhasil diedit");
         }
 
         $this->category->update($id_decrypt, $data_category);

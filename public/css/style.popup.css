@@ -95,7 +95,7 @@
 .popup_AddCategory {
   background-color: whitesmoke;
   width: 35rem;
-  height: 14rem;
+  height: 25rem;
   padding: 20px;
   position: absolute;
   top: 50%;
@@ -107,7 +107,7 @@
 .popup_viewcategory {
   background-color: whitesmoke;
   width: 35rem;
-  height: 14rem;
+  height: 25rem;
   padding: 20px;
   position: absolute;
   top: 50%;

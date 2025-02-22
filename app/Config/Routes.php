@@ -54,6 +54,7 @@ $routes->group("class", ['filter' => 'auth'], function ($routes) {
 
 $routes->group("category", ['filter' => 'auth'], function ($routes) {
     $routes->get('all', 'BookController::getAllCategories');
+    $routes->get('list', 'BookController::viewDetailCategory');
     $routes->post('add', 'BookController::addCategory');
     $routes->post('edit', 'BookController::editCategory');
     $routes->get('delete', 'BookController::deleteCategory');
