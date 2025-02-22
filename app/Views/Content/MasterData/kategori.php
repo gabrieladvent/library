@@ -101,7 +101,7 @@ $encrypter = \Config\Services::encrypter(); ?>
                         <div class="popup_viewcategory">
                             <div class="title">
                                 <div class="form-group">
-                                    <h1>Lihat Data</h1>
+                                    <h1>Edit Kategory</h1>
 
                                 </div>
                             </div>

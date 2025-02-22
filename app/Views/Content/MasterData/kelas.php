@@ -36,7 +36,7 @@ $encrypter = \Config\Services::encrypter(); ?>
                                         <td>
                                             <div class="action-buttons">
                                                 <button onclick="viewDetailClass(this)" class="btn btn-view" data-id="<?= urlencode(base64_encode($encrypter->encrypt($class['id']))) ?>">
-                                                    <i class="bx bx-edit"></i> Kelolah
+                                                    <i class="bx bx-edit"></i> Edit
                                                 </button>
 
                                                 <button class="btn btn-edit" onclick="DeleteClass(this)" data-id="<?= urlencode(base64_encode($encrypter->encrypt($class['id']))) ?>" data-name="<?= $class['class_name'] ?>">
@@ -83,9 +83,8 @@ $encrypter = \Config\Services::encrypter(); ?>
                         <div class="popup_viewclass">
                             <div class="title">
                                 <div class="form-group">
-                                    <h1>Lihat Data</h1>
-                                    <input type="checkbox" id="enableEdit" onchange="toggleEditClass(this)">
-                                    <label for="enableEdit">Aktifkan Mode Edit</label>
+                                    <h1>Edit class</h1>
+
                                 </div>
                             </div>
                             <form id="formDetailUser" method="POST" autocomplete="off" enctype="multipart/form-data">
@@ -94,7 +93,7 @@ $encrypter = \Config\Services::encrypter(); ?>
                                     <div class="status_input">
                                         <div class="input-content status">
                                             <label class="label" for="">Masukan Nama Kelas</label>
-                                            <input class="input-user" type="text" id="class_name" name="class_name" disabled>
+                                            <input class="input-user" type="text" id="class_name" name="class_name">
                                         </div>
 
                                     </div>
