@@ -48,7 +48,7 @@ $classForPopup = $class;
                                         <td class="email"><?= $key['identification'] ?> </td>
                                         <td class="email"><?= $key['address'] ?> </td>
                                         <td class="email"><?= $key['phone'] ?> </td>
-                                        <td class="email"><?= $key['created_at'] ?> </td>
+                                        <td class="email"><?= $key['class_name'] ?> </td>
 
                                         <td>
                                             <div class="action-buttons">
@@ -59,7 +59,7 @@ $classForPopup = $class;
 
 
                                                 <button class="btn btn-edit" onclick="DeleteAnggota(this)" data-id="<?= urlencode(base64_encode($encrypter->encrypt($key['id']))) ?>" data-name="<?= $key['fullname'] ?>" data-type="Anggota">
-                                                    <i class="bx bx-trash"></i> Hapus>
+                                                    <i class="bx bx-trash"></i> Hapus
                                                 </button>
 
                                             </div>

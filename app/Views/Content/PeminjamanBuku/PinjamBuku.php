@@ -33,81 +33,53 @@ $encrypter = \Config\Services::encrypter();
                             <th>Aksi</th>
                         </tr>
                     </thead>
-                    <!-- <tbody>
-                        <?php foreach ($loans as $loan => $index): ?>
-                            <tr>
-                                <td><?= $loan + 1 ?></td>
-                                <td><?= $index['fullname'] ?></td>
-                                <td><?= $index['book_name'] ?></td>
-                                <td><?= implode(", ", json_decode($index['author'], true)) ?></td>
-                                <td><?= date('d-m-Y', strtotime($index['loan_date'])) ?></td>
-                                <td><?= date('d-m-Y', strtotime($index['return_date_expected'])) ?></td>
-                                <td><?= $index['quantity'] ?></td>
-                                <td>
-                                    <div class="container_status">
-                                        <?php
-                                        $statusColors = [
-                                            'Menunggu' => 'background-color: #e6c9a7; color: #3e3d3c',
-                                            'Dipinjam' => 'background-color: rgb(236, 245, 164); color: #3e3d3c',
-                                            'Diperpanjang' => 'background-color: rgb(163, 212, 244); color: #3e3d3c',
-                                            'Dikembalikan' => 'background-color: rgb(136, 238, 155); color: #3e3d3c',
-                                            'Terlambat' => 'background-color: rgb(241, 121, 121); color: #3e3d3c'
-                                        ];
-
-                                        $status = $index['status'];
-                                        $style = isset($statusColors[$status]) ? $statusColors[$status] : 'background-color: #ccc; color: #3e3d3c';
-                                        ?>
-                                        <p class="status" style="<?= $style ?>"><?= htmlspecialchars($status) ?></p>
-                                    </div>
-                                </td>
-
-                                <td>
-                                    <div class="action-buttons">
-                                        <button onclick="viewDetailLoans(this)" class="btn btn-view" data-id="<?= urlencode(base64_encode($encrypter->encrypt($index['id']))) ?>">
-                                            <i class="bx bx-edit"></i> Kelolah
-                                        </button>
-                                        <button class="btn btn-edit" onclick="Delete(this)" data-id="<?= urlencode(base64_encode($encrypter->encrypt($index['id']))) ?>">
-                                            <i class="bx bx-trash"></i> Hapus
-                                        </button>
-
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php endforeach ?>
-                    </tbody> -->
-
-                    <!-- contoh -->
                     <tbody>
+                        <?php if (!empty($loans)): ?>
+                            <?php foreach ($loans as $loan => $index): ?>
+                                <tr>
+                                    <td><?= $loan + 1 ?></td>
+                                    <td><?= $index['fullname'] ?></td>
+                                    <td><?= $index['book_name'] ?></td>
+                                    <td><?= implode(", ", json_decode($index['author'], true)) ?></td>
+                                    <td><?= date('d-m-Y', strtotime($index['loan_date'])) ?></td>
+                                    <td><?= date('d-m-Y', strtotime($index['return_date_expected'])) ?></td>
+                                    <td><?= $index['quantity'] ?></td>
+                                    <td>
+                                        <div class="container_status">
+                                            <?php
+                                            $statusColors = [
+                                                'Menunggu' => 'background-color: #e6c9a7; color: #3e3d3c',
+                                                'Dipinjam' => 'background-color: rgb(236, 245, 164); color: #3e3d3c',
+                                                'Diperpanjang' => 'background-color: rgb(163, 212, 244); color: #3e3d3c',
+                                                'Dikembalikan' => 'background-color: rgb(136, 238, 155); color: #3e3d3c',
+                                                'Terlambat' => 'background-color: rgb(241, 121, 121); color: #3e3d3c'
+                                            ];
 
+                                            $status = $index['status'];
+                                            $style = isset($statusColors[$status]) ? $statusColors[$status] : 'background-color: #ccc; color: #3e3d3c';
+                                            ?>
+                                            <p class="status" style="<?= $style ?>"><?= htmlspecialchars($status) ?></p>
+                                        </div>
+                                    </td>
 
-                        <tr>
-                            <td>1</td>
-                            <td>Andrea Hirata</td>
-                            <td>Laskar Pelangi</td>
-                            <td>Laskar Pelangi</td>
-                            <td>2025-01-10</td>
-                            <td>2025-01-20</td>
-                            <td>2012</td>
-                            <td>
-                                <div class="container_status">
-                                    <p class="status">dikembalikan</p>
-                                </div>
-                            </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button onclick="viewDetailLoans(this)" class="btn btn-view" data-id="<?= urlencode(base64_encode($encrypter->encrypt($index['id']))) ?>">
+                                                <i class="bx bx-edit"></i> Kelolah
+                                            </button>
+                                            <button class="btn btn-edit" onclick="Delete(this)" data-id="<?= urlencode(base64_encode($encrypter->encrypt($index['id']))) ?>">
+                                                <i class="bx bx-trash"></i> Hapus
+                                            </button>
 
-                            <td>
-                                <div class="action-buttons">
-                                    <!-- Ubah button view menjadi: -->
-                                    <button onclick="viewDetailLoans(this)" class="btn btn-view" data-id="">
-                                        <i class="bx bx-edit"></i> Kelolah
-                                    </button>
-                                    <button class="btn btn-edit" onclick="Delete(this)" data-id="" data-name="">
-                                        <i class="bx bx-trash"></i> Hapus
-                                    </button>
-
-                                </div>
-                            </td>
-                        </tr>
-
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="9" style="text-align: center;">Data tidak tersedia.</td>
+                            </tr>
+                        <?php endif ?>
                     </tbody>
                 </table>
 
@@ -119,80 +91,57 @@ $encrypter = \Config\Services::encrypter();
                             <h1>Tambah Peminjaman</h1>
                             <a href="" class="popup-close">&times;</a>
                         </div>
-                        <form action="<?= base_url('loans/add') ?>" method="post" autocomplete="off" enctype="multipart/form-data">
+                        <form action="<?= base_url('loans/add') ?>" method="POST" autocomplete="off" enctype="multipart/form-data">
                             <?= csrf_field() ?>
                             <div class="container__input">
                                 <div class="satu">
-                                    <h1 class="subtitle">Formulir Peminjaman</h1>
+                                    <h1 class="subtitle">Data Anggota</h1>
                                     <div class="input-content">
                                         <label class="label" for="">Nama Anggota</label>
-                                        <select class="input" id="status" name="fullname">
-                                            <option id="loans_status" value="">anggota</option>
-                                            <option value="2">Gab</option>
-                                            <option value="3">Kelvin keleden</option>
-                                        </select>
+                                        <select class="input" id="status" name="user_id"></select>
                                     </div>
                                     <div class="count_book">
                                         <div class="input-jumlah">
                                             <label class="label" for="">Kelas</label>
-                                            <input class="input-count" type="text" value="X1-A" name="book_name" readonly />
-
+                                            <input class="input-count" type="text" name="class_name" readonly />
                                         </div>
-
-
                                     </div>
 
                                     <div class="input-content">
-
                                         <label class="label" for="">Catatan </label>
-                                        <textarea class="input alamat" id="alamat" name="description" rows="4" cols="50" placeholder="Masukkan alamat lengkap Anda" required></textarea>
-
-
+                                        <textarea class="input alamat" id="alamat" name="notes" rows="4" cols="50" placeholder="Tambahkan catatan..."></textarea>
                                     </div>
-
                                 </div>
+
                                 <div class="dua">
-                                    <h1 class="subtitle">Formulir Peminjaman</h1>
+                                    <h1 class="subtitle">Data Buku</h1>
                                     <div class="input-content">
                                         <label class="label" for="">Judul Buku</label>
-                                        <select class="input" id="status" name="fullname">
-                                            <option id="loans_status" value="">anggota</option>
-                                            <option value="2">Gab</option>
-                                            <option value="3">Kelvin keleden</option>
-                                        </select>
+                                        <select class="input" id="status" name="book_id"></select>
                                     </div>
                                     <div class="count_book">
                                         <div class="input-jumlah">
-                                            <label class="label" for="">tersedia</label>
-                                            <input class="input-count" type="text" value="21" name="book_name" />
+                                            <label class="label" for="">Persediaan</label>
+                                            <input class="input-count" type="text" name="available_books" readonly />
 
                                         </div>
                                         <div class="input-jumlah">
                                             <label class="label" for="">Jumlah Yang dipinjam</label>
-                                            <input class="input-count" type="number" name="total_books" min="1" step="1" required>
+                                            <input class="input-count" type="number" name="quantity" min="1" step="1" required>
                                         </div>
                                     </div>
 
                                     <div class="count_book">
                                         <div class="input-jumlah">
-                                            <label class="label" for="">Tanggal Pengembalian</label>
-                                            <input class="input-count" type="date" name="publisher" />
+                                            <label class="label" for="">Tanggal Peminjaman</label>
+                                            <input class="input-count" type="date" name="loan_date" value="<?php date('d-m-y', time()) ?>" readonly />
                                         </div>
                                         <div class="input-jumlah">
-                                            <label class="label" for="">Kategori</label>
-                                            <select class="input-count" id="status" name="fullname">
-                                                <option id="loans_status" value="">Kategori</option>
-                                                <option value="2">fiksi</option>
-                                                <option value="3">nonfiksi</option>
-                                            </select>
+                                            <label class="label" for="">Tanggal Pengembalian</label>
+                                            <input class="input-count" type="date" name="return_date_expected" />
                                         </div>
-
                                     </div>
-
-
                                 </div>
-
-
                             </div>
                             <div class="button">
                                 <button class="batal batal_add" type="button">Batal</button>
@@ -322,4 +271,99 @@ $encrypter = \Config\Services::encrypter();
 </div>
 
 <script type="text/javascript" src="<?= base_url('js/loans.js') ?>"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const totalBooksInput = document.querySelector("input[name='quantity']");
+        const availableInput = document.querySelector("input[name='available_books']");
+
+        const errorMessage = document.createElement("div");
+        errorMessage.style.color = "red";
+        errorMessage.style.fontSize = "12px";
+        errorMessage.style.marginTop = "5px";
+        totalBooksInput.insertAdjacentElement("afterend", errorMessage);
+
+        totalBooksInput.addEventListener("input", function() {
+            const availableBooks = parseInt(availableInput.value, 10) || 0;
+            const totalBooks = parseInt(totalBooksInput.value, 10) || 0;
+
+            if (totalBooks > availableBooks) {
+                errorMessage.textContent = "Jumlah yang dipinjam melebihi jumlah yang tersedia!";
+                totalBooksInput.style.borderColor = "red";
+            } else {
+                errorMessage.textContent = "";
+                totalBooksInput.style.borderColor = "";
+            }
+        });
+    });
+
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const today = new Date();
+        const nextWeek = new Date();
+        nextWeek.setDate(today.getDate() + 7);
+
+        const formatDate = (date) => {
+            return date.toISOString().split("T")[0];
+        };
+
+        document.querySelector("input[name='loan_date']").value = formatDate(today);
+        document.querySelector("input[name='return_date_expected']").value = formatDate(nextWeek);
+    });
+
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const memberSelect = document.querySelector("select[name='user_id']");
+        const classInput = document.querySelector("input[name='class_name']");
+        const bookSelect = document.querySelector("select[name='book_id']");
+        const availableInput = document.querySelector("input[name='available_books']");
+
+        fetch(`${window.location.origin}/user/all-user`)
+            .then(response => response.json())
+            .then(data => {
+                memberSelect.innerHTML = '<option value="">Pilih Anggota</option>';
+                data.data.forEach(member => {
+                    memberSelect.innerHTML += `<option value="${member.id}">${member.fullname}</option>`;
+                });
+            });
+
+        memberSelect.addEventListener("change", function() {
+            const memberId = this.value;
+            if (memberId) {
+                fetch(`${window.location.origin}/user/class?users=${memberId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        classInput.value = data.data.class_name;
+                    });
+            } else {
+                classInput.value = "";
+            }
+        });
+
+        fetch(`${window.location.origin}/book/all-books`)
+            .then(response => response.json())
+            .then(data => {
+                bookSelect.innerHTML = '<option value="">Pilih Buku</option>';
+                data.data.forEach(book => {
+                    if (book.available_books > 0) {
+                        bookSelect.innerHTML += `<option value="${book.id}">${book.book_name}</option>`;
+                    } else {
+                        bookSelect.innerHTML += `<option value="${book.id}" disabled>${book.book_name}</option>`;
+                    }
+                });
+            });
+
+        bookSelect.addEventListener("change", function() {
+            const bookId = this.value;
+            if (bookId) {
+                fetch(`${window.location.origin}/book/available?books=${bookId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        availableInput.value = data.data.available_books;
+                    });
+            } else {
+                availableInput.value = "";
+            }
+        });
+    });
+</script>
 <?= $this->endSection() ?>

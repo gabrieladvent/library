@@ -74,6 +74,8 @@ class BookController extends BaseController
 
         $data['books'] = $books;
         $data['user'] = $this->user->getDataUserById($decode_id);
+        $data['categories'] = $this->category->getAllCategory();
+        // dd($data);
 
         return view('Content/MasterData/buku', $data);
     }
@@ -156,19 +158,15 @@ class BookController extends BaseController
         $data_book_from_db = $this->book->getDataById($id_book);
 
         if (empty($data_book) || !$data_book_from_db) {
-            log_message('error', 'Request data is empty.');
             return ResponHelper::handlerErrorResponJson('Data tidak valid.', 400);
         }
 
 
         try {
-            // Handle file upload jika ada
             $image = $this->request->getFile('cover_img');
             if ($image && $image->isValid() && !$image->hasMoved()) {
-                // Perbaikan disini: gunakan book_name bukan fullname
                 $cover_img_new = $this->uploadFiles($image, $data_book['book_name']);
 
-                // Hapus file lama
                 $cover_img_old = $data_book_from_db['cover_img'];
                 if (!empty($cover_img_old) && file_exists($cover_img_old)) {
                     unlink($cover_img_old);
@@ -179,14 +177,12 @@ class BookController extends BaseController
                 $data_book['cover_img'] = $data_book_from_db['cover_img'];
             }
 
-            // Proses author
             $author = $this->request->getPost('author');
             $data_book['author'] = json_encode(is_array($author) ? $author : [$author]);
-
-            // Debug: log final data
+            $data_book['category_id'] = $data_book['category_name'];
+            unset($data_book['category_name']);
             log_message('debug', 'Final data untuk update: ' . print_r($data_book, true));
 
-            // Update buku
             $updated = $this->book->update($id_book, $data_book);
 
             if ($updated === false) {
@@ -413,8 +409,6 @@ class BookController extends BaseController
         }
     }
 
-
-
     public function addCategory()
     {
         $data_category = $this->request->getPost();
@@ -439,7 +433,7 @@ class BookController extends BaseController
 
         $check_books = $this->book->getDataByCategoryId($id_decrypt);
         if (!empty($check_books)) {
-            return ResponHelper::handlerErrorResponJson(['error' => 'Class still has users'], 400);
+            return ResponHelper::handlerErrorResponJson(['error' => 'Category still has Books'], 400);
         }
 
         try {

@@ -20,6 +20,7 @@ class BookSeeder extends Seeder
                 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatum harum voluptates odio quisquam, hic nam neque ab itaque non nostrum voluptate, dicta doloremque corporis voluptatem provident officia? Earum, quasi libero.',
                 'total_books' => 20,
                 'total_copies' => 20,
+                'available_books' => 40,
                 'cover_img' => null,
             ],
             [
@@ -33,6 +34,7 @@ class BookSeeder extends Seeder
                 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatum harum voluptates odio quisquam, hic nam neque ab itaque non nostrum voluptate, dicta doloremque corporis voluptatem provident officia? Earum, quasi libero. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatum harum voluptates odio quisquam, hic nam neque ab itaque non nostrum voluptate, dicta doloremque corporis voluptatem provident officia? Earum, quasi libero.',
                 'total_books' => 40,
                 'total_copies' => 20,
+                'available_books' => 60,
                 'cover_img' => null,
             ],
             [
@@ -45,7 +47,8 @@ class BookSeeder extends Seeder
                 'description' =>
                 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatum harum voluptates odio quisquam, hic nam neque ab itaque non nostrum voluptate, dicta doloremque corporis voluptatem provident officia? Earum, quasi libero. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatum harum voluptates odio quisquam, hic nam neque ab itaque non nostrum voluptate, dicta doloremque corporis voluptatem provident officia? Earum, quasi libero. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatum harum voluptates odio quisquam, hic nam neque ab itaque non nostrum voluptate, dicta doloremque corporis voluptatem provident officia? Earum, quasi libero.',
                 'total_books' => 10,
-                'total_copies' => 10,
+                'total_copies' => 0,
+                'available_books' => 0,
                 'cover_img' => null,
             ],
         ];

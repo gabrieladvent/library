@@ -78,8 +78,9 @@ class UsersModel extends Model
     {
         return $this
             ->select('users.id, users.email, users.username, users.role, biodatausers.fullname, biodatausers.identification, 
-                    biodatausers.address, biodatausers.phone, biodatausers.created_at')
+                    biodatausers.address, biodatausers.phone, biodatausers.created_at, biodatausers.class_id, classes.class_name')
             ->join('biodatausers', 'biodatausers.user_id = users.id', 'left')
+            ->join('classes', 'classes.id = biodatausers.class_id', 'left')
             ->where('users.role', $role)
             ->findAll();
     }

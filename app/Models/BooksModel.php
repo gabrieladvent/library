@@ -139,6 +139,6 @@ class BooksModel extends Model
 
     public function getAllBooksShort()
     {
-        return $this->select('id, book_name')->findAll();
+        return $this->select('id, book_name, available_books')->findAll();
     }
 }

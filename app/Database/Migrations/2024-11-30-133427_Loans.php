@@ -26,8 +26,13 @@ class Loans extends Migration
                 'unsigned' => true,
                 'constraint' => 5,
             ],
+            'pelayan_id' => [
+                'type' => 'INT',
+                'unsigned' => true,
+                'constraint' => 5,
+            ],
             'loan_date' => [
-                'type' => 'DATETIME',
+                'type' => 'DATE',
                 'null' => true,
             ],
             'return_date_expected' => [
@@ -56,18 +61,17 @@ class Loans extends Migration
             'created_at' => [
                 'type' => 'DATETIME',
                 'null' => true,
-                'default' => Time::now('Asia/Jakarta', 'id_ID'),
             ],
             'updated_at' => [
                 'type' => 'DATETIME',
                 'null' => true,
-                'default' => null,
             ]
         ]);
 
-        $this->forge->addPrimaryKey('id', 'loans');
+        $this->forge->addPrimaryKey('id');
         $this->forge->addForeignKey('book_id', 'books', 'id', 'CASCADE', 'CASCADE');
         $this->forge->addForeignKey('user_id', 'users', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('pelayan_id', 'users', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('loans');
     }
 

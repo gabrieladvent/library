@@ -16,6 +16,7 @@ class LoansModel extends Model
         'id',
         'book_id',
         'user_id',
+        'pelayan_id',
         'loan_date',
         'return_date_expected',
         'return_date_actual',
