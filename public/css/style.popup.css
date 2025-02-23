@@ -474,3 +474,7 @@ p .form {
 .input-content.status {
   width: 6rem;
 }
+
+.select2-container--open {
+  z-index: 9999;
+}

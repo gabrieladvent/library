@@ -86,9 +86,9 @@ $encrypter = \Config\Services::encrypter();
                                     <div class="input-content">
                                         <select class="input" id="category_id" name="category_id" required>
                                             <option value="">Pilih Jenis Buku</option>
-                                            <?php foreach ($categories as $category) : ?>
-                                                <option value="<?php echo $category['id']?>"><?php echo $category['category_name']?></option>
-                                            <?php endforeach ?>
+                                            <option value="1">1. Fiksi</option>
+                                            <option value="2">2. Novel</option>
+                                            <option value="3">3. Sains</option>
                                         </select>
                                     </div>
                                     <div class="input-content">
@@ -142,12 +142,7 @@ $encrypter = \Config\Services::encrypter();
                                         </div>
 
                                     </div>
-                                    <div class="input-content">
-                                        <label class="label" for="">Deskripsi Buku </label>
-                                        <textarea class="input alamat" id="alamat" name="description" rows="4" cols="50" placeholder="Masukkan alamat lengkap Anda" required></textarea>
 
-
-                                    </div>
                                 </div>
 
 
@@ -181,9 +176,9 @@ $encrypter = \Config\Services::encrypter();
                                         <label class="label">Jenis Buku</label>
                                         <select class="input" id="category_name" name="category_name" disabled>
                                             <option id="category_name" value="">Pilih Jenis Buku</option>
-                                            <?php foreach ($categories as $category) : ?>
-                                                <option value="<?php echo $category['id']?>"><?php echo $category['category_name']?></option>
-                                            <?php endforeach ?>
+                                            <option value="1">1. Fiksi</option>
+                                            <option value="2">2. Novel</option>
+                                            <option value="3">3. Sains</option>
                                         </select>
 
                                     </div>

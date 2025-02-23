@@ -111,13 +111,11 @@ function DeleteCategory(button) {
       dataType: "json",
       success: function (response) {
         closeDeletePopup(); // Tutup popup
-        // Redirect ke halaman yang sesuai dengan tipe
-
         if (response.status === "success") {
           Toastify({
             className: "notif bx bxs-check-circle",
-            text: " Data Berhasil di Hapus",
-            duration: 5000,
+            text: "Data Berhasil di Hapus",
+            duration: 3000,
             gravity: "top",
             position: "right",
             backgroundColor: "#D9FFF0",
@@ -128,12 +126,34 @@ function DeleteCategory(button) {
             },
             escapeHTML: false,
           }).showToast();
-          window.location.href = ``;
+
+          // Tunda redirect hingga notifikasi selesai tampil
+          setTimeout(function () {
+            window.location.href = ""; // Ganti dengan URL tujuan yang diinginkan
+          }, 3000);
         }
       },
       error: function (xhr, status, error) {
         closeDeletePopup();
-        window.location.href = `/`;
+        Toastify({
+          className: "notif bx bxs-x-circle",
+          text: "Terjadi kesalahan saat menghapus data",
+          duration: 3000,
+          gravity: "top",
+          position: "right",
+          backgroundColor: "#FFE8E8",
+          style: {
+            marginTop: "60px",
+            color: "red",
+            borderRadius: "8px",
+          },
+          escapeHTML: false,
+        }).showToast();
+
+        // Tunda redirect hingga notifikasi selesai tampil
+        setTimeout(function () {
+          window.location.href = ""; // Ganti dengan URL error atau halaman yang diinginkan
+        }, 5000);
       },
     });
   };

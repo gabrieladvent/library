@@ -191,11 +191,8 @@ class UserController extends BaseController
             return ResponHelper::handlerErrorResponJson('Data tidak valid.', 400);
         }
 
-        // $validationRules = $this->getValidationRules(true);
-        // if (empty($validationRules)) {
-        //     log_message('error', 'Validation rules are empty.');
-        //     return ResponHelper::handlerErrorResponJson('Kesalahan server internal.', 500);
-        // }
+        // Ambil parameter 'type' dari post data, default ke 'Admin' jika tidak ada
+        $type = $this->request->getPost('type') ?? 'Admin';
 
         try {
             $updatedData = $this->updateUser($id_user, $data_user);
@@ -203,7 +200,8 @@ class UserController extends BaseController
             if (!$updatedData) {
                 return ResponHelper::handlerErrorResponJson(['error' => 'Tidak ada data yang di edit'], 400);
             }
-            return ResponHelper::handlerSuccessResponRedirect("user/list/Admin", "Data berhasil diedit");
+            // Redirect ke URL list user sesuai dengan tipe yang diterima
+            return ResponHelper::handlerSuccessResponRedirect("user/list/{$type}", "Data berhasil diedit");
         } catch (\Exception $e) {
             return ResponHelper::handlerErrorResponJson($e->getMessage(), 500);
         }

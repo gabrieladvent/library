@@ -72,8 +72,8 @@ class LoansController extends BaseController
         }
 
         $decode_id = $this->encrypter->decrypt(base64_decode($id_user['id']));
-        if($this->user->getDataUserById($decode_id) == null){
-            return ResponHelper::handlerErrorResponRedirect('loans/list', 'Data tidak valid. tdk dapat id'); 
+        if ($this->user->getDataUserById($decode_id) == null) {
+            return ResponHelper::handlerErrorResponRedirect('loans/list', 'Data tidak valid. tdk dapat id');
         }
 
         $data_loans = $this->request->getPost();
@@ -89,11 +89,11 @@ class LoansController extends BaseController
             $this->book->update($data_loans['book_id'], ['available_books' => $data_available]);
 
             $this->db->transComplete();
+            return ResponHelper::handlerSuccessResponRedirect('loans/list', 'Data berhasil ditambahkan');
         } catch (\Throwable $th) {
             $this->db->transRollback();
             return ResponHelper::handlerErrorResponRedirect('loans/list', 'Data tidak valid: ' . $th->getMessage());
         }
-
     }
 
     public function editLoans()

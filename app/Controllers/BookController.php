@@ -470,7 +470,7 @@ class BookController extends BaseController
         }
 
         $this->category->update($id_decrypt, $data_category);
-        return ResponHelper::handlerSuccessResponJson($data_category, 200);
+        return ResponHelper::handlerSuccessResponRedirect("category/all", "Data berhasil diedit");
     }
 
     public function getAllBooks()

@@ -49,7 +49,7 @@ $encrypter = \Config\Services::encrypter();
                                             <?php
                                             $statusColors = [
                                                 'Menunggu' => 'background-color: #e6c9a7; color: #3e3d3c',
-                                                'Dipinjam' => 'background-color: rgb(236, 245, 164); color: #3e3d3c',
+                                                'Dipinjam' => 'background-color: #FFF4CC; color: #FFA500',
                                                 'Diperpanjang' => 'background-color: rgb(163, 212, 244); color: #3e3d3c',
                                                 'Dikembalikan' => 'background-color: rgb(136, 238, 155); color: #3e3d3c',
                                                 'Terlambat' => 'background-color: rgb(241, 121, 121); color: #3e3d3c'
@@ -310,60 +310,131 @@ $encrypter = \Config\Services::encrypter();
         document.querySelector("input[name='return_date_expected']").value = formatDate(nextWeek);
     });
 
-
+    // dropdown search data user and books
+    // User Dropdown Implementation
     document.addEventListener("DOMContentLoaded", function() {
+        // Referensi elemen
         const memberSelect = document.querySelector("select[name='user_id']");
         const classInput = document.querySelector("input[name='class_name']");
         const bookSelect = document.querySelector("select[name='book_id']");
         const availableInput = document.querySelector("input[name='available_books']");
 
-        fetch(`${window.location.origin}/user/all-user`)
-            .then(response => response.json())
-            .then(data => {
-                memberSelect.innerHTML = '<option value="">Pilih Anggota</option>';
-                data.data.forEach(member => {
-                    memberSelect.innerHTML += `<option value="${member.id}">${member.fullname}</option>`;
-                });
-            });
+        // Fungsi matcher yang akan digunakan untuk kedua dropdown
+        function customMatcher(params, data) {
+            // Jika tidak ada term pencarian
+            if ($.trim(params.term) === '') {
+                return data;
+            }
 
-        memberSelect.addEventListener("change", function() {
-            const memberId = this.value;
+            // Ambil teks pencarian dan data
+            const searchText = params.term.toLowerCase();
+            const originalText = data.text.toLowerCase();
+
+            // Lakukan pencarian
+            if (originalText.indexOf(searchText) > -1) {
+                return data;
+            }
+
+            // Jika tidak cocok
+            return null;
+        }
+
+        // Konfigurasi dasar Select2
+        const select2Config = {
+            allowClear: true,
+            matcher: customMatcher,
+            language: {
+                noResults: function() {
+                    return "Tidak ada hasil yang ditemukan";
+                },
+                searching: function() {
+                    return "Mencari...";
+                }
+            }
+        };
+
+
+        $(memberSelect).on("change", function() {
+            let memberId = $(this).val();
             if (memberId) {
                 fetch(`${window.location.origin}/user/class?users=${memberId}`)
                     .then(response => response.json())
                     .then(data => {
-                        classInput.value = data.data.class_name;
-                    });
+                        classInput.value = data.data.class_name || "";
+                    })
+                    .catch(err => console.error("Error mengambil data kelas: ", err));
             } else {
                 classInput.value = "";
             }
         });
 
-        fetch(`${window.location.origin}/book/all-books`)
-            .then(response => response.json())
-            .then(data => {
-                bookSelect.innerHTML = '<option value="">Pilih Buku</option>';
-                data.data.forEach(book => {
-                    if (book.available_books > 0) {
-                        bookSelect.innerHTML += `<option value="${book.id}">${book.book_name}</option>`;
-                    } else {
-                        bookSelect.innerHTML += `<option value="${book.id}" disabled>${book.book_name}</option>`;
-                    }
-                });
-            });
+        // Inisialisasi Select2 untuk user
+        $(memberSelect).select2({
+            ...select2Config,
+            placeholder: "Pilih Anggota"
+        });
 
-        bookSelect.addEventListener("change", function() {
-            const bookId = this.value;
+
+        $(bookSelect).on("change", function() {
+            let bookId = $(this).val();
             if (bookId) {
                 fetch(`${window.location.origin}/book/available?books=${bookId}`)
                     .then(response => response.json())
                     .then(data => {
-                        availableInput.value = data.data.available_books;
-                    });
+                        availableInput.value = data.data.available_books || "";
+                    })
+                    .catch(err => console.error("Error mengambil data buku tersedia: ", err));
             } else {
                 availableInput.value = "";
             }
         });
+        // Inisialisasi Select2 untuk buku
+        $(bookSelect).select2({
+            ...select2Config,
+            placeholder: "Pilih Buku"
+        });
+
+        // Fetch data user
+        fetch(`${window.location.origin}/user/all-user`)
+            .then(response => response.json())
+            .then(data => {
+                $(memberSelect).empty();
+                $(memberSelect).append(new Option('Pilih Anggota', ''));
+
+                data.data.forEach(member => {
+                    $(memberSelect).append(new Option(member.fullname, member.id));
+                });
+
+                // Trigger change untuk memastikan Select2 terupdate
+                $(memberSelect).trigger('change');
+            })
+            .catch(err => console.error("Error mengambil data anggota: ", err));
+
+        // Fetch data buku
+        fetch(`${window.location.origin}/book/all-books`)
+            .then(response => response.json())
+            .then(data => {
+                $(bookSelect).empty();
+                $(bookSelect).append(new Option('Pilih Buku', ''));
+
+                data.data.forEach(book => {
+                    const option = new Option(book.book_name, book.id);
+                    if (book.available_books <= 0) {
+                        option.disabled = true;
+                    }
+                    $(bookSelect).append(option);
+                });
+
+                // Trigger change untuk memastikan Select2 terupdate
+                $(bookSelect).trigger('change');
+            })
+            .catch(err => console.error("Error mengambil data buku: ", err));
+
+        // Event handler untuk user
+
+
+        // Event handler untuk buku
+
     });
 </script>
 <?= $this->endSection() ?>
