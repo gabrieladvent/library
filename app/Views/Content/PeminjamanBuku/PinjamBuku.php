@@ -64,10 +64,10 @@ $encrypter = \Config\Services::encrypter();
 
                                     <td>
                                         <div class="action-buttons">
-                                            <button onclick="viewDetailLoans(this)" class="btn btn-view" data-id="<?= urlencode(base64_encode($encrypter->encrypt($index['id']))) ?>">
+                                            <button onclick="viewDetailLoans(this)" class="btn btn-view" data-id="<?= urlencode(base64_encode($encrypter->encrypt($index['loan_id']))) ?>">
                                                 <i class="bx bx-edit"></i> Kelolah
                                             </button>
-                                            <button class="btn btn-edit" onclick="Delete(this)" data-id="<?= urlencode(base64_encode($encrypter->encrypt($index['id']))) ?>">
+                                            <button class="btn btn-edit" onclick="Delete(this)" data-id="<?= urlencode(base64_encode($encrypter->encrypt($index['loan_id']))) ?>">
                                                 <i class="bx bx-trash"></i> Hapus
                                             </button>
 
@@ -162,82 +162,71 @@ $encrypter = \Config\Services::encrypter();
                                 <label for="enableEdit">Aktifkan Mode Edit</label>
                             </div>
                         </div>
-                        <form id="formDetailUser" method="post" autocomplete="off" enctype="multipart/form-data">
+                        <form action="formDetailUser" method="POST" autocomplete="off" enctype="multipart/form-data">
                             <?= csrf_field() ?>
                             <div class="container__input">
                                 <div class="satu">
-                                    <h1 class="subtitle">Formulir Peminjaman</h1>
+                                    <h1 class="subtitle">Data Anggota</h1>
                                     <div class="input-content">
                                         <label class="label" for="">Nama Anggota</label>
-                                        <select class="input" id="status" name="fullname" disabled>
-                                            <option id="loans_status" value="">anggota</option>
-                                            <option value="2">Gab</option>
-                                            <option value="3">Kelvin keleden</option>
-                                        </select>
+                                        <select class="input" id="userSelect" name="user_id" disabled></select>
                                     </div>
                                     <div class="count_book">
                                         <div class="input-jumlah">
                                             <label class="label" for="">Kelas</label>
-                                            <input class="input-count" type="text" value="X1-A" name="book_name" disabled />
-
+                                            <input class="input-count" type="text" name="class_name" readonly />
                                         </div>
                                         <div class="input-jumlah">
                                             <label class="label" for="">Status</label>
-                                            <select class="input-count" id="status" name="loans_status" disabled>
-                                                <option id="loans_status" value="">Status</option>
-                                                <option value="2">Perpanjang</option>
-                                                <option value="3">Dikembalikan</option>
+                                            <select class="input-count" id="status" name="status" disabled>
+                                                <option id="status" value="" selected></option>
+                                                <option value="Dipinjam">Dipinjam</option>
+                                                <option value="Diperpanjang">Diperpanjang</option>
+                                                <option value="Dikembalikan">Dikembalikan</option>
+                                                <option value="Terlambat">Terlambat</option>
                                             </select>
                                         </div>
                                     </div>
+
                                     <div class="input-content">
-
                                         <label class="label" for="">Catatan </label>
-                                        <textarea class="input alamat" id="alamat" name="description" rows="4" cols="50" placeholder="Masukkan alamat lengkap Anda" disabled required></textarea>
+                                        <textarea disabled class="input alamat" id="alamat" name="notes" rows="4" cols="50" placeholder="Tambahkan catatan..."></textarea>
                                     </div>
-
                                 </div>
+
                                 <div class="dua">
-                                    <h1 class="subtitle">Formulir Peminjaman</h1>
+                                    <h1 class="subtitle">Data Buku</h1>
                                     <div class="input-content">
                                         <label class="label" for="">Judul Buku</label>
-                                        <select class="input" id="status" name="fullname" disabled>
-                                            <option id="loans_status" value="">judul buku</option>
-                                            <option value="2">Gab</option>
-                                            <option value="3">Kelvin keleden</option>
-                                        </select>
+                                        <select class="input" id="bookSelect" name="book_id" disabled></select>
                                     </div>
                                     <div class="count_book">
                                         <div class="input-jumlah">
-                                            <label class="label" for="">tersedia</label>
-                                            <input class="input-count" type="text" value="2" name="tersedia" reado />
+                                            <label class="label" for="">Persediaan</label>
+                                            <input class="input-count" type="text" name="available_books" readonly />
 
                                         </div>
                                         <div class="input-jumlah">
                                             <label class="label" for="">Jumlah Yang dipinjam</label>
-                                            <input class="input-count" type="number" name="total_books" min="1" step="1" required disabled>
+                                            <input class="input-count" type="number" name="quantity" min="1" step="1" required disabled>
                                         </div>
                                     </div>
+
                                     <div class="count_book">
                                         <div class="input-jumlah">
-                                            <label class="label" for="">Tanggal Pengembalian</label>
-                                            <input class="input-count" type="date" name="publisher" disabled />
+                                            <label class="label" for="">Tanggal Peminjaman</label>
+                                            <input class="input-count" type="date" name="loan_date" value="<?php date('d-m-y', time()) ?>" readonly />
                                         </div>
                                         <div class="input-jumlah">
-                                            <label class="label" for="">Kategori</label>
-                                            <select class="input-count" id="status" name="fullname" disabled>
-                                                <option id="loans_status" value="">Kategori</option>
-                                                <option value="2">fiksi</option>
-                                                <option value="3">nonfiksi</option>
-                                            </select>
+                                            <label class="label" for="">Tanggal Pengembalian</label>
+                                            <input class="input-count" type="date" name="return_date_expected" disabled />
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
                             <div class="button">
-                                <button class="batal " onclick="closeViewPopup()" type="button">Batal</button>
-                                <button class="simpan" type="submit">Simpan</button>
+                                <button class="batal batal_add" type="button">Batal</button>
+                                <button class="simpan" type="submit" disabled>Simpan</button>
                             </div>
                         </form>
                     </div>

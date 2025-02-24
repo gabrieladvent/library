@@ -2,7 +2,7 @@ function viewDetailLoans(button) {
   const id = button.getAttribute("data-id");
   const popup = document.getElementById("popup__lihat");
 
-  // Show popup
+  // Tampilkan popup
   popup.classList.add("active");
   popup.style.display = "flex";
   popup.style.opacity = "1";
@@ -11,24 +11,54 @@ function viewDetailLoans(button) {
   popup.querySelector(".popup").style.transform =
     "translate(-50%, -50%) scale(1)";
 
+  // Ambil data dari API
   $.ajax({
-    url: `${window.location.origin}/loans/list?loans=${id}`,
+    url: `${window.location.origin}/loans/detail?loans=${id}`,
     type: "GET",
     dataType: "json",
     success: function (response) {
-      if (response.success) {
-        const loansdetial = response.data;
+      console.log("Response:", response);
 
-        $("#fullname").val(loansdetial.fullname);
+      if (response.status === "success") {
+        const loan = response.data.loan;
+        const book = response.data.book;
+        const user = response.data.user;
 
-        $("#formDetailUser").attr("data-user-id", id);
+        // Mengisi select user
+        $("#userSelect").html(
+          `<option value="${user.id}" selected>${user.fullname}</option>`
+        );
+        $("#userSelect").prop("disabled", false);
 
-        const actionUrl = `${window.location.origin}/loans/edit?loans=${id}`;
-        $("#formDetailUser").attr("action", actionUrl);
+        // Mengisi input lainnya
+        $("input[name='class_name']").val(user.class_name);
+        $("textarea[name='notes']").val(loan.notes || "");
+
+        // Mengisi select book
+        $("#bookSelect").html(
+          `<option value="${book.id}" selected>${book.book_name}</option>`
+        );
+        $("#bookSelect").prop("disabled", false);
+
+        $("input[name='available_books']").val(book.available_books);
+        $("input[name='quantity']").val(loan.quantity);
+        $("input[name='loan_date']").val(loan.loan_date || "");
+        $("input[name='return_date_expected']").val(
+          loan.return_date_expected || ""
+        );
+
+        // Pastikan form memiliki ID yang benar
+        $("form").attr(
+          "action",
+          `${window.location.origin}/loans/edit?loans=${id}`
+        );
       } else {
-        alert("Failed to fetch user data");
+        alert("Gagal mengambil data peminjaman.");
         closePopup();
       }
+    },
+    error: function () {
+      alert("Terjadi kesalahan dalam mengambil data.");
     },
   });
 }
@@ -37,31 +67,26 @@ function viewDetailLoans(button) {
 function toggleEdit(checkbox) {
   // Ambil semua input di dalam form
   const inputs = document.querySelectorAll(
-    "#formDetailUser input, #formDetailUser textarea, #formDetailUser select"
+    "form input, form textarea, form select"
   );
-  const submitBtn = document.querySelector(
-    '#formDetailUser button[type="submit"]'
-  );
+  const submitBtn = document.querySelector("form button[type='submit']");
 
   if (checkbox.checked) {
     // Aktifkan mode edit
     inputs.forEach((input) => {
-      if (input.id !== "enableEdit") {
-        // Jangan ubah checkbox
+      if (input.type !== "checkbox") {
         input.removeAttribute("disabled");
       }
     });
-    submitBtn.style.display = "block";
-
-    // Ambil ID dari form yang sudah diset saat viewDetai
+    submitBtn.removeAttribute("disabled");
   } else {
     // Nonaktifkan mode edit
     inputs.forEach((input) => {
-      if (input.id !== "enableEdit") {
+      if (input.type !== "checkbox") {
         input.setAttribute("disabled", true);
       }
     });
-    submitBtn.style.display = "none";
+    submitBtn.setAttribute("disabled", true);
   }
 }
 

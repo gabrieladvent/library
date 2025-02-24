@@ -7,6 +7,7 @@ use App\Models\LoansModel;
 use App\Models\UsersModel;
 use App\Helpers\ResponHelper;
 use App\Controllers\BaseController;
+use App\Models\BiodataUsersModel;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class LoansController extends BaseController
@@ -16,6 +17,7 @@ class LoansController extends BaseController
     protected $user;
     protected $encrypter;
     protected $loans;
+    protected $biodata;
     protected $db;
     protected $book;
     public function __construct()
@@ -23,25 +25,12 @@ class LoansController extends BaseController
         // Buat instance dari model yang digunakan
         $this->user = new UsersModel();
         $this->loans = new LoansModel();
+        $this->biodata = new BiodataUsersModel();
         $this->book = new BooksModel();
         $this->db = \Config\Database::connect();
         $this->encrypter = \Config\Services::encrypter();
     }
 
-    /*
-    1. nama anggota (string) : nama_anggota
-    2. nama buku (string) : nama_buku
-    3. tangal peminjaman (string) : tanggal_pinjam
-    4. tanggal pengembalian (string) : tanggal_pengembalian
-    5. jumlah buku (int) : jml_buku
-    6. status (saya belum tau parameter yang cocok) : Status
-    */
-
-    /* 
-        dari parameter dan varaibel di atas 
-        saya ingin kau buat fitur
-        menampilkan data, tambah data ,edit data dan delete data
-        */
 
     public function viewLoans()
     {
@@ -59,9 +48,31 @@ class LoansController extends BaseController
 
         $data['user'] = $this->user->getDataUserById($decode_id);
         $data['loans'] = $this->loans->getAllLoans();
-        // dd(empty($data['loans']));
-        log_message("info", "data loans" . json_encode($data));
+        // dd($data);
         return view("Content/PeminjamanBuku/PinjamBuku", $data);
+    }
+
+    public function viewDetailLoans()
+    {
+        $id_loans = $_GET['loans'];
+        if (empty($id_loans)) {
+            return ResponHelper::handlerErrorResponJson('ID invalid.', 400);
+        }
+        $id_decrypt = $this->decryptId($id_loans);
+
+        $loan = $this->loans->getDetailLoanByIdLoan($id_decrypt);
+        if($loan === null) {
+            return ResponHelper::handlerErrorResponJson('Data not found.', 404);
+        }
+        
+        $data = [
+            'loan' => $loan,
+            'book' => $this->book->getDataById($loan['book_id']),
+            'user' => $this->user->getUserById($loan['user_id'])
+        ];
+        log_message("info", "data detail loans" . json_encode($data));
+
+        return ResponHelper::handlerSuccessResponJson('success', 200, $data);
     }
 
     public function addLoans()
@@ -81,7 +92,7 @@ class LoansController extends BaseController
         $quantity = $data_loans['quantity'];
         $data_available = $data_loans['available_books'] - $quantity;
         unset($data_loans['available_books']);
-
+        
         try {
             $this->db->transStart();
 
@@ -105,26 +116,9 @@ class LoansController extends BaseController
         // delete data 
     }
 
-
-    // roport loans 
-    public function reportLoans()
+    private function decryptId($id_book)
     {
-        $id_user = session('id_user');
-        if (!$id_user || !isset($id_user['id'])) {
-            return redirect()->back()->with('error', 'Session tidak valid');
-        }
-
-        try {
-            $decode_id = $this->encrypter->decrypt(base64_decode($id_user['id']));
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Dekripsi ID gagal');
-        }
-
-
-        $data['user'] = $this->user->getDataUserById($decode_id);
-
-
-        log_message("info", "data loans" . json_encode($data));
-        return view("Content/Laporan/laporan", $data);
+        $decode_id = $this->encrypter->decrypt(base64_decode($id_book));
+        return $decode_id;
     }
 }
