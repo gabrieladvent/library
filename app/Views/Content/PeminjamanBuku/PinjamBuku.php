@@ -98,7 +98,7 @@ $encrypter = \Config\Services::encrypter();
                                     <h1 class="subtitle">Data Anggota</h1>
                                     <div class="input-content">
                                         <label class="label" for="">Nama Anggota</label>
-                                        <select class="input" id="status" name="user_id"></select>
+                                        <select class="input" id="userSelect" name="user_id"></select>
                                     </div>
                                     <div class="count_book">
                                         <div class="input-jumlah">
@@ -117,7 +117,7 @@ $encrypter = \Config\Services::encrypter();
                                     <h1 class="subtitle">Data Buku</h1>
                                     <div class="input-content">
                                         <label class="label" for="">Judul Buku</label>
-                                        <select class="input" id="status" name="book_id"></select>
+                                        <select class="input" id="bookSelect" name="book_id"></select>
                                     </div>
                                     <div class="count_book">
                                         <div class="input-jumlah">
@@ -354,19 +354,7 @@ $encrypter = \Config\Services::encrypter();
         };
 
 
-        $(memberSelect).on("change", function() {
-            let memberId = $(this).val();
-            if (memberId) {
-                fetch(`${window.location.origin}/user/class?users=${memberId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        classInput.value = data.data.class_name || "";
-                    })
-                    .catch(err => console.error("Error mengambil data kelas: ", err));
-            } else {
-                classInput.value = "";
-            }
-        });
+
 
         // Inisialisasi Select2 untuk user
         $(memberSelect).select2({
@@ -375,19 +363,7 @@ $encrypter = \Config\Services::encrypter();
         });
 
 
-        $(bookSelect).on("change", function() {
-            let bookId = $(this).val();
-            if (bookId) {
-                fetch(`${window.location.origin}/book/available?books=${bookId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        availableInput.value = data.data.available_books || "";
-                    })
-                    .catch(err => console.error("Error mengambil data buku tersedia: ", err));
-            } else {
-                availableInput.value = "";
-            }
-        });
+
         // Inisialisasi Select2 untuk buku
         $(bookSelect).select2({
             ...select2Config,
@@ -410,6 +386,21 @@ $encrypter = \Config\Services::encrypter();
             })
             .catch(err => console.error("Error mengambil data anggota: ", err));
 
+        // even handler user
+        $(memberSelect).on("change", function() {
+            let memberId = $(this).val();
+            if (memberId) {
+                fetch(`${window.location.origin}/user/class?users=${memberId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        classInput.value = data.data.class_name || "";
+                    })
+                    .catch(err => console.error("Error mengambil data kelas: ", err));
+            } else {
+                classInput.value = "";
+            }
+        });
+
         // Fetch data buku
         fetch(`${window.location.origin}/book/all-books`)
             .then(response => response.json())
@@ -430,10 +421,20 @@ $encrypter = \Config\Services::encrypter();
             })
             .catch(err => console.error("Error mengambil data buku: ", err));
 
-        // Event handler untuk user
-
-
         // Event handler untuk buku
+        $(bookSelect).on("change", function() {
+            let bookId = $(this).val();
+            if (bookId) {
+                fetch(`${window.location.origin}/book/available?books=${bookId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        availableInput.value = data.data.available_books || "";
+                    })
+                    .catch(err => console.error("Error mengambil data buku tersedia: ", err));
+            } else {
+                availableInput.value = "";
+            }
+        });
 
     });
 </script>
