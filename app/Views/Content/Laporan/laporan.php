@@ -2,275 +2,166 @@
 
 <?php $this->section('content');
 $encrypter = \Config\Services::encrypter();
-
 ?>
 
 <div class="container-book">
     <div class="container-buku">
         <div class="head">
             <div class="title">
-                <h1>Data Buku</h1>
+                <h1>Laporan</h1>
+                <a class="reset" href="">
+                    <i class='bx bx-reset'></i>
+                </a>
             </div>
-            <a href="#popup" class="tambah">
-                <p>Tambah Data</p>
-                <i class='bx bxs-plus-square'></i>
-            </a>
         </div>
+        <div class="print_container">
+            <button type="button" onclick="window.open('<?= site_url('laporan/printAll') ?>', '_blank');" class="printAll_container">
+                <i class='bx bxs-printer'></i>
+                <p>Print All</p>
+            </button>
 
+            <div class="search">
+                <label for="search_loansdate">Pilih Tanggal Peminjaman</label>
+                <input id="search_loansdate" type="date">
+            </div>
+            <div class="search">
+                <label for="search_returndate">Pilih Tanggal Pengembalian</label>
+                <input id="search_returndate" type="date" placeholder="pilih tanggal pengembalian">
+            </div>
+            <div class="search">
+                <label for="search_status">Status</label>
+                <select id="search_status">
+                    <option value="">Pilih Status</option>
+                    <option value="pinjam">Pinjam</option>
+                    <option value="dikembalikan">Dikembalikan</option>
+                    <option value="perpanjang">Perpanjang</option>
+                    <option value="terlambat">Terlambat</option>
+                </select>
+            </div>
+
+        </div>
         <div class="container-table">
             <div class="table">
                 <table border="1">
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Judul Buku</th>
-                            <th>Penulis</th>
-                            <th>Penerbit</th>
-                            <th>Tahun Terbit</th>
-                            <th>Persediaan Buku</th>
-                            <th>Sampull</th>
+                            <th>Nama Anggota</th>
+                            <th>Nama Buku</th>
+                            <th>Tanggal Peminjaman</th>
+                            <th>Tanggal Pengembalian</th>
+                            <th>Jumlah Buku</th>
+                            <th>Status</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <?php if (!empty($books)): ?>
-                            <?php foreach ($books as $index => $book): ?>
-
-                                <tr>
-                                    <td><?= $index + 1 ?></td>
-                                    <td><?= esc($book['book_name']) ?></td>
-                                    <td><?= esc($book['author']) ?></td>
-                                    <td><?= esc($book['publisher'] ?? '') ?></td>
-                                    <td><?= esc($book['year_published'] ?? '') ?></td>
-                                    <td><?= esc($book['available_books'] ?? 0) ?> Buku</td>
-                                    <td>
-                                        <img
-                                            src="<?= base_url($book['cover_img'] ?? '') ?>"
-                                            alt="Sampul Buku"
-                                            class="book-cover" />
-                                    </td>
-
-                                    <td>
-                                        <div class="action-buttons">
-                                            <!-- Ubah button view menjadi: -->
-                                            <button onclick="viewDetail(this)" class="btn btn-view" data-id="<?= $book['id'] ?>">
-                                                <i class="bx bx-edit"></i> Kelolah
-                                            </button>
-                                            <button class="btn btn-edit" onclick="Delete(this)" data-id="<?= $book['id'] ?>" data-name="<?= $book['book_name'] ?>">
-                                                <i class="bx bx-trash"></i> Hapus
-                                            </button>
-
-                                        </div>
-                                    </td>
-                                </tr>
-                            <?php endforeach ?>
-                        <?php else: ?>
-                            <tr>
-                                <td colspan="7" style="text-align: center;">Data tidak tersedia.</td>
-                            </tr>
-                        <?php endif; ?>
+                    <tbody id="dataTable">
+                        <!-- Contoh data. Pastikan format tanggal sesuai dengan nilai input (YYYY-MM-DD) -->
+                        <tr>
+                            <td>1</td>
+                            <td>Kelvin</td>
+                            <td>Dilan</td>
+                            <td>2025-01-01</td>
+                            <td>2025-01-05</td>
+                            <td>1 Buku</td>
+                            <td>dikembalikan</td>
+                            <td>
+                                <div class="button_print">
+                                    <button onclick="window.open('<?= site_url('laporan/printPDF/1') ?>', '_blank');" class="btn btn-print">
+                                        <i id="print" class='bx bxs-printer'></i> Print
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Andi</td>
+                            <td>Rembulan</td>
+                            <td>2025-01-02</td>
+                            <td>2025-01-06</td>
+                            <td>2 Buku</td>
+                            <td>pinjam</td>
+                            <td>
+                                <div class="button_print">
+                                    <button onclick="window.open('<?= site_url('laporan/printPDF/2') ?>', '_blank');" class="btn btn-print">
+                                        <i id="print" class='bx bxs-printer'></i> Print
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Sinta</td>
+                            <td>Bulan</td>
+                            <td>2025-01-03</td>
+                            <td>2025-01-07</td>
+                            <td>1 Buku</td>
+                            <td>terlambat</td>
+                            <td>
+                                <div class="button_print">
+                                    <button onclick="window.open('<?= site_url('laporan/printPDF/3') ?>', '_blank');" class="btn btn-print">
+                                        <i id="print" class='bx bxs-printer'></i> Print
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
-
-
-                <div class="container__popup" id="popup">
-                    <div class="popup">
-                        <div class="title">
-                            <h1>Tambah Byu</h1>
-                            <a href="" class="popup-close">&times;</a>
-                        </div>
-                        <form action="<?= base_url('book/add') ?>" method="post" autocomplete="off" enctype="multipart/form-data">
-                            <?= csrf_field() ?>
-                            <div class="container__input">
-                                <div class="satu">
-                                    <div class="input-content">
-                                        <select class="input" id="category_id" name="category_id" required>
-                                            <option value="">Pilih Jenis Buku</option>
-                                            <option value="1">1. Fiksi</option>
-                                            <option value="2">2. Novel</option>
-                                            <option value="3">3. Sains</option>
-                                        </select>
-                                    </div>
-                                    <div class="input-content">
-                                        <label class="label" for="">Judul Buku</label>
-                                        <input class="input" type="text" name="book_name" />
-                                    </div>
-                                    <div class="input-content">
-                                        <label class="label" for="">isbn</label>
-                                        <input class="input" type="text" name="isbn" />
-                                    </div>
-                                    <div class="content-author">
-                                        <label class="label" for="author">Authors (Pisahkan dengan koma)</label>
-                                        <div class="author" id="author-container">
-                                            <input class="input-author" type="text" id="author-input"
-                                                name="author[]" placeholder="Masukkan nama author"
-                                                required />
-                                        </div>
-                                        <div id="result"></div>
-                                    </div>
-
-
-                                    <div class="input-content">
-                                        <label for="fileInput">Pilih Gambar:</label>
-                                        <input class="" type="file" id="fileInput" name="cover_img" accept="image/*" required>
-                                    </div>
-
-
-                                </div>
-                                <div class="dua">
-                                    <div class="input-content">
-                                        <label class="label" for="">Penerbit</label>
-                                        <input class="input" type="text" name="publisher" />
-                                    </div>
-                                    <div class="input-content">
-                                        <label class="label" for="">Tahun Terbit</label>
-                                        <input class="input" type="number" name="year_published" min="1999" max="2025" />
-                                    </div>
-                                    <div class="count_book">
-                                        <div class="input-jumlah">
-                                            <label class="label" for="total_copies">Total Copy</label>
-                                            <input class="input-count" type="number" id="total_copies_add" name="total_copies" min="1" step="1" required>
-                                        </div>
-
-                                        <div class="input-jumlah">
-                                            <label class="label" for="total_books">Jumlah Buku</label>
-                                            <input class="input-count" type="number" id="total_books_add" name="total_books" min="1" step="1" required>
-                                        </div>
-
-                                        <div class="input-jumlah">
-                                            <input class="input-count" type="hidden" id="available_books_add" name="available_books" min="1" step="1" readonly>
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-
-                            </div>
-                            <div class="button">
-                                <button class="batal batal_add" type="button">Batal</button>
-                                <button class="simpan" type="submit">Simpan</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-
-                <div class="container__popup" id="popup__lihat">
-                    <div class="popup">
-                        <div class="title">
-                            <div class="form-group">
-                                <h1>Lihat Data</h1>
-                                <input type="checkbox" id="enableEdit" onchange="toggleEdit(this)">
-                                <label for="enableEdit">Aktifkan Mode Edit</label>
-                            </div>
-
-                            <a href="#" id="popup__close" class="popup-close">&times;</a>
-                        </div>
-                        <form id="formDetailUser" method="POST" autocomplete="off" enctype="multipart/form-data">
-                            <?= csrf_field() ?>
-
-                            <div class="container__input">
-                                <div class="satu">
-                                    <div class="input-content">
-                                        <label class="label">Jenis Buku</label>
-                                        <select class="input" id="category_name" name="category_name" disabled>
-                                            <option id="category_name" value="">Pilih Jenis Buku</option>
-                                            <option value="1">1. Fiksi</option>
-                                            <option value="2">2. Novel</option>
-                                            <option value="3">3. Sains</option>
-                                        </select>
-
-                                    </div>
-                                    <div class="input-content">
-                                        <label class="label">Nama Buku</label>
-                                        <input class="input" type="text" id="fullname" name="book_name" disabled />
-                                    </div>
-                                    <div class="input-content">
-                                        <label class="label">ISBN</label>
-                                        <input class="input" type="text" id="isbn" name="isbn" disabled />
-                                    </div>
-                                    <div class="input-content">
-                                        <label class="label" for="">Author</label>
-                                        <input class="input" type="text" id="author" name="author" disabled />
-                                    </div>
-                                    <div class="input-content">
-                                        <label class="label" for="">Cover Image</label>
-                                        <div class="img">
-                                            <img id="cover_img_view" alt="cover image" style="max-width: 200px;">
-                                            <input type="file" id="cover_image" name="cover_img" accept="image/*" readonly>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="dua">
-                                    <div class=" input-content">
-                                        <label class="label">Penebit</label>
-                                        <input class="input" type="text" id="publisher" name="publisher" disabled />
-                                    </div>
-
-                                    <div class="input-content">
-                                        <label class="label" for="">Tahun Terbit</label>
-                                        <input class="input" type="number" id="year_published" name="year_published" min="1900" disabled />
-                                    </div>
-                                    <div class="count_book">
-                                        <div class="input-jumlah">
-                                            <label class="label" for="">Total copy</label>
-                                            <input class="input-count" type="number" id="total_copies" name="total_copies" disabled>
-                                        </div>
-                                        <div class="input-jumlah">
-                                            <label class="label" for="">jumlah Buku</label>
-                                            <input class="input-count" type="number" id="total_books" name="total_books" min="1" max="1000" step="1" disabled>
-                                        </div>
-                                        <div class="input-jumlah">
-                                            <input class="input-count" type="hidden" id="available_books" name="available_books" min="1" step="1" disabled>
-                                        </div>
-                                    </div>
-
-                                    <div class="input-content">
-                                        <label class="label" for="">Deskripsi Buku </label>
-                                        <textarea class="input alamat" id="description" name="description" rows="4" cols="50" placeholder="Masukkan alamat lengkap Anda" disabled></textarea>
-
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="button">
-                                <button class="batal batal_add" onclick="closeViewPopup()" type="button">Batal</button>
-                                <button class="simpan" type="submit">Simpan</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-
-                <div id="popup__delete" class="container__popup">
-                    <div class="popup_delete">
-                        <div class="title_delete">
-                            <div class="form-group">
-                                <h1>Konfirmasi Hapus</h1>
-
-                            </div>
-                        </div>
-                        <div class="popup__content">
-                            <div class="title_delete">
-                                <h3>Apakah anda yakin ingin menghapus buku ini?</h3>
-                                <p></p>
-                            </div>
-                            <div class="button-delete">
-                                <button type="button" class="batal" onclick="closeDeletePopup()">Batal</button>
-                                <button type="button" class="simpan" id="confirmDelete">Hapus</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
 </div>
 
-<script type="text/javascript" src="<?= base_url('js/books.js') ?>"></script>
+<script>
+    // Simulasi filtering data pada tabel
+    document.addEventListener("DOMContentLoaded", function() {
+        const loansInput = document.getElementById("search_loansdate");
+        const returnInput = document.getElementById("search_returndate");
+        const statusSelect = document.getElementById("search_status");
+        const tableBody = document.getElementById("dataTable");
 
+        function filterTable() {
+            const loansDate = loansInput.value; // Format: YYYY-MM-DD
+            const returnDate = returnInput.value; // Format: YYYY-MM-DD
+            const statusValue = statusSelect.value.toLowerCase().trim();
 
+            // Dapatkan semua baris data
+            const rows = tableBody.querySelectorAll("tr");
 
+            rows.forEach(row => {
+                // Ambil data dari setiap kolom (index disesuaikan dengan posisi kolom)
+                const cells = row.querySelectorAll("td");
+                const rowLoansDate = cells[3].textContent.trim();
+                const rowReturnDate = cells[4].textContent.trim();
+                const rowStatus = cells[6].textContent.trim().toLowerCase();
+
+                let showRow = true;
+
+                // Filter berdasarkan Tanggal Peminjaman jika input diisi
+                if (loansDate && rowLoansDate !== loansDate) {
+                    showRow = false;
+                }
+
+                // Filter berdasarkan Tanggal Pengembalian jika input diisi
+                if (returnDate && rowReturnDate !== returnDate) {
+                    showRow = false;
+                }
+
+                // Filter berdasarkan Status jika input diisi
+                if (statusValue && rowStatus !== statusValue) {
+                    showRow = false;
+                }
+
+                // Tampilkan atau sembunyikan baris
+                row.style.display = showRow ? "" : "none";
+            });
+        }
+
+        // Tambahkan event listener untuk setiap input/select
+        loansInput.addEventListener("change", filterTable);
+        returnInput.addEventListener("change", filterTable);
+        statusSelect.addEventListener("change", filterTable);
+    });
+</script>
 
 <?= $this->endSection() ?>

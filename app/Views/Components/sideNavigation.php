@@ -56,7 +56,7 @@
 
                     <!-- Laporan -->
                     <div class="nav">
-                        <a href="" class="nav-pinjam" id="laporan-toggle">
+                        <a href="/loans/report" class="nav-pinjam" id="laporan-toggle">
                             <img src="<?= base_url("img/Group 18.png") ?>" alt="" />
                             <h3 class="text-nav">Laporan</h3>
 
