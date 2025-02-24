@@ -42,7 +42,7 @@ function viewDetailAnggota(button) {
 
         // Set form attributes
         $("#formDetailUser").attr("data-user-id", id);
-        const actionUrl = `${window.location.origin}/user/edit?users=${id}`;
+        const actionUrl = `${window.location.origin}/user/edit?users=${id}&type=User`;
         $("#formDetailUser").attr("action", actionUrl);
       } else {
         alert("Failed to fetch user data");

@@ -55,24 +55,13 @@
                     </div>
 
                     <!-- Laporan -->
-                    <div class="nav" id="nav-link">
-                        <button onclick=toggleSubMenu(this) class="dropdown-btn" id="laporan-toggle">
+                    <div class="nav">
+                        <a href="/loans/report" class="nav-pinjam" id="laporan-toggle">
                             <img src="<?= base_url("img/Group 18.png") ?>" alt="" />
                             <h3 class="text-nav">Laporan</h3>
-                            <i class="bx bx-chevron-down svg"></i>
-                        </button>
-                        <div class="sub-menu" id="laporan-menu">
-                            <div>
-                                <a href="riwayat.html" class="sub-menu-item" id="riwayat-link">
-                                    <i class="bx bx-history"></i>
-                                    <p>Riwayat</p>
-                                </a>
-                                <a href="laporan-peminjaman.html" class="sub-menu-item" id="laporan-peminjaman-link">
-                                    <i class='bx bxs-report'></i>
-                                    <p>Laporan Peminjaman</p>
-                                </a>
-                            </div>
-                        </div>
+
+                        </a>
+
                     </div>
 
                     <!-- Admin -->

@@ -11,10 +11,10 @@
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="<?= base_url('css/style.dashboard.css') ?>" />
 
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
-    <!-- javascript -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
 
     <title>Document</title>
 </head>
@@ -61,6 +61,7 @@
                 duration: 3000,
                 gravity: "top",
                 position: "right",
+                backgroundColor: "#FFE8E8",
                 style: {
                     color: "red",
                 }
@@ -78,5 +79,10 @@
         })
     </script>
 </body>
+
+<!-- javascript -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 </html>

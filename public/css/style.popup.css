@@ -474,3 +474,12 @@ p .form {
 .input-content.status {
   width: 6rem;
 }
+
+.select2-container--open {
+  z-index: 9999;
+}
+
+/* Styling option */
+.select2-container {
+  font-size: 14px;
+}

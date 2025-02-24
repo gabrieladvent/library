@@ -65,6 +65,7 @@ $routes->group("loans", ['filter' => 'auth'], function ($routes) {
     $routes->post('add', 'LoansController::addLoans');
     $routes->post('edit', 'LoansController::editLoans');
     $routes->get('delete', 'LoansController::deleteLoans');
+    $routes->get('report', 'LoansController::reportLoans');
 });
 
 

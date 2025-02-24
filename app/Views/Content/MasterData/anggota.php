@@ -217,6 +217,7 @@ $classForPopup = $class;
                             </div>
                             <form id="formDetailUser" method="POST" autocomplete="off" enctype="multipart/form-data">
                                 <?= csrf_field() ?>
+                                <input type="hidden" name="type" value="User">
                                 <div class="container__input">
                                     <div class="satu">
                                         <div class="status_input">

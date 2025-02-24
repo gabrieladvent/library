@@ -151,12 +151,10 @@ function DeleteClass(button) {
       dataType: "json",
       success: function (response) {
         closeDeletePopup(); // Tutup popup
-        // Redirect ke halaman yang sesuai dengan tipe
-        window.location.href = `/class/all`;
         if (response.status === "success") {
           Toastify({
             className: "notif bx bxs-check-circle",
-            text: " Data Berhasil di Hapus",
+            text: "Data Berhasil di Hapus",
             duration: 3000,
             gravity: "top",
             position: "right",
@@ -168,13 +166,51 @@ function DeleteClass(button) {
             },
             escapeHTML: false,
           }).showToast();
+          // Tunda redirect hingga notifikasi selesai tampil
+          setTimeout(function () {
+            window.location.href = `/class/all`;
+          }, 5000);
         } else {
-          window.location.href = `/class/all`;
+          Toastify({
+            className: "notif bx bxs-warning",
+            text: "Gagal menghapus data.",
+            duration: 3000,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "#FFE8E8",
+            style: {
+              marginTop: "60px",
+              color: "red",
+              borderRadius: "8px",
+            },
+            escapeHTML: false,
+          }).showToast();
+          // Tunda redirect hingga notifikasi selesai tampil
+          setTimeout(function () {
+            window.location.href = `/class/all`;
+          }, 5000);
         }
       },
       error: function (xhr, status, error) {
         closeDeletePopup();
-        window.location.href = `/class/all`;
+        Toastify({
+          className: "notif bx bxs-x-circle",
+          text: "Terjadi kesalahan saat menghapus data",
+          duration: 3000,
+          gravity: "top",
+          position: "right",
+          backgroundColor: "#FFE8E8",
+          style: {
+            marginTop: "60px",
+            color: "red",
+            borderRadius: "8px",
+          },
+          escapeHTML: false,
+        }).showToast();
+        // Tunda redirect hingga notifikasi selesai tampil
+        setTimeout(function () {
+          window.location.href = `/class/all`;
+        }, 5000);
       },
     });
   };
