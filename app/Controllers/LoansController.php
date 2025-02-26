@@ -114,18 +114,18 @@ class LoansController extends BaseController
         try {
             $id_loans = $this->request->getGet('loans');
             if (empty($id_loans)) {
-                return ResponHelper::handlerErrorResponJson('ID invalid.', 400);
+                return ResponHelper::handlerErrorResponRedirect('loans/list', 'ID invalid.');
             }
 
             $id_decrypt = $this->decryptId($id_loans);
             $detail_data = $this->loans->getDetailLoanByIdLoan($id_decrypt);
             if (!$detail_data) {
-                return ResponHelper::handlerErrorResponJson('Data not found.', 404);
+                return ResponHelper::handlerErrorResponRedirect('loans/list', 'Data tidak ditemukan');
             }
 
             $data_loans = $this->request->getPost();
             if (empty($data_loans)) {
-                return ResponHelper::handlerErrorResponJson('No data provided.', 400);
+                return ResponHelper::handlerErrorResponRedirect('loans/list', 'Data tidak ditemukan');
             }
 
             $updateData = [];
@@ -144,14 +144,14 @@ class LoansController extends BaseController
 
                     case 'Diperpanjang':
                         if ($data_loans['return_date_expected'] === $detail_data['return_date_expected']) {
-                            return ResponHelper::handlerErrorResponJson('Tanggal Pengembalian Sama', 400);
+                            return ResponHelper::handlerErrorResponRedirect('loans/list', 'Tanggal Pengembalian Sama');
                         }
                         $updateData['return_date_expected'] = $data_loans['return_date_expected'];
+                        $updateData['status'] = 'Diperpanjang';
                         break;
                 }
             }
 
-            // Handle quantity change
             if (isset($data_loans['quantity']) && $data_loans['quantity'] !== $detail_data['quantity']) {
                 $quantity_diff = $data_loans['quantity'] - $detail_data['quantity'];
                 $data_book = $this->book->getDataById($data_loans['book_id']);
@@ -165,7 +165,6 @@ class LoansController extends BaseController
                 $updateData['quantity'] = $data_loans['quantity'];
             }
 
-            // Update loan data if any changes
             if (!empty($updateData)) {
                 $this->loans->update($id_decrypt, $updateData);
             }
@@ -175,10 +174,10 @@ class LoansController extends BaseController
                 throw new \Exception('Transaction failed.');
             }
 
-            return ResponHelper::handlerSuccessResponJson('Loan updated successfully.', 200);
+            return ResponHelper::handlerSuccessResponRedirect('loans/list', 'Berhasil mengupdate pinjaman.');
         } catch (\Exception $e) {
             $this->db->transRollback();
-            return ResponHelper::handlerErrorResponJson($e->getMessage(), 500);
+            return ResponHelper::handlerErrorResponRedirect('loans/list', 'Gagal mengupdate peminjaman');
         }
     }
 

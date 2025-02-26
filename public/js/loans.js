@@ -52,6 +52,7 @@ function viewDetailLoans(button) {
 
         $("input[name='available_books']").val(book.available_books);
         $("input[name='book_name']").val(book.book_name);
+        $("input[name='book_id']").val(book.id).attr("hidden", true);
         $("input[name='user_id']").val(user.fullname);
         $("input[name='quantity']").val(loan.quantity);
         $("input[name='loan_date']").val(loan.loan_date || "");

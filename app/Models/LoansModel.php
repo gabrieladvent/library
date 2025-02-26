@@ -158,9 +158,9 @@ class LoansModel extends Model
     }
 
     public function getDetailLoanByIdLoan($id_loan)
-{
-    return $this
-        ->select('
+    {
+        return $this
+            ->select('
             loans.id AS loan_id, 
             loans.book_id, 
             loans.user_id, 
@@ -175,11 +175,10 @@ class LoansModel extends Model
             users.id AS user_id, 
             biodatausers.fullname
         ')
-        ->join('books', 'books.id = loans.book_id')
-        ->join('users', 'users.id = loans.user_id')
-        ->join('biodatausers', 'biodatausers.id = users.id')
-        ->where('loans.id', $id_loan)
-        ->first();
-}
-
+            ->join('books', 'books.id = loans.book_id')
+            ->join('users', 'users.id = loans.user_id')
+            ->join('biodatausers', 'biodatausers.id = users.id')
+            ->where('loans.id', $id_loan)
+            ->first();
+    }
 }

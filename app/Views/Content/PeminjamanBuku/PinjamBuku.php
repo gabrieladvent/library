@@ -199,6 +199,7 @@ $encrypter = \Config\Services::encrypter();
                                     <div class="input-content">
                                         <label class="label" for="">Judul Buku</label>
                                         <input class="input" type="text" name="book_name">
+                                        <input class="hidden" type="text" name="book_id">
 
                                     </div>
                                     <div class="count_book">
