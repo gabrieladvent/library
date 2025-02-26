@@ -31,9 +31,6 @@ function viewDetailLoans(button) {
         const book = response.data.book;
         const user = response.data.user;
 
-        // Inisialisasi dropdown user dan book dengan Select2
-        initializeDropdowns();
-
         // Mengisi select user
         $("#memberSelect").html(
           `<option value="${user.id}" selected>${user.fullname}</option>`
@@ -54,6 +51,8 @@ function viewDetailLoans(button) {
         $("#bookSelectedit").trigger("change");
 
         $("input[name='available_books']").val(book.available_books);
+        $("input[name='book_name']").val(book.book_name);
+        $("input[name='user_id']").val(user.fullname);
         $("input[name='quantity']").val(loan.quantity);
         $("input[name='loan_date']").val(loan.loan_date || "");
         $("input[name='return_date_expected']").val(
@@ -78,77 +77,6 @@ function viewDetailLoans(button) {
       closePopup();
     },
   });
-}
-
-// Inisialisasi dropdown saat pertama kali popup dibuka
-function initializeDropdowns() {
-  // Konfigurasi dasar Select2
-  const select2Config = {
-    allowClear: true,
-    matcher: customMatcher,
-    language: {
-      noResults: function () {
-        return "Tidak ada hasil yang ditemukan";
-      },
-      searching: function () {
-        return "Mencari...";
-      },
-    },
-    disabled: true,
-  };
-
-  // Inisialisasi Select2 untuk member
-  if ($("#memberSelect").data("select2")) {
-    $("#memberSelect").select2("destroy");
-  }
-  $("#memberSelect").select2({
-    ...select2Config,
-    placeholder: "Pilih Anggota",
-  });
-
-  // Inisialisasi Select2 untuk buku
-  if ($("#bookSelectedit").data("select2")) {
-    $("#bookSelectedit").select2("destroy");
-  }
-  $("#bookSelectedit").select2({
-    ...select2Config,
-    placeholder: "Pilih Buku",
-  });
-}
-
-// Custom matcher function untuk pencarian
-function customMatcher(params, data) {
-  if ($.trim(params.term) === "") {
-    return data;
-  }
-  const searchText = params.term.toLowerCase();
-  const originalText = data.text.toLowerCase();
-  return originalText.indexOf(searchText) > -1 ? data : null;
-}
-
-// Fungsi untuk menonaktifkan mode edit
-function disableEditMode() {
-  const form = document.querySelector("#popup__lihat form");
-  const inputs = form.querySelectorAll("input, textarea, select");
-  const submitBtn = form.querySelector("button[type='submit']");
-
-  inputs.forEach((input) => {
-    if (input.type !== "checkbox" && input.id !== "enableEdit") {
-      input.setAttribute("disabled", true);
-    }
-  });
-  submitBtn.setAttribute("disabled", true);
-
-  // Disable Select2 elements
-  $("#memberSelect").prop("disabled", true);
-  $("#bookSelectedit").prop("disabled", true);
-
-  if ($("#memberSelect").data("select2")) {
-    $("#memberSelect").select2("enable", false);
-  }
-  if ($("#bookSelectedit").data("select2")) {
-    $("#bookSelectedit").select2("enable", false);
-  }
 }
 
 // Perbaikan fungsi toggleEdit
@@ -177,160 +105,6 @@ function toggleEdit(checkbox) {
     // Nonaktifkan mode edit
     disableEditMode();
   }
-}
-
-// Fungsi untuk fetch dan setup dropdown user
-function fetchAndSetupUserDropdown() {
-  const currentUserId = $("#memberSelect").val();
-  const currentUserText = $("#memberSelect option:selected").text();
-
-  // Fetch data users
-  fetch(`${window.location.origin}/user/all-user`)
-    .then((response) => response.json())
-    .then((data) => {
-      // Simpan pilihan yang sedang dipilih
-      const currentSelection = {
-        id: currentUserId,
-        text: currentUserText,
-      };
-
-      // Reinisialisasi Select2
-      $("#memberSelect").select2("destroy");
-      $("#memberSelect").empty();
-
-      // Tambahkan opsi default
-      $("#memberSelect").append(new Option("Pilih Anggota", ""));
-
-      // Tambahkan semua data user
-      data.data.forEach((user) => {
-        const isSelected = user.id == currentUserId;
-        const option = new Option(
-          user.fullname,
-          user.id,
-          isSelected,
-          isSelected
-        );
-        $("#memberSelect").append(option);
-      });
-
-      // Inisialisasi ulang dengan opsi yang dikonfigurasi
-      $("#memberSelect").select2({
-        placeholder: "Pilih Anggota",
-        allowClear: true,
-        matcher: customMatcher,
-        language: {
-          noResults: () => "Tidak ada hasil yang ditemukan",
-          searching: () => "Mencari...",
-        },
-      });
-
-      // Set event handler untuk perubahan
-      $("#memberSelect").on("change", function () {
-        let userId = $(this).val();
-        if (userId) {
-          fetch(`${window.location.origin}/user/class?users=${userId}`)
-            .then((response) => response.json())
-            .then((data) => {
-              $("input[name='class_name']").val(data.data.class_name || "");
-            })
-            .catch((err) => console.error("Error mengambil data kelas: ", err));
-        } else {
-          $("input[name='class_name']").val("");
-        }
-      });
-
-      // Trigger change untuk memperbarui informasi kelas
-      $("#memberSelect").trigger("change");
-    })
-    .catch((err) => console.error("Error mengambil data user: ", err));
-}
-
-// Fungsi untuk fetch dan setup dropdown buku
-function fetchAndSetupBookDropdown() {
-  const currentBookId = $("#bookSelectedit").val();
-  const currentBookText = $("#bookSelectedit option:selected").text();
-  const currentQuantity = $("input[name='quantity']").val();
-
-  // Fetch data buku
-  fetch(`${window.location.origin}/book/all-books`)
-    .then((response) => response.json())
-    .then((data) => {
-      // Simpan pilihan yang sedang dipilih
-      const currentSelection = {
-        id: currentBookId,
-        text: currentBookText,
-      };
-
-      // Reinisialisasi Select2
-      $("#bookSelectedit").select2("destroy");
-      $("#bookSelectedit").empty();
-
-      // Tambahkan opsi default
-      $("#bookSelectedit").append(new Option("Pilih Buku", ""));
-
-      // Tambahkan semua data buku
-      data.data.forEach((book) => {
-        const isSelected = book.id == currentBookId;
-        const option = new Option(
-          book.book_name,
-          book.id,
-          isSelected,
-          isSelected
-        );
-        // Jika buku tidak tersedia dan bukan buku yang sedang dipilih
-        // Untuk buku yang sedang dipilih, kita tetap biarkan bisa dipilih
-        if (book.available_books <= 0 && !isSelected) {
-          option.disabled = true;
-        }
-        $("#bookSelectedit").append(option);
-      });
-
-      // Inisialisasi ulang dengan opsi yang dikonfigurasi
-      $("#bookSelectedit").select2({
-        placeholder: "Pilih Buku",
-        allowClear: true,
-        matcher: customMatcher,
-        language: {
-          noResults: () => "Tidak ada hasil yang ditemukan",
-          searching: () => "Mencari...",
-        },
-      });
-
-      // Set event handler untuk perubahan
-      $("#bookSelectedit").on("change", function () {
-        let bookId = $(this).val();
-        if (bookId) {
-          fetch(`${window.location.origin}/book/available?books=${bookId}`)
-            .then((response) => response.json())
-            .then((data) => {
-              // Jika buku berubah, kita perlu mempertimbangkan jumlah tersedia
-              // plus jumlah yang sudah dipinjam jika ini buku yang sama
-              let availableBooks = data.data.available_books || 0;
-
-              // Jika buku yang sama dengan sebelumnya, tambahkan jumlah yang sedang dipinjam
-              // ke perhitungan ketersediaan
-              if (bookId == currentBookId) {
-                availableBooks =
-                  parseInt(availableBooks) + parseInt(currentQuantity);
-              }
-
-              $("input[name='available_books']").val(availableBooks);
-
-              // Reset dan validasi jumlah pinjam
-              validateQuantity();
-            })
-            .catch((err) =>
-              console.error("Error mengambil data persediaan buku: ", err)
-            );
-        } else {
-          $("input[name='available_books']").val("");
-        }
-      });
-
-      // Trigger change untuk memperbarui informasi persediaan
-      $("#bookSelectedit").trigger("change");
-    })
-    .catch((err) => console.error("Error mengambil data buku: ", err));
 }
 
 // Fungsi untuk validasi jumlah pinjam

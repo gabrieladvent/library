@@ -168,9 +168,7 @@ $encrypter = \Config\Services::encrypter();
                                     <h1 class="subtitle">Data Anggota</h1>
                                     <div class="input-content">
                                         <label class="label" for="">Nama Anggota</label>
-                                        <select class="input" id="memberSelect" name="user_id" required>
-                                            <option value="">Pilih Anggota</option>
-                                        </select>
+                                        <input class="input" type="text" name="user_id" readonly>
 
                                     </div>
                                     <div class="count_book">
@@ -200,9 +198,7 @@ $encrypter = \Config\Services::encrypter();
                                     <h1 class="subtitle">Data Buku</h1>
                                     <div class="input-content">
                                         <label class="label" for="">Judul Buku</label>
-                                        <select class="input" id="bookSelectedit" name="book_id" required>
-                                            <option value="">Pilih Buku</option>
-                                        </select>
+                                        <input class="input" type="text" name="book_name">
 
                                     </div>
                                     <div class="count_book">
