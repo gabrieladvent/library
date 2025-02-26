@@ -32,10 +32,10 @@ $encrypter = \Config\Services::encrypter();
                 <label for="search_status">Status</label>
                 <select id="search_status">
                     <option value="">Pilih Status</option>
-                    <option value="Dipinjam">Dipinjam</option>
-                    <option value="Dikembalikan">Dikembalikan</option>
-                    <option value="Perpanjang">Perpanjang</option>
-                    <option value="Terlambat">Terlambat</option>
+                    <option value="pinjam">Pinjam</option>
+                    <option value="dikembalikan">Dikembalikan</option>
+                    <option value="perpanjang">Perpanjang</option>
+                    <option value="terlambat">Terlambat</option>
                 </select>
             </div>
 
@@ -49,44 +49,64 @@ $encrypter = \Config\Services::encrypter();
                             <th>Nama Anggota</th>
                             <th>Nama Buku</th>
                             <th>Tanggal Peminjaman</th>
-                            <th>Tanggal Pengembalian (Ekspektasi)</th>
-                            <th>Tanggal Pengembalian (Aktual)</th>
+                            <th>Tanggal Pengembalian</th>
                             <th>Jumlah Buku</th>
                             <th>Status</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody id="dataTable">
-                        <?php if (!empty($loans)): ?>
-                            <?php foreach ($loans as $index => $loan): ?>
-                                <tr>
-                                    <td><?= $index + 1 ?></td>
-                                    <td><?= htmlspecialchars($loan['fullname']) ?></td>
-                                    <td><?= htmlspecialchars($loan['book_name']) ?></td>
-                                    <td><?= date('d-m-Y', strtotime($loan['loan_date'])) ?></td>
-                                    <td><?= date('d-m-Y', strtotime($loan['return_date_expected'])) ?></td>
-                                    <td>
-                                        <?= $loan['status'] == 'Dikembalikan' ? date('d-m-Y', strtotime($loan['return_date_actual'])) : '-' ?>
-                                    </td>
-                                    <td><?= (int) $loan['quantity'] ?></td>
-                                    <td><?= htmlspecialchars($loan['status']) ?></td>
-                                    <td>
-                                        <div class="button_print">
-                                            <button onclick="window.open('<?= site_url('laporan/printPDF/' . $loan['id']) ?>', '_blank');" class="btn btn-print">
-                                                <i id="print" class='bx bxs-printer'></i> Print
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            <?php endforeach ?>
-                        <?php else: ?>
-                            <tr>
-                                <td colspan="9">Data tidak ditemukan</td>
-                            </tr>
-                        <?php endif ?>
+                        <!-- Contoh data. Pastikan format tanggal sesuai dengan nilai input (YYYY-MM-DD) -->
+                        <tr>
+                            <td>1</td>
+                            <td>Kelvin</td>
+                            <td>Dilan</td>
+                            <td>2025-01-01</td>
+                            <td>2025-01-05</td>
+                            <td>1 Buku</td>
+                            <td>dikembalikan</td>
+                            <td>
+                                <div class="button_print">
+                                    <button onclick="window.open('<?= site_url('laporan/printPDF/1') ?>', '_blank');" class="btn btn-print">
+                                        <i id="print" class='bx bxs-printer'></i> Print
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Andi</td>
+                            <td>Rembulan</td>
+                            <td>2025-01-02</td>
+                            <td>2025-01-06</td>
+                            <td>2 Buku</td>
+                            <td>pinjam</td>
+                            <td>
+                                <div class="button_print">
+                                    <button onclick="window.open('<?= site_url('laporan/printPDF/2') ?>', '_blank');" class="btn btn-print">
+                                        <i id="print" class='bx bxs-printer'></i> Print
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Sinta</td>
+                            <td>Bulan</td>
+                            <td>2025-01-03</td>
+                            <td>2025-01-07</td>
+                            <td>1 Buku</td>
+                            <td>terlambat</td>
+                            <td>
+                                <div class="button_print">
+                                    <button onclick="window.open('<?= site_url('laporan/printPDF/3') ?>', '_blank');" class="btn btn-print">
+                                        <i id="print" class='bx bxs-printer'></i> Print
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
-
             </div>
         </div>
     </div>
@@ -100,14 +120,9 @@ $encrypter = \Config\Services::encrypter();
         const statusSelect = document.getElementById("search_status");
         const tableBody = document.getElementById("dataTable");
 
-        function formatDate(dateString) {
-            const [year, month, day] = dateString.split("-");
-            return `${day}-${month}-${year}`;
-        }
-
         function filterTable() {
-            const loansDate = formatDate(loansInput.value);
-            const returnDate = formatDate(returnInput.value);
+            const loansDate = loansInput.value; // Format: YYYY-MM-DD
+            const returnDate = returnInput.value; // Format: YYYY-MM-DD
             const statusValue = statusSelect.value.toLowerCase().trim();
 
             // Dapatkan semua baris data
@@ -118,7 +133,7 @@ $encrypter = \Config\Services::encrypter();
                 const cells = row.querySelectorAll("td");
                 const rowLoansDate = cells[3].textContent.trim();
                 const rowReturnDate = cells[4].textContent.trim();
-                const rowStatus = cells[7].textContent.trim().toLowerCase();
+                const rowStatus = cells[6].textContent.trim().toLowerCase();
 
                 let showRow = true;
 
@@ -135,9 +150,6 @@ $encrypter = \Config\Services::encrypter();
                 // Filter berdasarkan Status jika input diisi
                 if (statusValue && rowStatus !== statusValue) {
                     showRow = false;
-                } else{
-                    // Jika status kosong, tampilkan semua baris
-                    showRow = true;
                 }
 
                 // Tampilkan atau sembunyikan baris
