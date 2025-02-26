@@ -70,7 +70,6 @@ $encrypter = \Config\Services::encrypter();
                                             <button class="btn btn-edit" onclick="Delete(this)" data-id="<?= urlencode(base64_encode($encrypter->encrypt($index['loan_id']))) ?>">
                                                 <i class="bx bx-trash"></i> Hapus
                                             </button>
-
                                         </div>
                                     </td>
                                 </tr>
@@ -171,15 +170,6 @@ $encrypter = \Config\Services::encrypter();
                                         <label class="label" for="">Nama Anggota</label>
                                         <select class="input" id="memberSelect" name="user_id" required>
                                             <option value="">Pilih Anggota</option>
-                                            <?php if (!empty($members) && is_array($members)): ?>
-                                                <?php foreach ($members as $member): ?>
-                                                    <option value="<?= htmlspecialchars($member['id']) ?>">
-                                                        <?= htmlspecialchars($member['fullname']) ?>
-                                                    </option>
-                                                <?php endforeach; ?>
-                                            <?php else: ?>
-                                                <option value="">Data anggota tidak tersedia.</option>
-                                            <?php endif; ?>
                                         </select>
 
                                     </div>
@@ -212,15 +202,6 @@ $encrypter = \Config\Services::encrypter();
                                         <label class="label" for="">Judul Buku</label>
                                         <select class="input" id="bookSelectedit" name="book_id" required>
                                             <option value="">Pilih Buku</option>
-                                            <?php if (!empty($books) && is_array($books)): ?>
-                                                <?php foreach ($books as $book): ?>
-                                                    <option value="<?= htmlspecialchars($book['id']) ?>">
-                                                        <?= htmlspecialchars($book['book_name']) ?>
-                                                    </option>
-                                                <?php endforeach; ?>
-                                            <?php else: ?>
-                                                <option value="">Data buku tidak tersedia.</option>
-                                            <?php endif; ?>
                                         </select>
 
                                     </div>
@@ -263,7 +244,6 @@ $encrypter = \Config\Services::encrypter();
                         <div class="title_delete">
                             <div class="form-group">
                                 <h1>Konfirmasi Hapus</h1>
-
                             </div>
                         </div>
                         <div class="popup__content">
@@ -284,7 +264,4 @@ $encrypter = \Config\Services::encrypter();
 </div>
 
 <script type="text/javascript" src="<?= base_url('js/loans.js') ?>"></script>
-<script>
-
-</script>
 <?= $this->endSection() ?>

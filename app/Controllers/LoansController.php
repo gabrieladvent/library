@@ -61,10 +61,10 @@ class LoansController extends BaseController
         $id_decrypt = $this->decryptId($id_loans);
 
         $loan = $this->loans->getDetailLoanByIdLoan($id_decrypt);
-        if($loan === null) {
+        if ($loan === null) {
             return ResponHelper::handlerErrorResponJson('Data not found.', 404);
         }
-        
+
         $data = [
             'loan' => $loan,
             'book' => $this->book->getDataById($loan['book_id']),
@@ -92,7 +92,7 @@ class LoansController extends BaseController
         $quantity = $data_loans['quantity'];
         $data_available = $data_loans['available_books'] - $quantity;
         unset($data_loans['available_books']);
-        
+
         try {
             $this->db->transStart();
 
@@ -109,11 +109,114 @@ class LoansController extends BaseController
 
     public function editLoans()
     {
-        // edit data
+        // dd($this->request->getPost());
+        $this->db->transStart();
+        try {
+            $id_loans = $this->request->getGet('loans');
+            if (empty($id_loans)) {
+                return ResponHelper::handlerErrorResponJson('ID invalid.', 400);
+            }
+
+            $id_decrypt = $this->decryptId($id_loans);
+            $detail_data = $this->loans->getDetailLoanByIdLoan($id_decrypt);
+            if (!$detail_data) {
+                return ResponHelper::handlerErrorResponJson('Data not found.', 404);
+            }
+
+            $data_loans = $this->request->getPost();
+            if (empty($data_loans)) {
+                return ResponHelper::handlerErrorResponJson('No data provided.', 400);
+            }
+
+            $updateData = [];
+
+            // Handle status change
+            if (isset($data_loans['status']) && $data_loans['status'] !== $detail_data['status']) {
+                switch ($data_loans['status']) {
+                    case 'Dikembalikan':
+                        $data_book = $this->book->getDataById($data_loans['book_id']);
+                        if ($data_book) {
+                            $data_book['available_books'] += $detail_data['quantity'];
+                            $this->book->update($data_loans['book_id'], $data_book);
+                        }
+                        $updateData['status'] = 'Dikembalikan';
+                        break;
+
+                    case 'Diperpanjang':
+                        if ($data_loans['return_date_expected'] === $detail_data['return_date_expected']) {
+                            return ResponHelper::handlerErrorResponJson('Tanggal Pengembalian Sama', 400);
+                        }
+                        $updateData['return_date_expected'] = $data_loans['return_date_expected'];
+                        break;
+                }
+            }
+
+            // Handle quantity change
+            if (isset($data_loans['quantity']) && $data_loans['quantity'] !== $detail_data['quantity']) {
+                $quantity_diff = $data_loans['quantity'] - $detail_data['quantity'];
+                $data_book = $this->book->getDataById($data_loans['book_id']);
+                if ($data_book) {
+                    $data_book['available_books'] -= $quantity_diff;
+                    if ($data_book['available_books'] < 0) {
+                        throw new \Exception('Transaction failed.');
+                    }
+                    $this->book->update($data_loans['book_id'], $data_book);
+                }
+                $updateData['quantity'] = $data_loans['quantity'];
+            }
+
+            // Update loan data if any changes
+            if (!empty($updateData)) {
+                $this->loans->update($id_decrypt, $updateData);
+            }
+
+            $this->db->transComplete();
+            if ($this->db->transStatus() === false) {
+                throw new \Exception('Transaction failed.');
+            }
+
+            return ResponHelper::handlerSuccessResponJson('Loan updated successfully.', 200);
+        } catch (\Exception $e) {
+            $this->db->transRollback();
+            return ResponHelper::handlerErrorResponJson($e->getMessage(), 500);
+        }
     }
+
+
+
     public function deleteLoans()
     {
-        // delete data 
+        $this->db->transStart();
+        try {
+            $id_loans = $this->request->getGet('loans');
+            if (empty($id_loans)) {
+                return ResponHelper::handlerErrorResponJson('ID invalid.', 400);
+            }
+
+            $id_decrypt = $this->decryptId($id_loans);
+            $detail_data = $this->loans->getDetailLoanByIdLoan($id_decrypt);
+            if (!$detail_data) {
+                return ResponHelper::handlerErrorResponJson('Data not found.', 404);
+            }
+
+            $data_book = $this->book->getDataById($detail_data['book_id']);
+            if ($data_book) {
+                $data_book['available_books'] += $detail_data['quantity'];
+                $this->book->update($detail_data['book_id'], $data_book);
+            }
+
+            $this->loans->delete($id_decrypt);
+
+            $this->db->transComplete();
+            if ($this->db->transStatus() === false) {
+                throw new \Exception('Transaction failed.');
+            }
+
+            return ResponHelper::handlerSuccessResponJson('Loan deleted successfully.', 200);
+        } catch (\Exception $e) {
+            $this->db->transRollback();
+            return ResponHelper::handlerErrorResponJson($e->getMessage(), 500);
+        }
     }
 
     private function decryptId($id_book)
