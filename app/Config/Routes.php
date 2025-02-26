@@ -63,10 +63,16 @@ $routes->group("category", ['filter' => 'auth'], function ($routes) {
 $routes->group("loans", ['filter' => 'auth'], function ($routes) {
     $routes->get('list', 'LoansController::viewLoans');
     $routes->post('add', 'LoansController::addLoans');
+    $routes->get('detail', 'LoansController::viewDetailLoans');
     $routes->post('edit', 'LoansController::editLoans');
     $routes->get('delete', 'LoansController::deleteLoans');
-    $routes->get('report', 'LoansController::reportLoans');
 });
+
+$routes->group("report", ['filter' => 'auth'], function ($routes) {
+    $routes->get('list', 'ReportController::index');
+});
+
+
 
 
 $routes->set404Override(function () {

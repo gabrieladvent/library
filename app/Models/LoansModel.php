@@ -57,14 +57,26 @@ class LoansModel extends Model
 
     public function getAllLoans()
     {
-        // Ambil semua data peminjaman
         return $this
-            ->select('loans.*, books.book_name, books.author, users.id, biodatausers.fullname')
+            ->select('
+                    loans.id AS loan_id,
+                    loans.book_id, 
+                    loans.user_id, 
+                    loans.loan_date, 
+                    loans.return_date_expected,
+                    loans.quantity,
+                    loans.status, 
+                    books.book_name, 
+                    books.author, 
+                    users.id AS user_id, 
+                    biodatausers.fullname
+                ')
             ->join('books', 'books.id = loans.book_id')
             ->join('users', 'users.id = loans.user_id')
             ->join('biodatausers', 'biodatausers.id = users.id')
             ->findAll();
     }
+
     /**
      * Menghitung jumlah peminjaman yang dilakukan dalam 7 hari terakhir
      * 
@@ -102,8 +114,8 @@ class LoansModel extends Model
     }
 
     /**
-     * Mengambil data peminjaman yang tersedia untuk user yang dikirimkan
-     * 
+     * Mengambil data peminjaman yang tersedia untuk user yang mkan
+     * dikiri
      * Fungsi ini akan mengembalikan data peminjaman yang memiliki id user yang
      * sama dengan parameter dan memiliki status 'Borrowed' atau 'Overdue'
      * 
@@ -144,4 +156,30 @@ class LoansModel extends Model
             ->where('status', 'Borrowed')
             ->countAllResults();
     }
+
+    public function getDetailLoanByIdLoan($id_loan)
+{
+    return $this
+        ->select('
+            loans.id AS loan_id, 
+            loans.book_id, 
+            loans.user_id, 
+            loans.loan_date, 
+            loans.return_date_expected, 
+            loans.return_date_actual, 
+            loans.quantity, 
+            loans.status, 
+            loans.notes, 
+            books.book_name, 
+            books.author, 
+            users.id AS user_id, 
+            biodatausers.fullname
+        ')
+        ->join('books', 'books.id = loans.book_id')
+        ->join('users', 'users.id = loans.user_id')
+        ->join('biodatausers', 'biodatausers.id = users.id')
+        ->where('loans.id', $id_loan)
+        ->first();
+}
+
 }

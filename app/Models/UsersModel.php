@@ -121,6 +121,16 @@ class UsersModel extends Model
             ->first();
     }
 
+    public function getUserById($id)
+    {
+        return $this
+            ->select('users.id, biodatausers.fullname, biodatausers.class_id, classes.class_name as class_name')
+            ->join('biodatausers', 'biodatausers.user_id = users.id', 'left')
+            ->join('classes', 'classes.id = biodatausers.class_id', 'left')
+            ->where('users.id', $id)
+            ->first();
+    }
+
     /**
      * Menambahkan data user baru
      * 

@@ -36,6 +36,10 @@ $encrypter = \Config\Services::encrypter();
                     <option value="Dikembalikan">Dikembalikan</option>
                     <option value="Perpanjang">Perpanjang</option>
                     <option value="Terlambat">Terlambat</option>
+                    <option value="Dipinjam">Dipinjam</option>
+                    <option value="Dikembalikan">Dikembalikan</option>
+                    <option value="Perpanjang">Perpanjang</option>
+                    <option value="Terlambat">Terlambat</option>
                 </select>
             </div>
 
@@ -49,6 +53,8 @@ $encrypter = \Config\Services::encrypter();
                             <th>Nama Anggota</th>
                             <th>Nama Buku</th>
                             <th>Tanggal Peminjaman</th>
+                            <th>Tanggal Pengembalian (Ekspektasi)</th>
+                            <th>Tanggal Pengembalian (Aktual)</th>
                             <th>Tanggal Pengembalian (Ekspektasi)</th>
                             <th>Tanggal Pengembalian (Aktual)</th>
                             <th>Jumlah Buku</th>
@@ -84,8 +90,36 @@ $encrypter = \Config\Services::encrypter();
                                 <td colspan="9">Data tidak ditemukan</td>
                             </tr>
                         <?php endif ?>
+                        <?php if (!empty($loans)): ?>
+                            <?php foreach ($loans as $index => $loan): ?>
+                                <tr>
+                                    <td><?= $index + 1 ?></td>
+                                    <td><?= htmlspecialchars($loan['fullname']) ?></td>
+                                    <td><?= htmlspecialchars($loan['book_name']) ?></td>
+                                    <td><?= date('d-m-Y', strtotime($loan['loan_date'])) ?></td>
+                                    <td><?= date('d-m-Y', strtotime($loan['return_date_expected'])) ?></td>
+                                    <td>
+                                        <?= $loan['status'] == 'Dikembalikan' ? date('d-m-Y', strtotime($loan['return_date_actual'])) : '-' ?>
+                                    </td>
+                                    <td><?= (int) $loan['quantity'] ?></td>
+                                    <td><?= htmlspecialchars($loan['status']) ?></td>
+                                    <td>
+                                        <div class="button_print">
+                                            <button onclick="window.open('<?= site_url('laporan/printPDF/' . $loan['id']) ?>', '_blank');" class="btn btn-print">
+                                                <i id="print" class='bx bxs-printer'></i> Print
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="9">Data tidak ditemukan</td>
+                            </tr>
+                        <?php endif ?>
                     </tbody>
                 </table>
+
 
             </div>
         </div>
@@ -105,7 +139,14 @@ $encrypter = \Config\Services::encrypter();
             return `${day}-${month}-${year}`;
         }
 
+        function formatDate(dateString) {
+            const [year, month, day] = dateString.split("-");
+            return `${day}-${month}-${year}`;
+        }
+
         function filterTable() {
+            const loansDate = formatDate(loansInput.value);
+            const returnDate = formatDate(returnInput.value);
             const loansDate = formatDate(loansInput.value);
             const returnDate = formatDate(returnInput.value);
             const statusValue = statusSelect.value.toLowerCase().trim();
@@ -118,6 +159,7 @@ $encrypter = \Config\Services::encrypter();
                 const cells = row.querySelectorAll("td");
                 const rowLoansDate = cells[3].textContent.trim();
                 const rowReturnDate = cells[4].textContent.trim();
+                const rowStatus = cells[7].textContent.trim().toLowerCase();
                 const rowStatus = cells[7].textContent.trim().toLowerCase();
 
                 let showRow = true;
