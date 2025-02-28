@@ -32,10 +32,10 @@ $encrypter = \Config\Services::encrypter();
                 <label for="search_status">Status</label>
                 <select id="search_status">
                     <option value="">Pilih Status</option>
-                    <option value="Dipinjam">Dipinjam</option>
-                    <option value="Dikembalikan">Dikembalikan</option>
-                    <option value="Diperpanjang">Diperpanjang</option>
-                    <option value="Terlambat">Terlambat</option>
+                    <option value="pinjam">Pinjam</option>
+                    <option value="dikembalikan">Dikembalikan</option>
+                    <option value="perpanjang">Perpanjang</option>
+                    <option value="terlambat">Terlambat</option>
                 </select>
             </div>
 
@@ -56,38 +56,61 @@ $encrypter = \Config\Services::encrypter();
                         </tr>
                     </thead>
                     <tbody id="dataTable">
-                        <?php if (!empty($loans)): ?>
-                            <?php foreach ($loans as $index => $loan): ?>
-                                <tr>
-                                    <td><?= $index + 1 ?></td>
-                                    <td><?= $loan['fullname'] ?></td>
-                                    <td><?= $loan['book_name'] ?></td>
-                                    <td><?= $loan['loan_date'] ?></td>
-                                    <td><?= $loan['return_date_expected'] ?></td>
-                                    <td><?= $loan['quantity'] ?></td>
-                                    <td><?= $loan['status'] ?></td>
-                                    <td>
-                                        <div class="button_print">
-                                            <button onclick="window.open('<?= site_url('laporan/printPDF/3') ?>', '_blank');" class="btn btn-print">
-                                                <i id="print" class='bx bxs-printer'></i> Print
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <tr>
-                                <td colspan="8">Data Tidak Ditemukan</td>
-                            </tr>
-                        <?php endif ?>
+                        <!-- Contoh data. Pastikan format tanggal sesuai dengan nilai input (YYYY-MM-DD) -->
+                        <tr>
+                            <td>1</td>
+                            <td>Kelvin</td>
+                            <td>Dilan</td>
+                            <td>2025-01-01</td>
+                            <td>2025-01-05</td>
+                            <td>1 Buku</td>
+                            <td>dikembalikan</td>
+                            <td>
+                                <div class="button_print">
+                                    <button onclick="window.open('<?= site_url('laporan/printPDF/1') ?>', '_blank');" class="btn btn-print">
+                                        <i id="print" class='bx bxs-printer'></i> Print
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Andi</td>
+                            <td>Rembulan</td>
+                            <td>2025-01-02</td>
+                            <td>2025-01-06</td>
+                            <td>2 Buku</td>
+                            <td>pinjam</td>
+                            <td>
+                                <div class="button_print">
+                                    <button onclick="window.open('<?= site_url('laporan/printPDF/2') ?>', '_blank');" class="btn btn-print">
+                                        <i id="print" class='bx bxs-printer'></i> Print
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Sinta</td>
+                            <td>Bulan</td>
+                            <td>2025-01-03</td>
+                            <td>2025-01-07</td>
+                            <td>1 Buku</td>
+                            <td>terlambat</td>
+                            <td>
+                                <div class="button_print">
+                                    <button onclick="window.open('<?= site_url('laporan/printPDF/3') ?>', '_blank');" class="btn btn-print">
+                                        <i id="print" class='bx bxs-printer'></i> Print
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
-
-
 
 <script>
     // Simulasi filtering data pada tabel
