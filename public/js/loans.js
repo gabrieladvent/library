@@ -24,13 +24,7 @@ function viewDetailLoans(button) {
     type: "GET",
     dataType: "json",
     success: function (response) {
-      console.log("Response:", response);
-
       if (response.status === "success") {
-        const loan = response.data.loan;
-        const book = response.data.book;
-        const user = response.data.user;
-
         // Mengisi select user
         $("#memberSelect").html(
           `<option value="${user.id}" selected>${user.fullname}</option>`
@@ -67,10 +61,10 @@ function viewDetailLoans(button) {
         );
 
         // Pastikan semua input di-disable saat pertama kali dibuka
-        disableEditMode();
       } else {
         alert("Gagal mengambil data peminjaman.");
         closePopup();
+        closeDeletePopup();
       }
     },
     error: function () {
@@ -431,4 +425,92 @@ document.addEventListener("DOMContentLoaded", function () {
       availableInput.value = "";
     }
   });
+});
+
+// delete loans function
+function Delete(button) {
+  const id = button.getAttribute("data-id");
+  const bookName = button.getAttribute("data-name");
+
+  const popup = document.getElementById("popup__delete");
+  const popupContent = popup.querySelector(".popup_delete");
+
+  popup.querySelector(".title_delete p").textContent = bookName;
+  popup.style.display = "flex";
+  popup.style.opacity = "1";
+  popup.style.visibility = "visible";
+
+  popupContent.style.opacity = "1";
+  popupContent.style.transform = "translate(-50%, -50%) scale(1)";
+
+  document.getElementById("confirmDelete").onclick = function () {
+    $.ajax({
+      url: `${window.location.origin}/book/delete?books=${id}`,
+      type: "GET",
+      dataType: "json",
+      success: function (response) {
+        closeDeletePopup(); // Tutup popup
+        if (response.status === "success") {
+          Toastify({
+            className: "notif bx bxs-check-circle",
+            text: "Data Berhasil di Hapus",
+            duration: 3000,
+            gravity: "top", // top or bottom
+            position: "right", // left, center, or right
+            backgroundColor: "#D9FFF0",
+            style: {
+              marginTop: "60px",
+              color: "green",
+              borderRadius: "8px",
+            },
+            escapeHTML: false, // Allow HTML content
+          }).showToast();
+          window.location.href = "/book/dashboard";
+        } else {
+          window.location.href = "/book/dashboard";
+        }
+      },
+      error: function () {
+        console.error("Error deleting book");
+      },
+    });
+  };
+
+  document.getElementById("popup__close_delete").onclick = function (e) {
+    e.preventDefault();
+    closeDeletePopup();
+  };
+}
+function closeDeletePopup() {
+  const popup = document.getElementById("popup__delete");
+  const popupContent = popup.querySelector(".popup");
+
+  popup.style.opacity = "0";
+  popup.style.visibility = "hidden";
+
+  setTimeout(() => {
+    popup.style.display = "none";
+    popupContent.style.transform = "translate(-50%, -50%) scale(0.8)";
+  }, 300);
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Ambil elemen tombol Batal dan popup
+  const batalAdd = document.querySelector(".batal_add");
+  const popups = document.getElementById("popuploans");
+  const popup = popups.querySelector(".popup_loans");
+
+  if (batalAdd) {
+    batalAdd.addEventListener("click", function (e) {
+      e.preventDefault();
+      popups.style.opacity = "0";
+      popups.style.visibility = "hidden";
+
+      window.location.href = "";
+      setTimeout(() => {
+        popup.style.display = "none";
+        popup.style.transform = "translate(-50%, -50%) scale(0.8)";
+      }, 300);
+    });
+  }
 });
