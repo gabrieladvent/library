@@ -4,18 +4,76 @@
 $encrypter = \Config\Services::encrypter();
 ?>
 
+<style>
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        width: 300px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .close {
+        float: right;
+        font-size: 24px;
+        cursor: pointer;
+    }
+
+    .btn-excel {
+        background-color: #28a745;
+        color: white;
+        padding: 10px 20px;
+        margin: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .btn-pdf {
+        background-color: #dc3545;
+        color: white;
+        padding: 10px 20px;
+        margin: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .btn-excel:hover {
+        background-color: #218838;
+    }
+
+    .btn-pdf:hover {
+        background-color: #c82333;
+    }
+</style>
+
 <div class="container-book">
     <div class="container-buku">
         <div class="head">
             <div class="title">
                 <h1>Laporan</h1>
-                <a class="reset" href="">
+                <a class="reset" href="" onclick="resetFilters();">
                     <i class='bx bx-reset'></i>
                 </a>
             </div>
         </div>
         <div class="print_container">
-            <button type="button" onclick="window.open('<?= site_url('laporan/printAll') ?>', '_blank');" class="printAll_container">
+            <button type="button" onclick="openPrintModal()" class="printAll_container">
                 <i class='bx bxs-printer'></i>
                 <p>Print All</p>
             </button>
@@ -26,20 +84,20 @@ $encrypter = \Config\Services::encrypter();
             </div>
             <div class="search">
                 <label for="search_returndate">Pilih Tanggal Pengembalian</label>
-                <input id="search_returndate" type="date" placeholder="pilih tanggal pengembalian">
+                <input id="search_returndate" type="date">
             </div>
             <div class="search">
                 <label for="search_status">Status</label>
                 <select id="search_status">
-                    <option value="">Pilih Status</option>
-                    <option value="pinjam">Pinjam</option>
-                    <option value="dikembalikan">Dikembalikan</option>
-                    <option value="perpanjang">Perpanjang</option>
-                    <option value="terlambat">Terlambat</option>
+                    <option value="">Semua Peminjaman</option>
+                    <option value="Dipinjam">Dipinjam</option>
+                    <option value="Dikembalikan">Dikembalikan</option>
+                    <option value="Diperpanjang">Diperpanjang</option>
+                    <option value="Terlambat">Terlambat</option>
                 </select>
             </div>
-
         </div>
+
         <div class="container-table">
             <div class="table">
                 <table border="1">
@@ -56,55 +114,32 @@ $encrypter = \Config\Services::encrypter();
                         </tr>
                     </thead>
                     <tbody id="dataTable">
-                        <!-- Contoh data. Pastikan format tanggal sesuai dengan nilai input (YYYY-MM-DD) -->
-                        <tr>
-                            <td>1</td>
-                            <td>Kelvin</td>
-                            <td>Dilan</td>
-                            <td>2025-01-01</td>
-                            <td>2025-01-05</td>
-                            <td>1 Buku</td>
-                            <td>dikembalikan</td>
-                            <td>
-                                <div class="button_print">
-                                    <button onclick="window.open('<?= site_url('laporan/printPDF/1') ?>', '_blank');" class="btn btn-print">
-                                        <i id="print" class='bx bxs-printer'></i> Print
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Andi</td>
-                            <td>Rembulan</td>
-                            <td>2025-01-02</td>
-                            <td>2025-01-06</td>
-                            <td>2 Buku</td>
-                            <td>pinjam</td>
-                            <td>
-                                <div class="button_print">
-                                    <button onclick="window.open('<?= site_url('laporan/printPDF/2') ?>', '_blank');" class="btn btn-print">
-                                        <i id="print" class='bx bxs-printer'></i> Print
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Sinta</td>
-                            <td>Bulan</td>
-                            <td>2025-01-03</td>
-                            <td>2025-01-07</td>
-                            <td>1 Buku</td>
-                            <td>terlambat</td>
-                            <td>
-                                <div class="button_print">
-                                    <button onclick="window.open('<?= site_url('laporan/printPDF/3') ?>', '_blank');" class="btn btn-print">
-                                        <i id="print" class='bx bxs-printer'></i> Print
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
+                        <?php if (!empty($loans)): ?>
+                            <?php foreach ($loans as $index => $loan): ?>
+                                <tr>
+                                    <td><?= $index + 1 ?></td>
+                                    <td><?= $loan['fullname'] ?></td>
+                                    <td><?= $loan['book_name'] ?></td>
+                                    <td><?= $loan['loan_date'] ?></td>
+                                    <td><?= $loan['return_date_expected'] ?></td>
+                                    <td><?= $loan['quantity'] ?></td>
+                                    <td><?= $loan['status'] ?></td>
+                                    <td>
+                                        <div class="button_print">
+                                            <button onclick="openPrintModal(this)"
+                                                data-loan-id="<?= base64_encode($encrypter->encrypt($loan['loan_id'])) ?>"
+                                                class="btn btn-print">
+                                                <i id="print" class='bx bxs-printer'></i> Print
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="8">Data Tidak Ditemukan</td>
+                            </tr>
+                        <?php endif ?>
                     </tbody>
                 </table>
             </div>
@@ -112,8 +147,60 @@ $encrypter = \Config\Services::encrypter();
     </div>
 </div>
 
+<div id="printModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closePrintModal()">&times;</span>
+        <h2>Pilih Format Cetak</h2>
+        <p>Silakan pilih format laporan yang ingin dicetak:</p>
+        <button class="btn btn-excel" onclick="printWithFilters('excel')">Excel</button>
+        <button class="btn btn-pdf" onclick="printWithFilters('pdf')">PDF</button>
+    </div>
+</div>
+
+
 <script>
-    // Simulasi filtering data pada tabel
+    let selectedLoanId = null;
+
+    function openPrintModal(button = null) {
+        selectedLoanId = button ? button.getAttribute("data-loan-id") : null;
+        document.getElementById("printModal").style.display = "flex";
+    }
+
+    function closePrintModal() {
+        document.getElementById("printModal").style.display = "none";
+    }
+
+    function printWithFilters(format) {
+        let loansDate = document.getElementById('search_loansdate').value;
+        let returnDate = document.getElementById('search_returndate').value;
+        let status = document.getElementById('search_status').value;
+        let url = "<?= base_url('report/print/') ?>" + format;
+
+        if (selectedLoanId) {
+            url += "?loans=" + encodeURIComponent(selectedLoanId);
+        } else {
+            url += "?loans_date=" + encodeURIComponent(loansDate);
+            url += "&return_date=" + encodeURIComponent(returnDate);
+            url += "&status=" + encodeURIComponent(status);
+        }
+
+        window.open(url);
+        closePrintModal();
+    }
+
+    window.onclick = function(event) {
+        let modal = document.getElementById("printModal");
+        if (event.target === modal) {
+            closePrintModal();
+        }
+    };
+
+    function resetFilters() {
+        document.getElementById('search_loansdate').value = "";
+        document.getElementById('search_returndate').value = "";
+        document.getElementById('search_status').value = "";
+    }
+
     document.addEventListener("DOMContentLoaded", function() {
         const loansInput = document.getElementById("search_loansdate");
         const returnInput = document.getElementById("search_returndate");

@@ -88,9 +88,31 @@ class LoansModel extends Model
     public function countNewLoans()
     {
         // Untuk menghitung jumlah record, gunakan countAllResults()
-        return $this->where('created_at >=', date('Y-m-d H:i:s', strtotime('-7 days')))
+        return $this->where('loan_date >=', date('Y-m-d H:i:s', strtotime('-7 days')))
             ->countAllResults();
     }
+
+
+    public function countDailyLoansByStatus()
+    {
+        return $this->select("DAYNAME(loan_date) as loan_day, status, COUNT(*) as total")
+            ->where('loan_date >=', date('Y-m-d H:i:s', strtotime('-7 days')))
+            ->groupBy(['loan_day', 'status'])
+            ->orderBy('MIN(loan_date)', 'ASC')
+            ->findAll();
+    }
+
+    public function countLoansByClass()
+    {
+        return $this->select("classes.class_name, COUNT(*) as total")
+            ->join('biodatausers', 'biodatausers.user_id = loans.user_id') // Join dengan biodatausers
+            ->join('classes', 'classes.id = biodatausers.class_id') // Join dengan class
+            ->groupBy('classes.class_name')
+            ->orderBy('total', 'DESC') // Urutkan berdasarkan jumlah peminjaman terbanyak
+            ->findAll();
+    }
+
+
     /**
      * Mengambil data peminjaman berdasarkan id user yang dikirimkan
      * 
@@ -171,14 +193,60 @@ class LoansModel extends Model
             loans.status, 
             loans.notes, 
             books.book_name, 
-            books.author, 
+            books.author,
+            books.isbn, 
             users.id AS user_id, 
-            biodatausers.fullname
+            biodatausers.fullname,
+            biodatausers.identification,
+            classes.class_name
         ')
             ->join('books', 'books.id = loans.book_id')
             ->join('users', 'users.id = loans.user_id')
             ->join('biodatausers', 'biodatausers.id = users.id')
+            ->join('classes', 'classes.id = biodatausers.class_id')
             ->where('loans.id', $id_loan)
             ->first();
+    }
+
+    public function getLoansByFilter($loansDate = null, $returnDate = null, $status = null)
+    {
+        $this->select('
+            loans.id AS loan_id, 
+            loans.book_id, 
+            loans.user_id, 
+            loans.loan_date, 
+            loans.return_date_expected, 
+            loans.return_date_actual, 
+            loans.quantity, 
+            loans.status, 
+            loans.notes, 
+            books.book_name, 
+            books.author,
+            books.isbn, 
+            users.id AS user_id, 
+            biodatausers.fullname,
+            biodatausers.identification,
+            classes.class_name
+        ')
+            ->join('books', 'books.id = loans.book_id')
+            ->join('users', 'users.id = loans.user_id')
+            ->join('biodatausers', 'biodatausers.id = users.id')
+            ->join('classes', 'classes.id = biodatausers.class_id');
+
+        if (!empty($loansDate)) {
+            $this->where("DATE(loans.loan_date)", $loansDate);
+        }
+
+        if (!empty($returnDate)) {
+            $this->where("DATE(loans.return_date)", $returnDate);
+        }
+
+        // Filter berdasarkan status jika ada
+        if (!empty($status)) {
+            $this->where("loans.status", $status);
+        }
+
+        return $this->orderBy("loans.loan_date", "DESC")
+            ->findAll();
     }
 }

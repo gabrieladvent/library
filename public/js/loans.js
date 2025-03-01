@@ -25,33 +25,23 @@ function viewDetailLoans(button) {
     dataType: "json",
     success: function (response) {
       if (response.status === "success") {
-        // Mengisi select user
-        $("#memberSelect").html(
-          `<option value="${user.id}" selected>${user.fullname}</option>`
-        );
-        $("#memberSelect").trigger("change");
+        const resp = response.data;
 
         // Mengisi input lainnya
-        $("input[name='class_name']").val(user.class_name);
-        $("textarea[name='notes']").val(loan.notes || "");
+        $("input[name='class_name']").val(resp.user.class_name);
+        $("textarea[name='notes']").val(resp.loan.notes || "");
 
         // Mengisi dropdown status
-        $("#status").val(loan.status);
+        $("#status").val(resp.loan.status);
 
-        // Mengisi select book
-        $("#bookSelectedit").html(
-          `<option value="${book.id}" selected>${book.book_name}</option>`
-        );
-        $("#bookSelectedit").trigger("change");
-
-        $("input[name='available_books']").val(book.available_books);
-        $("input[name='book_name']").val(book.book_name);
-        $("input[name='book_id']").val(book.id).attr("hidden", true);
-        $("input[name='user_id']").val(user.fullname);
-        $("input[name='quantity']").val(loan.quantity);
-        $("input[name='loan_date']").val(loan.loan_date || "");
+        $("input[name='available_books']").val(resp.book.available_books);
+        $("input[name='book_name']").val(resp.book.book_name);
+        $("input[name='book_id']").val(resp.book.id).attr("hidden", true);
+        $("input[name='user_id']").val(resp.user.fullname);
+        $("input[name='quantity']").val(resp.loan.quantity);
+        $("input[name='loan_date']").val(resp.loan.loan_date || "");
         $("input[name='return_date_expected']").val(
-          loan.return_date_expected || ""
+          resp.loan.return_date_expected || ""
         );
 
         // Pastikan form memiliki action yang benar
@@ -93,8 +83,6 @@ function toggleEdit(checkbox) {
     });
     submitBtn.removeAttribute("disabled");
 
-    // Fetch data untuk dropdown user dan book
-    fetchAndSetupUserDropdown();
     fetchAndSetupBookDropdown();
   } else {
     // Nonaktifkan mode edit
@@ -445,7 +433,7 @@ function Delete(button) {
 
   document.getElementById("confirmDelete").onclick = function () {
     $.ajax({
-      url: `${window.location.origin}/book/delete?books=${id}`,
+      url: `${window.location.origin}/loans/delete?loans=${id}`,
       type: "GET",
       dataType: "json",
       success: function (response) {
@@ -465,9 +453,9 @@ function Delete(button) {
             },
             escapeHTML: false, // Allow HTML content
           }).showToast();
-          window.location.href = "/book/dashboard";
+          window.location.href = "/loans/list";
         } else {
-          window.location.href = "/book/dashboard";
+          window.location.href = "/loans/list";
         }
       },
       error: function () {

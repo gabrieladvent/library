@@ -70,9 +70,8 @@ $routes->group("loans", ['filter' => 'auth'], function ($routes) {
 
 $routes->group("report", ['filter' => 'auth'], function ($routes) {
     $routes->get('list', 'ReportController::index');
+    $routes->get('print/(:any)', 'ReportController::exportReport/$1');
 });
-
-
 
 
 $routes->set404Override(function () {

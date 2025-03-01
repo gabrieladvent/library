@@ -141,4 +141,13 @@ class BooksModel extends Model
     {
         return $this->select('id, book_name, available_books')->findAll();
     }
+
+    public function countBooksByCategory()
+    {
+        return $this->select("categories.category_name, COUNT(books.id) as total")
+            ->join('categories', 'categories.id = books.category_id') // Join dengan tabel categories
+            ->groupBy('categories.category_name')
+            ->orderBy('total', 'DESC') // Urutkan dari kategori dengan jumlah buku terbanyak
+            ->findAll();
+    }
 }

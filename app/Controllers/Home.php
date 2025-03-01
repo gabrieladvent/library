@@ -79,6 +79,10 @@ class Home extends BaseController
     {
         $id_user = session('id_user');
         $decode_id = $this->encrypter->decrypt(base64_decode($id_user['id']));
+        $daily_loans = $this->getChartLine();
+        $classes_loans = $this->getChartBar();
+        $books_category = $this->getChartPie();
+
 
         $data = [
             'user' => $this->user->getDataUserById($decode_id),
@@ -88,8 +92,72 @@ class Home extends BaseController
                 'count_user' => $this->user->countUserByRole('User') ?? 0,
                 'count_admin' => $this->user->countUserByRole('Admin') ?? 0,
             ],
+            'labels_line' => json_encode($daily_loans['labels'] ?? 0),
+            'loan_data_line' => json_encode($daily_loans['statusData'] ?? 0),
+
+            'labels_bar' => json_encode($classes_loans['labels']),
+            'loan_data_bar' => json_encode($classes_loans['data']),
+
+            'labels_pie' => json_encode($books_category['labels']),
+            'loan_data_pie' => json_encode($books_category['data']),
         ];
 
         return view('Dashboard', $data);
+    }
+
+    private function getChartLine()
+    {
+        $count_daily_loans = $this->loans->countDailyLoansByStatus();
+
+        $hariInggris = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        $hariIndonesia = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+
+        $labels = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+        $statusData = [
+            'Dipinjam' => array_fill(0, 7, 0),
+            'Diperpanjang' => array_fill(0, 7, 0),
+            'Dikembalikan' => array_fill(0, 7, 0),
+            'Terlambat' => array_fill(0, 7, 0),
+        ];
+
+        foreach ($count_daily_loans as $row) {
+            $loan_day = str_replace($hariInggris, $hariIndonesia, $row['loan_day']);
+            $dayIndex = array_search($loan_day, $labels);
+            if ($dayIndex !== false) {
+                $statusData[$row['status']][$dayIndex] = (int) $row['total'];
+            }
+        }
+
+        return ['labels' => $labels, 'statusData' => $statusData];
+    }
+
+    private function getChartBar()
+    {
+        $count_loans_by_class = $this->loans->countLoansByClass();
+
+        $classLabels = [];
+        $classData = [];
+
+        foreach ($count_loans_by_class as $row) {
+            $classLabels[] = $row['class_name']; 
+            $classData[] = (int) $row['total']; 
+        }
+
+        return ['labels' => $classLabels, 'data' => $classData];
+    }
+
+    private function getChartPie()
+    {
+        $count_books_by_category = $this->books->countBooksByCategory();
+
+        $categoryLabels = [];
+        $categoryData = [];
+
+        foreach ($count_books_by_category as $row) {
+            $categoryLabels[] = $row['category_name']; 
+            $categoryData[] = (int) $row['total'];
+        }
+
+        return ['labels' => $categoryLabels, 'data' => $categoryData];
     }
 }
