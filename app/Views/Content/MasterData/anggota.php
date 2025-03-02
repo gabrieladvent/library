@@ -32,7 +32,7 @@ $classForPopup = $class;
                             <tr>
                                 <th>No</th>
                                 <th>Nama Anggota</th>
-                                <th>NIS</th>
+                                <th>NISN</th>
                                 <th>Alamat</th>
                                 <th>Nomor Hp</th>
                                 <th>Kelas</th>
@@ -176,15 +176,7 @@ $classForPopup = $class;
                                                 <input class="input-count" type="number" name="identification">
                                             </div>
                                         </div>
-                                        <div class="input-content">
-                                            <label class="label" for="">Password</label>
-                                            <input class="input" type="Password" name="password" />
-                                        </div>
 
-                                        <div class="input-content">
-                                            <label class="label" for="">Konfimasi Password</label>
-                                            <input class="input" type="Password" name="password_confirm" />
-                                        </div>
 
                                         <div class=" input-content">
                                             <label class="label" for="">alamat </label>
@@ -309,7 +301,7 @@ $classForPopup = $class;
 
                                             </div>
                                             <div class="input-jumlah">
-                                                <label class="label" for="">NIP</label>
+                                                <label class="label" for="">NISN</label>
                                                 <input class="input-count" type="number" id="identification" name="identification" disabled>
                                             </div>
                                         </div>

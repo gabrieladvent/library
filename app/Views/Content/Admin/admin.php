@@ -33,7 +33,7 @@ $encrypter = \Config\Services::encrypter(); ?>
                                 <th>Full Name</th>
                                 <th>Alamat</th>
                                 <th>Nomor Hp</th>
-                                <th>Tanggal Bergabung</th>
+                                <th>NUPTK</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -46,7 +46,7 @@ $encrypter = \Config\Services::encrypter(); ?>
                                         <td class="email"><?= $key['fullname'] ?> </td>
                                         <td class="email"><?= $key['address'] ?> </td>
                                         <td class="email"><?= $key['phone'] ?> </td>
-                                        <td class="email"><?= $key['created_at'] ?> </td>
+                                        <td class="email"><?= $key['identification'] ?> </td>
 
                                         <td>
                                             <div class="action-buttons">
@@ -150,7 +150,7 @@ $encrypter = \Config\Services::encrypter(); ?>
 
                                             </div>
                                             <div class="input-jumlah">
-                                                <label class="label" for="">NIP</label>
+                                                <label class="label" for="">NUPTK</label>
                                                 <input class="input-count" type="number" name="identification">
                                             </div>
                                         </div>
@@ -264,7 +264,7 @@ $encrypter = \Config\Services::encrypter(); ?>
 
                                         </div>
                                         <div class="input-jumlah">
-                                            <label class="label" for="">NIP</label>
+                                            <label class="label" for="">NUPTK</label>
                                             <input class="input-count" type="number" id="identification" name="identification" disabled>
                                         </div>
                                     </div>
