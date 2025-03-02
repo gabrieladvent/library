@@ -76,7 +76,7 @@ $encrypter = \Config\Services::encrypter();
                 <div class="container__popup" id="popup">
                     <div class="popup">
                         <div class="title">
-                            <h1>Tambah Byu</h1>
+                            <h1>Tambah Buku</h1>
                             <a href="" class="popup-close">&times;</a>
                         </div>
                         <form action="<?= base_url('book/add') ?>" method="post" autocomplete="off" enctype="multipart/form-data">
@@ -90,6 +90,7 @@ $encrypter = \Config\Services::encrypter();
                                                 <option value="<?= $category['id'] ?>"><?= $category['category_name'] ?></option>
                                             <?php endforeach ?>
                                         </select>
+
                                     </div>
                                     <div class="input-content">
                                         <label class="label" for="">Judul Buku</label>
@@ -184,6 +185,7 @@ $encrypter = \Config\Services::encrypter();
                                                 <?php endforeach; ?>
                                             <?php endif; ?>
                                         </select>
+
 
                                     </div>
                                     <div class="input-content">
