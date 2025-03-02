@@ -49,7 +49,7 @@ function viewDetailLoans(button) {
           "action",
           `${window.location.origin}/loans/edit?loans=${id}`
         );
-
+        validateQuantity();
         // Pastikan semua input di-disable saat pertama kali dibuka
       } else {
         alert("Gagal mengambil data peminjaman.");
@@ -64,7 +64,6 @@ function viewDetailLoans(button) {
   });
 }
 
-// Perbaikan fungsi toggleEdit
 function toggleEdit(checkbox) {
   // Ambil form yang ada pada popup edit
   const form = document.querySelector("#popup__lihat form");
@@ -85,8 +84,15 @@ function toggleEdit(checkbox) {
 
     fetchAndSetupBookDropdown();
   } else {
-    // Nonaktifkan mode edit
-    disableEditMode();
+    // **Nonaktifkan mode edit & Kembalikan input ke kondisi disabled**
+    inputs.forEach((input) => {
+      if (input.type !== "checkbox" && input.id !== "enableEdit") {
+        if (input.name !== "available_books" && input.name !== "loan_date") {
+          input.setAttribute("disabled", "true"); // Kembalikan ke disabled
+        }
+      }
+    });
+    submitBtn.setAttribute("disabled", "true"); // Disable tombol submit
   }
 }
 
@@ -101,41 +107,32 @@ function validateQuantity() {
 
   // Hapus pesan error yang mungkin ada sebelumnya
   let errorMessage = totalBooksInput.nextElementSibling;
-  if (
-    errorMessage &&
-    errorMessage.style &&
-    errorMessage.style.color === "red"
-  ) {
-    errorMessage.remove();
+  if (!errorMessage || errorMessage.tagName.toLowerCase() !== "div") {
+    errorMessage = document.createElement("div");
+    errorMessage.style.color = "red";
+    errorMessage.style.fontSize = "12px";
+    errorMessage.style.marginTop = "5px";
+    totalBooksInput.insertAdjacentElement("afterend", errorMessage);
   }
 
-  // Buat elemen pesan error baru jika belum ada
-  errorMessage = document.createElement("div");
-  errorMessage.style.color = "red";
-  errorMessage.style.fontSize = "12px";
-  errorMessage.style.marginTop = "5px";
-  totalBooksInput.insertAdjacentElement("afterend", errorMessage);
+  // Ambil nilai awal
+  const availableBooks = parseInt(availableInput.value, 10) || 0;
+  const totalBooks = parseInt(totalBooksInput.value, 10) || 0;
 
-  // Tambahkan event listener untuk validasi
+  // Tambahkan event listener agar validasi berjalan setelah user mengubah input
   totalBooksInput.addEventListener("input", function () {
-    const availableBooks = parseInt(availableInput.value, 10) || 0;
-    const totalBooks = parseInt(totalBooksInput.value, 10) || 0;
+    const newTotalBooks = parseInt(totalBooksInput.value, 10) || 0;
 
-    if (totalBooks > availableBooks) {
+    if (newTotalBooks > availableBooks) {
       errorMessage.textContent =
         "Jumlah yang dipinjam melebihi jumlah yang tersedia!";
-      totalBooksInput.style.borderColor = "red";
-    } else if (totalBooks <= 0) {
+    } else if (newTotalBooks <= 0) {
       errorMessage.textContent = "Jumlah pinjam harus lebih dari 0!";
-      totalBooksInput.style.borderColor = "red";
     } else {
       errorMessage.textContent = "";
       totalBooksInput.style.borderColor = "";
     }
   });
-
-  // Validasi awal
-  totalBooksInput.dispatchEvent(new Event("input"));
 }
 
 // Perbaikan fungsi closePopup
@@ -161,8 +158,11 @@ function closePopup() {
   popup.style.visibility = "hidden";
 
   setTimeout(() => {
+    window.location.href = "/loans/list";
     popup.style.display = "none";
-  }, 300);
+
+    // **Redirect ke /loans/list setelah popup ditutup**
+  }, 300); // Sesuaikan dengan durasi animasi
 }
 
 // Event listener untuk tombol batal
