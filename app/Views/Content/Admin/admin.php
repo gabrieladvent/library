@@ -78,6 +78,7 @@ $encrypter = \Config\Services::encrypter(); ?>
                             </div>
                             <form action="<?= base_url('user/add') ?>" method="post" autocomplete="off" enctype="multipart/form-data" onsubmit="return validationPasswordAdmin()">
                                 <?= csrf_field() ?>
+                                <input type="hidden" name="type" value="Admin">
                                 <div class="container__input">
                                     <div class="satu">
                                         <div class="status_input">

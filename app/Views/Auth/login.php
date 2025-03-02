@@ -97,8 +97,8 @@
         duration: 3000,
         gravity: "top",
         position: "right",
+        backgroundColor: "#FFD9E7",
         style: {
-
           color: "red",
         }
       }).showToast();

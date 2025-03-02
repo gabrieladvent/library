@@ -162,7 +162,9 @@ function DeleteAnggota(button) {
             },
             escapeHTML: false, // Allow HTML content
           }).showToast();
-          window.location.href = "/user/list/Anggota";
+          setTimeout(() => {
+            window.location.href = "/user/list/Anggota";
+          }, 1000);
         } else {
           // Redirect ke halaman dashboard dengan pesan error
           window.location.href = "/user/list/Anggota    ";

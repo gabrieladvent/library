@@ -22,7 +22,6 @@ function viewDetail(button) {
     success: function (response) {
       if (response.success) {
         const book = response.data.book_detail;
-        
 
         // Fill form with book data
         $("#category_name").val(book.category_id || "");
@@ -34,7 +33,7 @@ function viewDetail(button) {
         )}`;
         $("#publisher").val(book.publisher || "");
         $("#year_published").val(book.year_published || "");
-        $("#total_copies").val(book.total_copies|| 0);
+        $("#total_copies").val(book.total_copies || 0);
         $("#total_books").val(book.total_books || 0);
         $("#available_books").val(book.available_books || 0);
         $("#description").val(book.description || "");
@@ -121,9 +120,9 @@ function Delete(button) {
             },
             escapeHTML: false, // Allow HTML content
           }).showToast();
-          window.location.href = "/book/dashboard";
-        } else {
-          window.location.href = "/book/dashboard";
+          setTimeout(() => {
+            window.location.href = "/book/dashboard";
+          }, 1000);
         }
       },
       error: function () {
