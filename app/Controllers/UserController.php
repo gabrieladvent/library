@@ -141,35 +141,35 @@ class UserController extends BaseController
      */
     public function addUser()
     {
+        // Ambil tipe user, default ke 'Anggota' jika tidak ada
+        $type = $this->request->getPost('type') ?? 'Anggota';
+
         try {
-            // $valid = \Config\Services::validation();
-            // $validate = $this->getValidationRules();
-
-            // dd(!$valid->setRules($validate)->run($this->request->getPost()));
-
-            // if (!$valid->setRules($validate)->run($this->request->getPost())) {
-            //     $message = $valid->getErrors();
-            //     return ResponHelper::handlerErrorResponRedirect('registrasi/employee', $message);
-            // }
+            // Debugging: Cek apakah data form terkirim dengan benar
+            // dd($this->request->getPost());
 
             // Mendapatkan data input
             $data_user = $this->request->getPost();
 
             // Pastikan data input berupa array
             if (!$data_user || !is_array($data_user)) {
-                return ResponHelper::handlerSuccessResponRedirect("user/list/Admin", "Data gagal  ditambahkan");
+                return ResponHelper::handlerErrorResponRedirect("user/list/{$type}", "Data gagal ditambahkan");
             }
 
-            // Menyimpan data ke database$insert_user = $this->insertUser($data_user);
+            // Simpan ke database
             $insert_user = $this->insertUser($data_user);
 
-            // Mengembalikan respons sukses
-            return ResponHelper::handlerSuccessResponRedirect("user/list/Admin", "Data berhasil ditambahkan");
+            // Debugging: Cek redirect sebelum dijalankan
+            // return dd("Redirect ke: user/list/{$type}");
+
+            // Redirect ke halaman yang sesuai
+            return ResponHelper::handlerSuccessResponRedirect("user/list/{$type}", "Data berhasil ditambahkan");
         } catch (\Exception $e) {
-            // Menangani error dan mengembalikan pesan error
-            return ResponHelper::handlerErrorResponJson($e->getMessage(), 500);
+            // Tangani error dan tetap redirect ke halaman yang sesuai
+            return ResponHelper::handlerErrorResponRedirect("user/list/{$type}", $e->getMessage());
         }
     }
+
 
     /**
      * Fungsi untuk mengedit data user yang sudah ada

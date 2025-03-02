@@ -169,7 +169,7 @@ function DeleteClass(button) {
           // Tunda redirect hingga notifikasi selesai tampil
           setTimeout(function () {
             window.location.href = `/class/all`;
-          }, 5000);
+          }, 1000);
         } else {
           Toastify({
             className: "notif bx bxs-warning",
@@ -177,7 +177,7 @@ function DeleteClass(button) {
             duration: 3000,
             gravity: "top",
             position: "right",
-            backgroundColor: "#FFE8E8",
+            backgroundColor: "#FFD9E7",
             style: {
               marginTop: "60px",
               color: "red",
@@ -188,7 +188,7 @@ function DeleteClass(button) {
           // Tunda redirect hingga notifikasi selesai tampil
           setTimeout(function () {
             window.location.href = `/class/all`;
-          }, 5000);
+          }, 1000);
         }
       },
       error: function (xhr, status, error) {
@@ -199,7 +199,7 @@ function DeleteClass(button) {
           duration: 3000,
           gravity: "top",
           position: "right",
-          backgroundColor: "#FFE8E8",
+          backgroundColor: "#FFD9E7",
           style: {
             marginTop: "60px",
             color: "red",
@@ -210,7 +210,7 @@ function DeleteClass(button) {
         // Tunda redirect hingga notifikasi selesai tampil
         setTimeout(function () {
           window.location.href = `/class/all`;
-        }, 5000);
+        }, 1000);
       },
     });
   };

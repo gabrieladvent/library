@@ -453,13 +453,29 @@ function Delete(button) {
             },
             escapeHTML: false, // Allow HTML content
           }).showToast();
-          window.location.href = "/loans/list";
-        } else {
-          window.location.href = "/loans/list";
+          setTimeout(() => {
+            window.location.href = "/loans/list";
+          }, 1000);
         }
       },
       error: function () {
-        console.error("Error deleting book");
+        Toastify({
+          className: "notif bx bxs-check-circle",
+          text: "Error: Hapus Buku",
+          duration: 3000,
+          gravity: "top", // top or bottom
+          position: "right", // left, center, or right
+          backgroundColor: "#FFD9E7",
+          style: {
+            marginTop: "60px",
+            color: "green",
+            borderRadius: "8px",
+          },
+          escapeHTML: false, // Allow HTML content
+        }).showToast();
+        setTimeout(() => {
+          window.location.href = "/loans/list";
+        }, 1000);
       },
     });
   };

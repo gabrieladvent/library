@@ -81,7 +81,7 @@ $encrypter = \Config\Services::encrypter(); ?>
                                 <div class="container__input">
                                     <div class="input-content">
                                         <label class="label" for="">Deskripsi </label>
-                                        <textarea class="input alamat" id="alamat" name="description" rows="4" cols="50" placeholder="Masukkan alamat lengkap Anda" required></textarea>
+                                        <textarea class="input alamat" id="alamat" name="description" rows="4" cols="50" placeholder="Masukkan Deskripsi kategori Anda" required></textarea>
 
 
                                     </div>

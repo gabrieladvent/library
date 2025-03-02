@@ -35,54 +35,55 @@
 
     </div>
 
-    <script>
-        // Cek apakah ada pesan sukses atau error
-        <?php if (session()->getFlashdata('success')): ?>
-            Toastify({
-                className: "notif bx bxs-check-circle",
-                text: " <?= session()->getFlashdata('success') ?>",
-                duration: 3000,
-                gravity: "top", // top or bottom
-                position: "right", // left, center, or right
-                backgroundColor: "#D9FFF0",
-                style: {
-                    marginTop: "60px",
-                    color: "green",
-                    borderRadius: "8px"
-                },
-                escapeHTML: false // Allow HTML content
-            }).showToast();
-        <?php endif; ?>
 
-        <?php if (session()->getFlashdata('error')): ?>
-            Toastify({
-                className: "notif bx bxs-x-circle",
-                text: " <?= session()->getFlashdata('error') ?>",
-                duration: 3000,
-                gravity: "top",
-                position: "right",
-                backgroundColor: "#FFE8E8",
-                style: {
-                    color: "red",
-                }
-            }).showToast();
-        <?php endif; ?>
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const auth = document.querySelector(".user");
-            const subMenu = auth.nextElementSibling;
-
-            auth.addEventListener("click", () => {
-                subMenu.classList.toggle("visible")
-            })
-        })
-    </script>
 </body>
 
 <!-- javascript -->
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    // Cek apakah ada pesan sukses atau error
+    <?php if (session()->getFlashdata('success')): ?>
+        Toastify({
+            className: "notif bx bxs-check-circle",
+            text: " <?= session()->getFlashdata('success') ?>",
+            duration: 3000,
+            gravity: "top", // top or bottom
+            position: "right", // left, center, or right
+            backgroundColor: "#D9FFF0",
+            style: {
+                marginTop: "60px",
+                color: "green",
+                borderRadius: "8px"
+            },
+            escapeHTML: false // Allow HTML content
+        }).showToast();
+    <?php endif; ?>
+
+    <?php if (session()->getFlashdata('error')): ?>
+        Toastify({
+            className: "notif bx bxs-x-circle",
+            text: " <?= session()->getFlashdata('error') ?>",
+            duration: 3000,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "#FFD9E7",
+            style: {
+                color: "red",
+            }
+        }).showToast();
+    <?php endif; ?>
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const auth = document.querySelector(".user");
+        const subMenu = auth.nextElementSibling;
+
+        auth.addEventListener("click", () => {
+            subMenu.classList.toggle("visible")
+        })
+    })
+</script>
 
 </html>

@@ -162,10 +162,9 @@ function DeleteAnggota(button) {
             },
             escapeHTML: false, // Allow HTML content
           }).showToast();
-          window.location.href = "/user/list/Anggota";
-        } else {
-          // Redirect ke halaman dashboard dengan pesan error
-          window.location.href = "/user/list/Anggota    ";
+          setTimeout(() => {
+            window.location.href = "/user/list/Anggota";
+          }, 1000);
         }
       },
       error: function (xhr, status, error) {
@@ -178,7 +177,7 @@ function DeleteAnggota(button) {
           duration: 3000,
           gravity: "top", // top or bottom
           position: "right", // left, center, or right
-          backgroundColor: "#D9FFF0",
+          backgroundColor: "#FFD9E7",
           style: {
             marginTop: "60px",
             color: "green",
@@ -186,6 +185,9 @@ function DeleteAnggota(button) {
           },
           escapeHTML: false, // Allow HTML content
         }).showToast();
+        setTimeout(() => {
+          window.location.href = "/user/list/Anggota";
+        }, 1000);
       },
     });
   };

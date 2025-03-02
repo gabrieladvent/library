@@ -130,7 +130,7 @@ function DeleteCategory(button) {
           // Tunda redirect hingga notifikasi selesai tampil
           setTimeout(function () {
             window.location.href = ""; // Ganti dengan URL tujuan yang diinginkan
-          }, 3000);
+          }, 1000);
         }
       },
       error: function (xhr, status, error) {
@@ -141,7 +141,7 @@ function DeleteCategory(button) {
           duration: 3000,
           gravity: "top",
           position: "right",
-          backgroundColor: "#FFE8E8",
+          backgroundColor: "#FFD9E7",
           style: {
             marginTop: "60px",
             color: "red",
@@ -153,7 +153,7 @@ function DeleteCategory(button) {
         // Tunda redirect hingga notifikasi selesai tampil
         setTimeout(function () {
           window.location.href = ""; // Ganti dengan URL error atau halaman yang diinginkan
-        }, 5000);
+        }, 1000);
       },
     });
   };
