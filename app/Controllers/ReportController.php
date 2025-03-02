@@ -55,7 +55,7 @@ class ReportController extends BaseController
     public function exportReport($tipe = 'excel')
     {
         $loan_id = $this->request->getGet('loans');
-        $loan_data = []; // Inisialisasi default
+        $loan_data = [];
 
         if ($loan_id != null) {
             $id_decrypt = $this->decryptId($loan_id);
@@ -64,23 +64,15 @@ class ReportController extends BaseController
             $loansDate = $this->request->getGet('loans_date');
             $returnDate = $this->request->getGet('return_date');
             $status = $this->request->getGet('status');
-            // Ambil data berdasarkan filter
             $loan_data = $this->loans->getLoansByFilter($loansDate, $returnDate, $status);
         }
 
-        // Pastikan data tidak kosong
         if (empty($loan_data)) {
             return ResponHelper::handlerErrorResponRedirect('report/list', 'Data tidak ditemukan');
         }
 
-        $this->exportExcel($tipe, $loan_data);
-        return ResponHelper::handlerErrorResponRedirect('report/list', 'Data tidak ditemukan');
-    }
-
-    private function exportExcel($tipe, $data)
-    {
-        if (!isset($data[0])) {
-            $data = [$data];
+        if (!isset($loan_data[0])) {
+            $loan_data = [$loan_data];
         }
 
         $directory = ROOTPATH . 'public/data/export/';
@@ -142,7 +134,7 @@ class ReportController extends BaseController
         $rowNumber = 1;
 
         // Isi data
-        foreach ($data as $loans) {
+        foreach ($loan_data as $loans) {
             $sheet->setCellValue('A' . $row, $rowNumber);
             $sheet->setCellValue('B' . $row, $loans['fullname']);
             $sheet->setCellValue('C' . $row, $loans['class_name']);

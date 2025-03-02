@@ -238,7 +238,7 @@ class LoansModel extends Model
         }
 
         if (!empty($returnDate)) {
-            $this->where("DATE(loans.return_date)", $returnDate);
+            $this->where("DATE(loans.return_date_expected)", $returnDate);
         }
 
         // Filter berdasarkan status jika ada

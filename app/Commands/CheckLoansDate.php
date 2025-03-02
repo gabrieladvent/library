@@ -12,6 +12,11 @@ class CheckLoansDate extends BaseCommand
     protected $name        = 'checkLoans';
     protected $description = 'Untuk mengecek dan mengubah status dari peminjaman';
 
+    /**
+     * Command untuk mengecek dan mengubah status dari peminjaman.
+     * Hanya akan mengubah status menjadi 'Terlambat' jika tanggal
+     * pengembalian telah melebihi tanggal sekarang.
+     */
     public function run(array $params)
     {
         $db = Database::connect();
@@ -31,6 +36,8 @@ class CheckLoansDate extends BaseCommand
         $updated = 0;
 
         foreach ($loans as $loan) {
+            // Jika tanggal sekarang lebih besar dari tanggal pengembalian
+            // yang diharapkan maka status akan diupdate menjadi 'Terlambat'
             if ($now > $loan->return_date_expected) {
                 $db->table('loans')
                     ->where('id', $loan->id)

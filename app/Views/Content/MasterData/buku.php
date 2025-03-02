@@ -86,9 +86,9 @@ $encrypter = \Config\Services::encrypter();
                                     <div class="input-content">
                                         <select class="input" id="category_id" name="category_id" required>
                                             <option value="">Pilih Jenis Buku</option>
-                                            <option value="1">1. Fiksi</option>
-                                            <option value="2">2. Novel</option>
-                                            <option value="3">3. Sains</option>
+                                            <?php foreach ($categories as $category): ?>
+                                                <option value="<?= $category['id'] ?>"><?= $category['category_name'] ?></option>
+                                            <?php endforeach ?>
                                         </select>
                                     </div>
                                     <div class="input-content">
@@ -176,9 +176,13 @@ $encrypter = \Config\Services::encrypter();
                                         <label class="label">Jenis Buku</label>
                                         <select class="input" id="category_name" name="category_name" disabled>
                                             <option id="category_name" value="">Pilih Jenis Buku</option>
-                                            <option value="1">1. Fiksi</option>
-                                            <option value="2">2. Novel</option>
-                                            <option value="3">3. Sains</option>
+                                            <?php if (!empty($categories) && is_array($categories)): ?>
+                                                <?php foreach ($categories as $index => $category): ?>
+                                                    <option value="<?= htmlspecialchars($category['id']) ?>">
+                                                        <?= ($index + 1) . '. ' . htmlspecialchars($category['category_name']) ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
                                         </select>
 
                                     </div>

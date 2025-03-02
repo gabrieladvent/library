@@ -2,8 +2,6 @@
 
 use CodeIgniter\Router\RouteCollection;
 
-use function PHPUnit\Framework\returnValueMap;
-
 /**
  * @var RouteCollection $routes
  */

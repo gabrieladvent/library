@@ -23,8 +23,7 @@ $classForPopup = $class;
                 </a>
             </div>
             <div class="container-table">
-                <pre>
-</pre>
+                <pre></pre>
 
                 <div class="table">
                     <table border="1">
@@ -73,10 +72,12 @@ $classForPopup = $class;
                             <?php endif; ?>
                         </tbody>
                     </table>
+
+
                     <div class="container__popup" id="popup">
                         <div class="popup">
                             <div class="title">
-                                <h1>Tambah Byu</h1>
+                                <h1>Tambah Anggota</h1>
                                 <a href="" class="popup-close">&times;</a>
                             </div>
                             <form action="<?= base_url('user/add') ?>" method="post" autocomplete="off" enctype="multipart/form-data" onsubmit="return validationPasswordAnggota()">
@@ -122,8 +123,6 @@ $classForPopup = $class;
                                             <label class="label" for="">email</label>
                                             <input class="input" type="text" name="email" />
                                         </div> -->
-
-
 
 
                                         <div class="count_book">
@@ -215,7 +214,7 @@ $classForPopup = $class;
                                         <div class="status_input">
                                             <div class="input-content status">
                                                 <label class="label" for="">kelas</label>
-                                                <select class="input-count" id="class_id_popup" name="class_name_popup" required>
+                                                <select class="input-count" id="class_id_popup" name="class_id" required>
                                                     <option value="">Pilih Kelas</option>
                                                     <?php if (!empty($classForPopup) && is_array($classForPopup)): ?>
                                                         <?php

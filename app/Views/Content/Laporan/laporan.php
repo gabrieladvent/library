@@ -120,8 +120,8 @@ $encrypter = \Config\Services::encrypter();
                                     <td><?= $index + 1 ?></td>
                                     <td><?= $loan['fullname'] ?></td>
                                     <td><?= $loan['book_name'] ?></td>
-                                    <td><?= $loan['loan_date'] ?></td>
-                                    <td><?= $loan['return_date_expected'] ?></td>
+                                    <td><?= date('d-m-Y', strtotime($loan['loan_date'])) ?></td>
+                                    <td><?= date('d-m-Y', strtotime($loan['return_date_expected'])) ?></td>
                                     <td><?= $loan['quantity'] ?></td>
                                     <td><?= $loan['status'] ?></td>
                                     <td>
@@ -202,6 +202,14 @@ $encrypter = \Config\Services::encrypter();
     }
 
     document.addEventListener("DOMContentLoaded", function() {
+
+        const formatDate = (dateString) => {
+            if (!dateString) return ""; // Pastikan tidak ada error jika input kosong
+            const [year, month, day] = dateString.split("-"); // Pisahkan berdasarkan "-"
+            return `${day}-${month}-${year}`; // Susun kembali dalam format DD-MM-YYYY
+        };
+
+
         const loansInput = document.getElementById("search_loansdate");
         const returnInput = document.getElementById("search_returndate");
         const statusSelect = document.getElementById("search_status");
@@ -211,6 +219,9 @@ $encrypter = \Config\Services::encrypter();
             const loansDate = loansInput.value; // Format: YYYY-MM-DD
             const returnDate = returnInput.value; // Format: YYYY-MM-DD
             const statusValue = statusSelect.value.toLowerCase().trim();
+
+            const formattedLoansDate = formatDate(loansDate);
+            const formattedReturnDate = formatDate(returnDate);
 
             // Dapatkan semua baris data
             const rows = tableBody.querySelectorAll("tr");
@@ -225,12 +236,12 @@ $encrypter = \Config\Services::encrypter();
                 let showRow = true;
 
                 // Filter berdasarkan Tanggal Peminjaman jika input diisi
-                if (loansDate && rowLoansDate !== loansDate) {
+                if (formattedLoansDate && rowLoansDate !== formattedLoansDate) {
                     showRow = false;
                 }
 
                 // Filter berdasarkan Tanggal Pengembalian jika input diisi
-                if (returnDate && rowReturnDate !== returnDate) {
+                if (formattedReturnDate && rowReturnDate !== formattedReturnDate) {
                     showRow = false;
                 }
 

@@ -11,20 +11,6 @@ use App\Controllers\BaseController;
 
 class BookController extends BaseController
 {
-    // judul buku (string) : judul_buku
-    // pengarang (string) : Pengarang
-    // penerbit (string) : Penerbit
-    // Tahun Terbit(int) : tahun_terbit
-    // kategory (string) : Kategory
-    // jumlah buku (int) : jumlah_buku
-    // sampul(img) : Sampul
-
-    /* 
-        dari parameter dan varaibel di atas 
-        saya ingin kau buat fitur
-        menampilkan data, tambah data ,edit data dan delete data
-    */
-
     protected $book;
     protected $loan;
     protected $encrypter;
@@ -52,6 +38,14 @@ class BookController extends BaseController
         $this->db = \Config\Database::connect();
     }
 
+    /**
+     * Menampilkan halaman daftar buku
+     * 
+     * Fungsi ini akan menampilkan halaman yang berisi list dari buku yang terdaftar
+     * Fungsi ini akan mengirimkan 3 data ke view, yaitu list_buku, user dan list_kategori
+     * 
+     * @return \CodeIgniter\HTTP\ResponseInterface
+     */
     public function index()
     {
         $id_user = session('id_user');
@@ -66,27 +60,32 @@ class BookController extends BaseController
         }
 
         $books = $this->book->getAllBook();
-
-        // Decode author JSON string into an array, then join to string
         foreach ($books as &$book) {
-            $book['author'] = implode(', ', json_decode($book['author']));
+            $authors = json_decode($book['author']);
+            $book['author'] = implode(', ', $authors);
         }
 
         $data['books'] = $books;
         $data['user'] = $this->user->getDataUserById($decode_id);
         $data['categories'] = $this->category->getAllCategory();
-        // dd($data);
 
         return view('Content/MasterData/buku', $data);
     }
 
+
+    /**
+     * Menampilkan detail buku berdasarkan id
+     * 
+     * Fungsi ini akan menampilkan detail buku berdasarkan id yang dikirimkan
+     * Fungsi ini akan mengembalikan data buku dalam format JSON
+     * 
+     * @param int $book_id ID buku yang akan ditampilkan
+     * @return \CodeIgniter\HTTP\ResponseInterface
+     */
     public function viewDetailBook($book_id)
     {
         try {
-            // Langsung gunakan ID tanpa decode
             $book_detail = $this->book->getDataById($book_id);
-            $count_loans = $this->loan->getCountLoanByIdBook($book_id);
-
             if (!$book_detail) {
                 return $this->response->setJSON([
                     'success' => false,
@@ -94,11 +93,11 @@ class BookController extends BaseController
                 ])->setStatusCode(404);
             }
 
-            // Jika author dalam bentuk JSON string, decode
             if (isset($book_detail['author']) && is_string($book_detail['author'])) {
                 $book_detail['author'] = json_decode($book_detail['author'], true);
             }
 
+            $count_loans = $this->loan->getCountLoanByIdBook($book_id);
             return $this->response->setJSON([
                 'success' => true,
                 'data' => [
@@ -106,6 +105,7 @@ class BookController extends BaseController
                     'count_loans' => $count_loans
                 ]
             ]);
+
         } catch (\Exception $e) {
             log_message('error', 'Error in viewDetailBook: ' . $e->getMessage());
             return $this->response->setJSON([
@@ -116,24 +116,30 @@ class BookController extends BaseController
     }
 
 
+
+    /**
+     * Menambahkan data buku baru ke database
+     * 
+     * Fungsi ini akan menambahkan data buku ke database
+     * Fungsi ini akan mengembalikan respon dalam format JSON
+     * Jika data yang dikirimkan tidak valid, maka akan mengembalikan respon error 400
+     * Jika data yang dikirimkan valid, maka akan mengembalikan respon success 201
+     * 
+     * @return \CodeIgniter\HTTP\ResponseInterface
+     */
     public function addBook()
     {
         $validationRules = $this->getValidationRules(false);
-
         if (!$this->validate($validationRules)) {
             return ResponHelper::handlerErrorResponJson($this->validator->getErrors(), 400);
         }
 
-        // Ambil data yang dikirim dari form atau API
         $data_book = $this->request->getPost();
-
-        // Pastikan author diubah menjadi format JSON sebelum disimpan
         if (isset($data_book['author']) && is_array($data_book['author'])) {
             $data_book['author'] = json_encode($data_book['author']);
         }
 
         try {
-            // Simpan data ke database
             $cover_book = $this->uploadFiles($this->request->getFile('cover_img'), $this->request->getPost('book_name'));
             $data_book['cover_img'] = $cover_book['cover_img'];
 
@@ -147,6 +153,18 @@ class BookController extends BaseController
         }
     }
 
+
+
+    /**
+     * Menyimpan perubahan data buku yang telah diedit ke database
+     * 
+     * Fungsi ini akan mengupdate data buku yang telah diedit ke database
+     * Fungsi ini akan mengembalikan respon dalam format JSON
+     * Jika data yang dikirimkan tidak valid, maka akan mengembalikan respon error 400
+     * Jika data yang dikirimkan valid, maka akan mengembalikan respon success 200
+     * 
+     * @return \CodeIgniter\HTTP\ResponseInterface
+     */
     public function editBook()
     {
         $id_book = $_GET['books'];
@@ -161,12 +179,11 @@ class BookController extends BaseController
             return ResponHelper::handlerErrorResponJson('Data tidak valid.', 400);
         }
 
-
         try {
             $image = $this->request->getFile('cover_img');
             if ($image && $image->isValid() && !$image->hasMoved()) {
                 $cover_img_new = $this->uploadFiles($image, $data_book['book_name']);
-
+                // Hapus gambar lama dari direktori jika ada
                 $cover_img_old = $data_book_from_db['cover_img'];
                 if (!empty($cover_img_old) && file_exists($cover_img_old)) {
                     unlink($cover_img_old);
@@ -204,6 +221,17 @@ class BookController extends BaseController
         }
     }
 
+
+    /**
+     * Fungsi untuk menghapus buku
+     * 
+     * Fungsi ini akan menghapus buku berdasarkan id yang dikirimkan
+     * Fungsi ini akan mengembalikan respon dalam format JSON
+     * Jika data yang dikirimkan tidak valid, maka akan mengembalikan respon error 400
+     * Jika data yang dikirimkan valid, maka akan mengembalikan respon success 200
+     * 
+     * @return \CodeIgniter\HTTP\ResponseInterface
+     */
     public function deleteBook()
     {
         $id_book = $_GET['books'] ?? null;
@@ -250,12 +278,22 @@ class BookController extends BaseController
         }
     }
 
+
+    /**
+     * Decrypt id book
+     * 
+     * This function will decrypt the id book
+     * 
+     * @param string $id_book id book yang akan didekrip
+     * @return string id book yang telah didekrip
+     */
     private function decryptId($id_book)
     {
         $decode_id = $this->encrypter->decrypt(base64_decode($id_book));
         return $decode_id;
     }
 
+    
     private function getValidationRules($is_update = false)
     {
         return [
@@ -464,10 +502,6 @@ class BookController extends BaseController
 
         $data_category = $this->request->getPost();
         $isExist = $this->category->checkName($data_category['category_name']);
-
-        if ($isExist) {
-            return ResponHelper::handlerSuccessResponRedirect("category/all", "Data berhasil diedit");
-        }
 
         $this->category->update($id_decrypt, $data_category);
         return ResponHelper::handlerSuccessResponRedirect("category/all", "Data berhasil diedit");
