@@ -184,9 +184,37 @@ $encrypter = \Config\Services::encrypter();
             url += "&status=" + encodeURIComponent(status);
         }
 
-        window.open(url);
+        console.log("Opening URL:", url);
+
+        // Validasi sebelum membuka tab baru
+        fetch(url, {
+                method: 'HEAD'
+            }) // Cek apakah URL valid
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Gagal memuat laporan. Pastikan data tersedia.");
+                }
+                window.open(url, '_blank');
+            })
+            .catch(error => {
+                Toastify({
+                    className: "notif bx bxs-x-circle",
+                    text: error.message, // Menggunakan pesan error dari JavaScript
+                    duration: 2000,
+                    gravity: "top",
+                    position: "right",
+                    backgroundColor: "#FFD9E7",
+                    style: {
+                        marginTop: "60px",
+                        color: "red",
+                        borderRadius: "8px",
+                    },
+                }).showToast();
+            });
+
         closePrintModal();
     }
+
 
     window.onclick = function(event) {
         let modal = document.getElementById("printModal");

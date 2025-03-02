@@ -96,7 +96,13 @@ function toggleEdit(checkbox) {
   }
 }
 
-// Fungsi untuk validasi jumlah pinjam
+/*
+Fungsi untuk validasi jumlah pinjam
+
+ini fungsi untuk mengecek jika 
+dia set value 0 maka akan ada informasi error 
+dan jika kita melebih dari ketersediaan maka dia akan error juga
+*/
 function validateQuantity() {
   const totalBooksInput = document.querySelector(
     "#popup__lihat input[name='quantity']"
