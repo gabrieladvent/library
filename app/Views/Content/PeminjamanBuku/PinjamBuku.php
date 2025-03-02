@@ -50,9 +50,9 @@ $encrypter = \Config\Services::encrypter();
                                             $statusColors = [
                                                 'Menunggu' => 'background-color: #e6c9a7; color: #3e3d3c',
                                                 'Dipinjam' => 'background-color: #FFF4CC; color: #FFA500',
-                                                'Diperpanjang' => 'background-color: rgb(163, 212, 244); color: #3e3d3c',
-                                                'Dikembalikan' => 'background-color: rgb(136, 238, 155); color: #3e3d3c',
-                                                'Terlambat' => 'background-color: rgb(241, 121, 121); color: #3e3d3c'
+                                                'Diperpanjang' => 'background-color: #D6EAF8; color: #1E90FF',
+                                                'Dikembalikan' => 'background-color: #D4EFDF; color: #Dikembalikan',
+                                                'Terlambat' => 'background-color: #FADBD8; color: #FF4500'
                                             ];
 
                                             $status = $index['status'];
